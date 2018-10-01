@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "antd": "^3.9.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scripts": "1.1.5"
@@ -22,5 +23,8 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
     "webpack-bundle-analyzer": "^3.0.2"
-  }
+  },
+  "eslintIgnore": [
+    "build.js"
+  ]
 }
