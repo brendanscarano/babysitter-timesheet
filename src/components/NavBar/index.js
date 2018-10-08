@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Layout } from 'antd';
 
-const Wrapper = styled.div`
+const { Header } = Layout;
+
+const Wrapper = styled(Header)`
     position: fixed;
-    left: 0px;
-    top: 0px;
-    right: 0px;
-    z-index: 1000;
-    height: 80px;
+    width: 100%;
     border-bottom: 1px solid #e4e9ee;
     background-color: #fff;
     box-shadow: 0 0 25px 0 hsla(0, 0%, 79%, .35);

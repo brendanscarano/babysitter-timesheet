@@ -1,13 +1,18 @@
 import React from 'react';
-import { Button } from 'antd';
-import { DataSheet } from './components/DataSheet';
+import {
+  BrowserRouter as Router,
+  Route,
+} from 'react-router-dom';
+import { Home } from './screens/home';
+import { Child } from './screens/child';
 
 const App = () => (
-  <div>
-    Babysitter Time Sheet
-    <Button>Click Me</Button>
-    <DataSheet />
-  </div>
+  <Router>
+    <>
+      <Route exact path="/" component={Home} />
+      <Route path="/:id" component={Child} />
+    </>
+  </Router>
 );
 
 export default App;
