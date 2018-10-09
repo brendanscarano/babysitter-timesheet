@@ -22,13 +22,13 @@ const dailySum = (children, dateString) => children.reduce((sum, currentChild) =
   return sum + childTargetDate.paid;
 }, 0);
 
-const weeklySum = (dateString) => {
-  const dailySums = document.getElementsByClassName(`WE${dateString}`);
-  console.log('dailySums', dailySums);
-  const dailySumsCopy = [].slice.call(dailySums);
-  console.log('dailySumsCopy', dailySumsCopy);
-  return 0;
-};
+/**
+ *
+ * @param {array} datesToShow - Array of dateStrings to call dailySum on each one individually
+ */
+const weeklySum = datesToShow => datesToShow
+  .map(dateString => dailySum(KIDS, dateString))
+  .reduce((acc, curr) => acc + curr, 0);
 
 export const mockData = [
   [
@@ -40,14 +40,18 @@ export const mockData = [
     { value: allDates[dateString].dayOfWeek, readOnly: true, id: 'dayOfWeek' },
     { value: allDates[dateString].month, readOnly: true, id: 'month' },
     { value: allDates[dateString].dayOfMonth, readOnly: true, id: 'dayOfMonth' },
-    { value: dailySum(KIDS, dateString), readOnly: true, className: `WE090818 ${dateString}-dailyTotal` },
+    { value: dailySum(KIDS, dateString), readOnly: true, format: 'curr' },
     PLACEHOLDER_SPACE,
-    ...flattenDeep(KIDS.map(({ dates }) => [
-      { value: dates[dateString].hours, id: 'hours' },
-      { value: dates[dateString].paid, id: 'paid' },
+    ...flattenDeep(KIDS.map(({ info, dates }) => [
+      {
+        value: dates[dateString].hours, id: 'hours',
+      },
+      { value: dates[dateString].paid, id: 'paid', format: 'curr' },
       { value: dates[dateString].notes, id: 'notes' },
       PLACEHOLDER_SPACE,
     ])),
   ]),
-  [{ value: 'WE Sep 8 Total', colSpan: 3, readOnly: true }, { value: weeklySum('090818'), readOnly: true }],
+  [{
+    value: 'WE Sep 8 Total', colSpan: 3, readOnly: true,
+  }, { value: weeklySum(datesToShow), readOnly: true, format: 'curr' }],
 ];

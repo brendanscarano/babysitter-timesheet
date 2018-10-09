@@ -1,6 +1,8 @@
 export const MAGGIE = {
   info: {
-    name: 'Maggie',
+    name: 'MAGGIE',
+    rateAmount: 10,
+    rateTime: 'hour',
   },
   dates: {
     '090218': {
@@ -29,7 +31,9 @@ export const MAGGIE = {
 
 export const JOHNNY = {
   info: {
-    name: 'Johnny',
+    name: 'JOHNNY',
+    rateAmount: 8,
+    rateTime: 'hour',
   },
   dates: {
     '090218': {
