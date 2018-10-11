@@ -10,6 +10,7 @@
     "react": "^16.5.2",
     "react-app-rewire-styled-components": "^3.0.2",
     "react-app-rewired": "^1.6.2",
+    "react-calendar": "^2.17.4",
     "react-datasheet": "^1.3.9",
     "react-dom": "^16.5.2",
     "react-router-dom": "^4.3.1",

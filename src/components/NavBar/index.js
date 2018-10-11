@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 const { Header } = Layout;
 
 const Wrapper = styled(Header)`
-    position: fixed;
     width: 100%;
     border-bottom: 1px solid #e4e9ee;
     background-color: #fff;

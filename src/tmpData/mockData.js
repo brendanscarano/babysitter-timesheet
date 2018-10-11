@@ -1,3 +1,5 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import flattenDeep from 'lodash.flattendeep';
 import { MAGGIE, JOHNNY } from './mockChildren';
 import { allDates, datesToShow } from './mockDates';
@@ -6,7 +8,7 @@ const PLACEHOLDER_SPACE = { value: ' ', readOnly: true, id: 'space' };
 
 const KIDS = [MAGGIE, JOHNNY];
 
-const BASE_HEADERS = ['Month', 'Day', '#', 'Total', ''];
+const BASE_HEADERS = ['Day', 'Month', '#', 'Total', ''];
 const HEADERS_PER_KID = ['Hours per day', 'Paid/day', 'Notes', ' '];
 const HEADERS = [...BASE_HEADERS, ...flattenDeep(KIDS.map(kid => HEADERS_PER_KID))].map(
   text => ({ value: text, readOnly: true }),
@@ -19,7 +21,7 @@ const HEADERS = [...BASE_HEADERS, ...flattenDeep(KIDS.map(kid => HEADERS_PER_KID
  */
 const dailySum = (children, dateString) => children.reduce((sum, currentChild) => {
   const childTargetDate = currentChild.dates[dateString];
-  return sum + childTargetDate.paid;
+  return sum + (currentChild.info.rate * childTargetDate.hours);
 }, 0);
 
 /**
@@ -33,7 +35,23 @@ const weeklySum = datesToShow => datesToShow
 export const mockData = [
   [
     { ...PLACEHOLDER_SPACE, colSpan: 5 },
-    ...flattenDeep(KIDS.map(({ info }) => [{ value: info.name, colSpan: 3 }, PLACEHOLDER_SPACE])),
+    ...flattenDeep(KIDS.map(({ info }) => [
+      {
+        value: info.name,
+        colSpan: 3,
+        valueViewer: () => (
+          <Link to={`/${info.id}`}>
+            <span role="img" aria-label="child-emoji">{info.gender === 'male' ? '👦 ' : '👧 '}</span>
+            {info.name}
+          </Link>
+        ),
+      },
+      PLACEHOLDER_SPACE,
+    ])),
+  ],
+  [
+    { ...PLACEHOLDER_SPACE, colSpan: 5 },
+    ...flattenDeep(KIDS.map(({ info }) => [{ value: `$${info.rate}/${info.rateTime}`, colSpan: 3 }, PLACEHOLDER_SPACE])),
   ],
   HEADERS,
   ...datesToShow.map(dateString => [
@@ -46,7 +64,7 @@ export const mockData = [
       {
         value: dates[dateString].hours, id: 'hours',
       },
-      { value: dates[dateString].paid, id: 'paid', format: 'curr' },
+      { value: info.rate * dates[dateString].hours, id: 'paid', format: 'curr' },
       { value: dates[dateString].notes, id: 'notes' },
       PLACEHOLDER_SPACE,
     ])),
