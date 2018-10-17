@@ -5,7 +5,9 @@
   "dependencies": {
     "antd": "^3.9.3",
     "babel-plugin-import": "^1.9.1",
+    "calendar-months": "^1.0.1",
     "lodash.flattendeep": "^4.4.0",
+    "moment": "^2.22.2",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-app-rewire-styled-components": "^3.0.2",

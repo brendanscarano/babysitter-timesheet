@@ -9,7 +9,7 @@ const formatCurr = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
 });
 
-const DataSheet = ({ data, onCellsChanged }) => console.log('data', data) || (
+const DataSheet = ({ data, onCellsChanged }) => (
   <ReactDataSheet
     data={data}
     valueRenderer={cell => (cell.format === 'curr' ? formatCurr.format(cell.value) : cell.value)}

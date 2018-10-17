@@ -6,10 +6,8 @@ import { DataSheet } from '../../components/DataSheet';
 import { NavBar } from '../../components/NavBar';
 import { CalendarSider } from '../../components/CalendarSider';
 import { theme } from '../../shared/theme';
-import { mockData } from '../../tmpData/mockData';
-import { weeksOfMonth } from '../../tmpData/mockDates';
-
-console.log('October Weeks', weeksOfMonth(10));
+import { MAGGIE, JOHNNY } from '../../tmpData/mockChildren';
+import { buildDatasheet } from '../../helpers/buildDatasheet';
 
 const { Content } = Layout;
 
@@ -19,7 +17,7 @@ const StyledContent = styled(Content)`
 `;
 
 const enhance = compose(
-  withState('data', 'setData', mockData),
+  withState('data', 'setData', []),
   withHandlers({
     onCellsChanged: ({ data, setData }) => (changes) => {
       console.log('changes', changes);
@@ -30,19 +28,23 @@ const enhance = compose(
     },
   }),
 );
-const DumbHome = ({ data, onCellsChanged }) => (
-  <Layout>
-    <NavBar />
+const DumbHome = ({ data, onCellsChanged }) => {
+  const testData = buildDatasheet([MAGGIE, JOHNNY], '2018-09');
+  // console.log('testData', testData);
+  return (
     <Layout>
+      <NavBar />
       <Layout>
-        <StyledContent>
-          <DataSheet data={data} onCellsChanged={onCellsChanged} />
-        </StyledContent>
+        <Layout>
+          <StyledContent>
+            <DataSheet data={testData} onCellsChanged={onCellsChanged} />
+          </StyledContent>
+        </Layout>
+        <CalendarSider />
       </Layout>
-      <CalendarSider />
     </Layout>
-  </Layout>
-);
+  );
+};
 
 const Home = enhance(DumbHome);
 export { Home };

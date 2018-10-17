@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import flattenDeep from 'lodash.flattendeep';
 import { MAGGIE, JOHNNY } from './mockChildren';
-import { allDates, datesToShow } from './mockDates';
+import { allDates, datesToShow } from '../helpers/datesByMonth';
 
 const PLACEHOLDER_SPACE = { value: ' ', readOnly: true, id: 'space' };
 
