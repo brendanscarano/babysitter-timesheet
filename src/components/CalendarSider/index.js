@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Layout } from 'antd';
-import Calendar from 'react-calendar';
+import { YearView } from 'react-calendar';
+import moment from 'moment';
 
 const { Sider } = Layout;
 
@@ -12,11 +13,9 @@ const StyledSider = styled(Sider)`
     border-left: 1px solid #efefef;
 `;
 
-const StyledCalendar = styled(Calendar)`
-    border: none;
-`;
+const emojiForMonth = ['❄️', '💌', '🤣', '🌧', '🌻', '✏️', '🎇', '☀️', '🏫', '🎃', '🦃', '🎄'];
 
-const CalendarSider = () => (
+const CalendarSider = ({ onCalendarMonthClick }) => (
   <StyledSider
     width={400}
     theme="light"
@@ -24,10 +23,10 @@ const CalendarSider = () => (
     collapsed={false}
     reverseArrow
   >
-    <StyledCalendar
-      showWeekNumbers
-      onClickWeekNumber={event => console.log('clicking this!', event)}
-      calendarType="US"
+    <YearView
+      activeStartDate={new Date(2018, 0, 1)}
+      onClick={onCalendarMonthClick}
+      tileContent={({ date }) => ` ${emojiForMonth[date.getMonth()]}`}
     />
   </StyledSider>
 );

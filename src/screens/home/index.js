@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Layout } from 'antd';
 import { compose, withState, withHandlers } from 'recompose';
+import moment from 'moment';
 import { DataSheet } from '../../components/DataSheet';
 import { NavBar } from '../../components/NavBar';
 import { CalendarSider } from '../../components/CalendarSider';
@@ -18,6 +19,7 @@ const StyledContent = styled(Content)`
 
 const enhance = compose(
   withState('data', 'setData', []),
+  withState('monthToView', 'setMonthToView', moment().format('YYYY-MM')),
   withHandlers({
     onCellsChanged: ({ data, setData }) => (changes) => {
       console.log('changes', changes);
@@ -26,10 +28,18 @@ const enhance = compose(
       newData[firstChange.row][firstChange.col].value = firstChange.value;
       setData(newData);
     },
+    onCalendarMonthClick: ({ setMonthToView }) => (value) => {
+      const formattedDate = moment(value).format('YYYY-MM');
+      console.log('formattedDate', formattedDate);
+      setMonthToView(formattedDate);
+    },
   }),
 );
-const DumbHome = ({ data, onCellsChanged }) => {
-  const testData = buildDatasheet([MAGGIE, JOHNNY], '2018-09');
+const DumbHome = ({
+  data, monthToView, onCellsChanged, onCalendarMonthClick,
+}) => {
+  console.log('monthToView', monthToView);
+  const testData = buildDatasheet([MAGGIE, JOHNNY], monthToView);
   // console.log('testData', testData);
   return (
     <Layout>
@@ -40,7 +50,7 @@ const DumbHome = ({ data, onCellsChanged }) => {
             <DataSheet data={testData} onCellsChanged={onCellsChanged} />
           </StyledContent>
         </Layout>
-        <CalendarSider />
+        <CalendarSider onCalendarMonthClick={onCalendarMonthClick} />
       </Layout>
     </Layout>
   );
