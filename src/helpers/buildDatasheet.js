@@ -61,19 +61,23 @@ export const buildDatasheet = (kids, date) => {
     ],
     // THIRD ROW: Headings for each columns
     HEADERS,
-    // X ROWS: Individual days each with the hours/rate for each child
+    // N ROWS: Individual days each with the hours/rate for each child
     ...flattenDeep(daysInWeeks).map(day => (day.id !== WEEK_ENDING_ROW ? [
-      { value: day.dayOfWeek, readOnly: true, id: 'dayOfWeek' },
-      { value: day.month, readOnly: true, id: 'month' },
-      { value: day.number, readOnly: true, id: 'dayOfMonth' },
+      { value: day.dayOfWeek, readOnly: true, type: 'dayOfWeek' },
+      { value: day.month, readOnly: true, type: 'month' },
+      { value: day.number, readOnly: true, type: 'dayOfMonth' },
       { value: dailySum(kids, day.formattedDate), readOnly: true, format: 'curr' },
       PLACEHOLDER_SPACE,
       ...flattenDeep(kids.map(({ info, dates }) => [
         {
-          value: dates[day.formattedDate] ? dates[day.formattedDate].hours : 0, id: 'hours',
+          value: dates[day.formattedDate] ? dates[day.formattedDate].hours : 0, type: 'hours', id: info.id, formattedDate: day.formattedDate,
         },
-        { value: dates[day.formattedDate] ? (info.rate * dates[day.formattedDate].hours) : 0, id: 'paid', format: 'curr' },
-        { value: dates[day.formattedDate] ? dates[day.formattedDate].notes : '', id: 'notes' },
+        {
+          value: dates[day.formattedDate] ? (info.rate * dates[day.formattedDate].hours) : 0, type: 'paid', id: info.id, formattedDate: day.formattedDate, format: 'curr',
+        },
+        {
+          value: dates[day.formattedDate] ? dates[day.formattedDate].notes : '', type: 'notes', id: info.id, formattedDate: day.formattedDate,
+        },
         PLACEHOLDER_SPACE,
       ])),
     ]
