@@ -4,6 +4,7 @@ import flattenDeep from 'lodash.flattendeep';
 import Month from 'calendar-months';
 import moment from 'moment';
 import { dailySum, weeklySum } from './sums';
+import { EmptyCell } from '../components/DataSheet/EmptyCell';
 
 const PLACEHOLDER_SPACE = { value: ' ', readOnly: true, id: 'space' };
 
@@ -44,6 +45,7 @@ export const buildDatasheet = (kids, date) => {
         {
           value: info.name,
           colSpan: 3,
+          readOnly: true,
           valueViewer: () => (
             <Link to={`/${info.id}`}>
               <span role="img" aria-label="child-emoji">{info.gender === 'male' ? '👦 ' : '👧 '}</span>
@@ -57,15 +59,24 @@ export const buildDatasheet = (kids, date) => {
     // SECOND ROW: Rates per child
     [
       { ...PLACEHOLDER_SPACE, colSpan: 5 },
-      ...flattenDeep(kids.map(({ info }) => [{ value: `$${info.rate}/${info.rateTime}`, colSpan: 3 }, PLACEHOLDER_SPACE])),
+      ...flattenDeep(kids.map(({ info }) => [{ value: `$${info.rate}/${info.rateTime}`, colSpan: 3, readOnly: true }, PLACEHOLDER_SPACE])),
     ],
     // THIRD ROW: Headings for each columns
     HEADERS,
     // N ROWS: Individual days each with the hours/rate for each child
     ...flattenDeep(daysInWeeks).map(day => (day.id !== WEEK_ENDING_ROW ? [
-      { value: day.dayOfWeek, readOnly: true, type: 'dayOfWeek' },
-      { value: day.month, readOnly: true, type: 'month' },
-      { value: day.number, readOnly: true, type: 'dayOfMonth' },
+      {
+        value: day.dayOfWeek,
+        readOnly: true,
+        type: 'dayOfWeek',
+        className: 'empty-cell',
+      },
+      {
+        value: day.month, readOnly: true, type: 'month', className: 'empty-cell',
+      },
+      {
+        value: day.number, readOnly: true, type: 'dayOfMonth', className: 'empty-cell',
+      },
       { value: dailySum(kids, day.formattedDate), readOnly: true, format: 'curr' },
       PLACEHOLDER_SPACE,
       ...flattenDeep(kids.map(({ info, dates }) => [
@@ -73,7 +84,7 @@ export const buildDatasheet = (kids, date) => {
           value: dates[day.formattedDate] ? dates[day.formattedDate].hours : 0, type: 'hours', id: info.id, formattedDate: day.formattedDate,
         },
         {
-          value: dates[day.formattedDate] ? (info.rate * dates[day.formattedDate].hours) : 0, type: 'paid', id: info.id, formattedDate: day.formattedDate, format: 'curr',
+          value: dates[day.formattedDate] ? (info.rate * dates[day.formattedDate].hours) : 0, type: 'paid', id: info.id, formattedDate: day.formattedDate, format: 'curr', readOnly: true,
         },
         {
           value: dates[day.formattedDate] ? dates[day.formattedDate].notes : '', type: 'notes', id: info.id, formattedDate: day.formattedDate,

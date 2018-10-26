@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Layout } from 'antd';
 import {
-  compose, withState, withHandlers, withProps,
+  compose, withState, withHandlers, withProps, lifecycle,
 } from 'recompose';
 import moment from 'moment';
 import { DataSheet } from '../../components/DataSheet';
@@ -22,6 +22,11 @@ const StyledContent = styled(Content)`
 const enhance = compose(
   withState('kids', 'setKids', [MAGGIE, JOHNNY]),
   withState('monthToView', 'setMonthToView', moment().format('YYYY-MM')),
+  lifecycle({
+    async componentDidMount() {
+      console.log('mounted, mock fetch');
+    },
+  }),
   withHandlers({
     onCellsChanged: ({ kids, setKids }) => (changes) => {
       const firstChange = changes[0];

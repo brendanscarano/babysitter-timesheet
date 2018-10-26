@@ -3,3 +3,8 @@ body {
   padding: 0;
   font-family: 'Lato', sans-serif;
 }
+
+.data-grid-container .data-grid .empty-cell.cell.read-only {
+  border: none;
+  background-color: transparent;
+}
