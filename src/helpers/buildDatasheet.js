@@ -4,7 +4,6 @@ import flattenDeep from 'lodash.flattendeep';
 import Month from 'calendar-months';
 import moment from 'moment';
 import { dailySum, weeklySum } from './sums';
-import { EmptyCell } from '../components/DataSheet/EmptyCell';
 
 const PLACEHOLDER_SPACE = { value: ' ', readOnly: true, id: 'space' };
 
@@ -81,7 +80,10 @@ export const buildDatasheet = (kids, date) => {
       PLACEHOLDER_SPACE,
       ...flattenDeep(kids.map(({ info, dates }) => [
         {
-          value: dates[day.formattedDate] ? dates[day.formattedDate].hours : 0, type: 'hours', id: info.id, formattedDate: day.formattedDate,
+          value: dates[day.formattedDate] ? dates[day.formattedDate].hours : 0,
+          type: 'hours',
+          childId: info.id,
+          day,
         },
         {
           value: dates[day.formattedDate] ? (info.rate * dates[day.formattedDate].hours) : 0, type: 'paid', id: info.id, formattedDate: day.formattedDate, format: 'curr', readOnly: true,

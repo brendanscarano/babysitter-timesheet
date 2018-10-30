@@ -5,13 +5,13 @@ import {
   compose, withState, withHandlers,
 } from 'recompose';
 import moment from 'moment';
-import { Query } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 import { DataSheet } from '../../components/DataSheet';
 import { NavBar } from '../../components/NavBar';
 import { CalendarSider } from '../../components/CalendarSider';
 import { theme } from '../../shared/theme';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
-import { FetchUser } from './graphql';
+import { CREATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 
 const { Content } = Layout;
@@ -21,72 +21,88 @@ const StyledContent = styled(Content)`
   background-color: ${theme.colors.white};
 `;
 
+const Home = () => (
+  <Mutation
+    mutation={CREATE_DATE_MUTATION}
+    refetchQueries={() => {
+      return [{
+        query: FETCH_USER_QUERY
+      }]
+    }}
+  >
+    {(createDate, data) => {
+      return <Inner createDate={createDate} />
+    }}
+  </Mutation>
+)
 
-const enhance = compose(
-  withState('monthToView', 'setMonthToView', moment().format('YYYY-MM')),
-  withHandlers({
-    onCellsChanged: ({ kids, setKids }) => (changes) => {
-      const firstChange = changes[0];
-      const { cell, value } = firstChange;
 
-      const kidToUpdate = kids.filter(kid => kid.info.id === firstChange.cell.id)[0];
+class Inner extends React.PureComponent {
+  state = {
+    monthToView: moment().format('YYYY-MM')
+  }
 
-      // They already have data for this specific date
-      if (kidToUpdate.dates[cell.formattedDate]) {
-        kidToUpdate.dates[cell.formattedDate].hours = value;
-        kidToUpdate.dates[cell.formattedDate].paid = parseInt(value, 10) * kidToUpdate.info.rate;
-      } else {
-        kidToUpdate.dates[cell.formattedDate] = {
-          id: cell.formattedDate,
-          date: moment(cell.formattedDate).format('ddd MMM D'),
-          hours: parseInt(value, 10),
-          paid: parseInt(value, 10) * kidToUpdate.info.rate,
-          notes: '',
-        };
+  onCellsChanged = (changes) => {
+    const change = changes[0];
+    console.log('change', change)
+    const { month, number, year, dayOfWeek, formattedDate } = change.cell.day;
+
+    this.props.createDate({
+      variables: {
+        childId: change.cell.childId,
+        month: parseFloat(formattedDate.slice(0, 2)),
+        day: parseFloat(number),
+        year: parseFloat(year),
+        dayOfWeek,
+        hours: parseFloat(change.value),
+        dateObjectId: formattedDate
       }
+    });
+  };
 
-      setKids(kids.map(kid => (kid.info.id === firstChange.cell.id ? kidToUpdate : kid)));
-    },
-    onCalendarMonthClick: ({ setMonthToView }) => (value) => {
+  onCalendarMonthClick = (value) => {
       const formattedDate = moment(value).format('YYYY-MM');
-      setMonthToView(formattedDate);
-    },
-  }),
-);
-const DumbHome = ({
-  monthToView, onCellsChanged, onCalendarMonthClick,
-}) => (
-  <Layout>
-    <NavBar />
-    <Layout>
-      <Query query={FetchUser}>
-        {((props) => {
-          if (props.loading) {
-            return <div>Loading...</div>;
-          }
+      this.setState({ monthToView: formattedDate });
+  }
 
-          if (!props.data || !props.data.user) {
-            return <div>Something went wrong</div>;
-          }
+  render() {
+        return (
+          <Layout>
+            <NavBar />
+            <Layout>
+              <Query query={FETCH_USER_QUERY}>
+                {((props) => {
+                  console.log('query props', props)
+                  if (props.loading) {
+                    return <div>Loading...</div>;
+                  }
 
-          const children = mapQueryToKids(props.data);
-          const data = buildDatasheet(children, monthToView);
+                  if (
+                    !props.data
+                    || !props.data.user
+                    || !props.data.user.children) {
+                    return <div>Something went wrong</div>;
+                  }
 
-          return (
-            <>
-              <Layout>
-                <StyledContent>
-                  <DataSheet data={data} onCellsChanged={onCellsChanged} />
-                </StyledContent>
-              </Layout>
-              <CalendarSider onCalendarMonthClick={onCalendarMonthClick} />
-            </>
-          );
-        })}
-      </Query>
-    </Layout>
-  </Layout>
-);
+                  const children = mapQueryToKids(props.data.user.children);
+                  const data = buildDatasheet(children, this.state.monthToView);
 
-const Home = enhance(DumbHome);
+                  return (
+                    <>
+                      <Layout>
+                        <StyledContent>
+                          <DataSheet data={data} onCellsChanged={this.onCellsChanged} />
+                        </StyledContent>
+                      </Layout>
+                      <CalendarSider onCalendarMonthClick={this.onCalendarMonthClick} />
+                    </>
+                  );
+                })}
+              </Query>
+            </Layout>
+          </Layout>
+        )
+  }
+}
+
 export { Home };
