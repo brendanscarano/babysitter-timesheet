@@ -2,15 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { Layout } from 'antd';
 import {
-  compose, withState, withHandlers, withProps, lifecycle,
+  compose, withState, withHandlers,
 } from 'recompose';
 import moment from 'moment';
+import { Query } from 'react-apollo';
 import { DataSheet } from '../../components/DataSheet';
 import { NavBar } from '../../components/NavBar';
 import { CalendarSider } from '../../components/CalendarSider';
 import { theme } from '../../shared/theme';
-import { MAGGIE, JOHNNY } from '../../tmpData/mockChildren';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
+import { FetchUser } from './graphql';
+import { mapQueryToKids } from './mapQueryToKids';
 
 const { Content } = Layout;
 
@@ -19,14 +21,9 @@ const StyledContent = styled(Content)`
   background-color: ${theme.colors.white};
 `;
 
+
 const enhance = compose(
-  withState('kids', 'setKids', [MAGGIE, JOHNNY]),
   withState('monthToView', 'setMonthToView', moment().format('YYYY-MM')),
-  lifecycle({
-    async componentDidMount() {
-      console.log('mounted, mock fetch');
-    },
-  }),
   withHandlers({
     onCellsChanged: ({ kids, setKids }) => (changes) => {
       const firstChange = changes[0];
@@ -55,22 +52,38 @@ const enhance = compose(
       setMonthToView(formattedDate);
     },
   }),
-  withProps(props => ({
-    data: buildDatasheet(props.kids, props.monthToView),
-  })),
 );
 const DumbHome = ({
-  data, onCellsChanged, onCalendarMonthClick,
+  monthToView, onCellsChanged, onCalendarMonthClick,
 }) => (
   <Layout>
     <NavBar />
     <Layout>
-      <Layout>
-        <StyledContent>
-          <DataSheet data={data} onCellsChanged={onCellsChanged} />
-        </StyledContent>
-      </Layout>
-      <CalendarSider onCalendarMonthClick={onCalendarMonthClick} />
+      <Query query={FetchUser}>
+        {((props) => {
+          if (props.loading) {
+            return <div>Loading...</div>;
+          }
+
+          if (!props.data || !props.data.user) {
+            return <div>Something went wrong</div>;
+          }
+
+          const children = mapQueryToKids(props.data);
+          const data = buildDatasheet(children, monthToView);
+
+          return (
+            <>
+              <Layout>
+                <StyledContent>
+                  <DataSheet data={data} onCellsChanged={onCellsChanged} />
+                </StyledContent>
+              </Layout>
+              <CalendarSider onCalendarMonthClick={onCalendarMonthClick} />
+            </>
+          );
+        })}
+      </Query>
     </Layout>
   </Layout>
 );
