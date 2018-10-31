@@ -58,7 +58,7 @@ export const buildDatasheet = (kids, date) => {
     // SECOND ROW: Rates per child
     [
       { ...PLACEHOLDER_SPACE, colSpan: 5 },
-      ...flattenDeep(kids.map(({ info }) => [{ value: `$${info.rate}/${info.rateTime}`, colSpan: 3, readOnly: true }, PLACEHOLDER_SPACE])),
+      ...flattenDeep(kids.map(({ info }) => [{ value: `$${info.rate}/hr`, colSpan: 3, readOnly: true }, PLACEHOLDER_SPACE])),
     ],
     // THIRD ROW: Headings for each columns
     HEADERS,

@@ -1,14 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Layout } from 'antd';
-import {
-  compose, withState, withHandlers,
-} from 'recompose';
 import moment from 'moment';
 import { Mutation, Query } from 'react-apollo';
 import { DataSheet } from '../../components/DataSheet';
 import { NavBar } from '../../components/NavBar';
-import { CalendarSider } from '../../components/CalendarSider';
+import { MonthPicker } from '../../components/MonthPicker';
 import { theme } from '../../shared/theme';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
 import { CREATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
@@ -21,7 +18,7 @@ const StyledContent = styled(Content)`
   background-color: ${theme.colors.white};
 `;
 
-const Home = () => (
+const Main = (props) => console.log('props', props) || (
   <Mutation
     mutation={CREATE_DATE_MUTATION}
     refetchQueries={() => {
@@ -30,8 +27,8 @@ const Home = () => (
       }]
     }}
   >
-    {(createDate, data) => {
-      return <Inner createDate={createDate} />
+    {(createDate) => {
+      return <Inner createDate={createDate} {...props} />
     }}
   </Mutation>
 )
@@ -39,25 +36,30 @@ const Home = () => (
 
 class Inner extends React.PureComponent {
   state = {
+    /** TODO: SET MONTH TO VIEW BASED ON PROPS */
     monthToView: moment().format('YYYY-MM')
   }
 
-  onCellsChanged = (changes) => {
-    const change = changes[0];
-    console.log('change', change)
-    const { month, number, year, dayOfWeek, formattedDate } = change.cell.day;
+  componentDidMount() {
+    console.log('this.props', this.props);
+  }
 
-    this.props.createDate({
-      variables: {
-        childId: change.cell.childId,
-        month: parseFloat(formattedDate.slice(0, 2)),
-        day: parseFloat(number),
-        year: parseFloat(year),
-        dayOfWeek,
-        hours: parseFloat(change.value),
-        dateObjectId: formattedDate
-      }
-    });
+  onCellsChanged = (changes) => {
+    changes.forEach(change => {
+      const { number, year, dayOfWeek, formattedDate } = change.cell.day;
+
+      this.props.createDate({
+        variables: {
+          childId: change.cell.childId,
+          month: parseFloat(formattedDate.slice(0, 2)),
+          day: parseFloat(number),
+          year: parseFloat(year),
+          dayOfWeek,
+          hours: parseFloat(change.value),
+          dateObjectId: formattedDate
+        }
+      });
+    })
   };
 
   onCalendarMonthClick = (value) => {
@@ -72,7 +74,6 @@ class Inner extends React.PureComponent {
             <Layout>
               <Query query={FETCH_USER_QUERY}>
                 {((props) => {
-                  console.log('query props', props)
                   if (props.loading) {
                     return <div>Loading...</div>;
                   }
@@ -91,10 +92,10 @@ class Inner extends React.PureComponent {
                     <>
                       <Layout>
                         <StyledContent>
+                          <MonthPicker onCalendarMonthClick={this.onCalendarMonthClick} />
                           <DataSheet data={data} onCellsChanged={this.onCellsChanged} />
                         </StyledContent>
                       </Layout>
-                      <CalendarSider onCalendarMonthClick={this.onCalendarMonthClick} />
                     </>
                   );
                 })}
@@ -105,4 +106,4 @@ class Inner extends React.PureComponent {
   }
 }
 
-export { Home };
+export { Main };

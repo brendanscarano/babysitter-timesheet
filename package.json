@@ -9,6 +9,7 @@
     "calendar-months": "^1.0.1",
     "firebase-admin": "^6.0.0",
     "firebase-functions": "^2.0.5",
+    "formik": "^1.3.1",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "lodash.flattendeep": "^4.4.0",

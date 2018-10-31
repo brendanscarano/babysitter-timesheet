@@ -8,3 +8,8 @@ body {
   border: none;
   background-color: transparent;
 }
+
+.data-grid-container .data-grid .cell > input {
+  width: auto;
+  height: auto;
+}
