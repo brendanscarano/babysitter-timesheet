@@ -8,7 +8,7 @@ import { NavBar } from '../../components/NavBar';
 import { MonthPicker } from '../../components/MonthPicker';
 import { theme } from '../../shared/theme';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
-import { CREATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
+import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 
 const { Content } = Layout;
@@ -18,17 +18,17 @@ const StyledContent = styled(Content)`
   background-color: ${theme.colors.white};
 `;
 
-const Main = (props) => console.log('props', props) || (
+const Main = (props) => (
   <Mutation
-    mutation={CREATE_DATE_MUTATION}
+    mutation={CREATE_OR_UPDATE_DATE_MUTATION}
     refetchQueries={() => {
       return [{
         query: FETCH_USER_QUERY
       }]
     }}
   >
-    {(createDate) => {
-      return <Inner createDate={createDate} {...props} />
+    {(upsertDate) => {
+      return <Inner upsertDate={upsertDate} {...props} />
     }}
   </Mutation>
 )
@@ -45,17 +45,20 @@ class Inner extends React.PureComponent {
   }
 
   onCellsChanged = (changes) => {
+    console.log('changes', changes);
     changes.forEach(change => {
       const { number, year, dayOfWeek, formattedDate } = change.cell.day;
+      const { savedDateInDb } = change.cell;
 
-      this.props.createDate({
+      this.props.upsertDate({
         variables: {
+          dateId: savedDateInDb ? savedDateInDb.dateId : "",
           childId: change.cell.childId,
           month: parseFloat(formattedDate.slice(0, 2)),
           day: parseFloat(number),
           year: parseFloat(year),
-          dayOfWeek,
           hours: parseFloat(change.value),
+          dayOfWeek,
           dateObjectId: formattedDate
         }
       });
@@ -86,6 +89,7 @@ class Inner extends React.PureComponent {
                   }
 
                   const children = mapQueryToKids(props.data.user.children);
+                  console.log('children', children)
                   const data = buildDatasheet(children, this.state.monthToView);
 
                   return (

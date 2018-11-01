@@ -46,8 +46,8 @@ export const buildDatasheet = (kids, date) => {
           colSpan: 3,
           readOnly: true,
           valueViewer: () => (
-            <Link to={`/${info.id}`}>
-              <span role="img" aria-label="child-emoji">{info.gender === 'male' ? '👦 ' : '👧 '}</span>
+            <Link to={`/child/${info.id}`}>
+              <span role="img" aria-label="child-emoji">{info.gender === 'MALE' ? '👦 ' : '👧 '}</span>
               {info.name}
             </Link>
           ),
@@ -63,6 +63,17 @@ export const buildDatasheet = (kids, date) => {
     // THIRD ROW: Headings for each columns
     HEADERS,
     // N ROWS: Individual days each with the hours/rate for each child
+    /**
+       * day: IDay -> created by the time function above
+       * IDay {
+       *  dayOfWeek: "Sun"
+       *  month: "Dec"
+       *  number: "02"
+       *  year: "18"
+       *  formattedDate: "120818"
+       * }
+       */
+
     ...flattenDeep(daysInWeeks).map(day => (day.id !== WEEK_ENDING_ROW ? [
       {
         value: day.dayOfWeek,
@@ -84,6 +95,7 @@ export const buildDatasheet = (kids, date) => {
           type: 'hours',
           childId: info.id,
           day,
+          savedDateInDb: dates[day.formattedDate],
         },
         {
           value: dates[day.formattedDate] ? (info.rate * dates[day.formattedDate].hours) : 0, type: 'paid', id: info.id, formattedDate: day.formattedDate, format: 'curr', readOnly: true,

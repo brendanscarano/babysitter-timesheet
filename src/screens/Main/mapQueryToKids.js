@@ -28,8 +28,8 @@ export const mapQueryToKids = children => children.map(child => ({
   dates: child.dates.reduce((acc, curr) => ({
     ...acc,
     [curr.dateObjectId]: {
-      id: curr.dateObjectId,
-      date: `Day Month ${curr.day}`,
+      dateId: curr.id,
+      dateObjectId: curr.dateObjectId,
       hours: curr.hours,
       paid: curr.paid,
       notes: '',

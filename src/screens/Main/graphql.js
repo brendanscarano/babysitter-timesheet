@@ -12,6 +12,7 @@ export const FETCH_USER_QUERY = gql`
                 firstName
                 rateAmount
                 dates {
+                    id
                     month
                     day
                     year
@@ -24,31 +25,38 @@ export const FETCH_USER_QUERY = gql`
     }
 `;
 
-export const CREATE_DATE_MUTATION = gql`
-    mutation CreateDate(
-        $childId: ID!
+export const CREATE_OR_UPDATE_DATE_MUTATION = gql`
+    mutation UpsertDate(
+        $dateId: ID,
+        $childId: ID!,
         $month: Float!,
         $day: Float!,
         $year: Float!,
-        $dayOfWeek: String!,
         $hours: Float!,
+        $dayOfWeek: String!,
         $dateObjectId: String!,
-        $notes: String,
     ) {
-        createDate(data: {
+        upsertDate(where: {
+            id: $dateId
+        }
+        create: {
             owner: {
                 connect: {
-                id: $childId
-            }
-        },
-        month: $month,
-        day: $day,
-        year: $year,
-        dayOfWeek: $dayOfWeek,
-        hours: $hours,
-        dateObjectId: $dateObjectId,
-        notes: $notes,
-    }) {
-        dateObjectId
+                    id: $childId
+                }
+            },
+            month: $month,
+            day: $day,
+            year: $year,
+            hours: $hours,
+            dayOfWeek: $dayOfWeek,
+            dateObjectId: $dateObjectId,
+        }
+        update: {
+            hours: $hours
+        }) {
+            id
+            dateObjectId
+        }
     }
-}`;
+`;
