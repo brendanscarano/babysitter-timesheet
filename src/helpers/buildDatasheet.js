@@ -39,6 +39,9 @@ export const buildDatasheet = (kids, date) => {
 
     const formattedDaysInWeek = days.map(day => day.formattedDate);
     const lastDay = days[days.length - 1];
+
+    console.log('days', days);
+    // CREATE WEEK ENDING ROWS
     return [
       ...days,
       {
@@ -46,6 +49,7 @@ export const buildDatasheet = (kids, date) => {
         text: `WE ${lastDay.month} ${lastDay.number} Total`,
         value: weeklySum(kids, formattedDaysInWeek),
       },
+      // PLACEHOLDER_SPACE,
     ];
   });
 
@@ -56,7 +60,8 @@ export const buildDatasheet = (kids, date) => {
   return [
     // FIRST ROW: Names with Links to Child Pages
     [
-      { ...PLACEHOLDER_SPACE, colSpan: 5, className: STICKY_TOP_FIRST_ROW },
+      { ...PLACEHOLDER_SPACE, colSpan: 4, className: STICKY_TOP_FIRST_ROW },
+      PLACEHOLDER_SPACE,
       ...flattenDeep(kids.map(({ info }) => [
         {
           value: info.name,
@@ -70,12 +75,12 @@ export const buildDatasheet = (kids, date) => {
           ),
           className: STICKY_TOP_FIRST_ROW,
         },
-        PLACEHOLDER_SPACE,
       ])),
     ],
     // SECOND ROW: Rates per child
     [
-      { ...PLACEHOLDER_SPACE, colSpan: 5, className: STICKY_TOP_SECOND_ROW },
+      { ...PLACEHOLDER_SPACE, colSpan: 4, className: STICKY_TOP_SECOND_ROW },
+      PLACEHOLDER_SPACE,
       ...flattenDeep(kids.map(({ info }) => [{
         value: `$${info.rate}/hr`,
         colSpan: 3,
@@ -129,8 +134,16 @@ export const buildDatasheet = (kids, date) => {
         PLACEHOLDER_SPACE,
       ])),
     ]
-      : [{
-        value: day.text, colSpan: 3, readOnly: true,
-      }, { value: day.value, readOnly: true, format: 'curr' }])),
+      : [
+        {
+          value: day.text, colSpan: 3, readOnly: true,
+        },
+        {
+          value: day.value, readOnly: true, format: 'curr',
+        },
+        PLACEHOLDER_SPACE,
+        // TODO: FOR EVERY CHILD WEEKLY HOURS SUM AND WEEKLY PAID SUM
+      ]
+    )),
   ];
 };
