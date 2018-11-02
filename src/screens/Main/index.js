@@ -45,7 +45,6 @@ class Inner extends React.PureComponent {
   }
 
   onCellsChanged = (changes) => {
-    console.log('changes', changes);
     changes.forEach(change => {
       const { number, year, dayOfWeek, formattedDate } = change.cell.day;
       const { savedDateInDb } = change.cell;
@@ -57,7 +56,7 @@ class Inner extends React.PureComponent {
           month: parseFloat(formattedDate.slice(0, 2)),
           day: parseFloat(number),
           year: parseFloat(year),
-          hours: parseFloat(change.value),
+          hours: parseFloat(change.value) || 0,
           dayOfWeek,
           dateObjectId: formattedDate
         }

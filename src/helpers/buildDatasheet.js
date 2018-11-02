@@ -17,19 +17,33 @@ const WEEK_ENDING_ROW = 'week-ending-row';
  * @param {number} date 'YYYY-MM'
  */
 export const buildDatasheet = (kids, date) => {
+  const targetMonthNumber = date.slice(-2);
   const weeks = Month.create(date).calendarWeeks();
 
   const daysInWeeks = weeks.map((week) => {
+    const monthOnFirstDayOfWeek = week[0].format('MM');
+    const monthOnLastDayOfWeek = week[6].format('MM');
+    if (monthOnFirstDayOfWeek !== targetMonthNumber && monthOnLastDayOfWeek !== targetMonthNumber) {
+      return [];
+    }
+
     const days = week.map((day) => {
-      const [dayOfWeek, month, number, year, formattedDate] = moment(day).format('ddd MMM DD YY MMDDYY').split(' ');
+      const [dayOfWeek, month, monthNumber, number, year, formattedDate] = moment(day).format('ddd MMM MM DD YY MMDDYY').split(' ');
       return {
-        dayOfWeek, month, number, year, formattedDate,
+        dayOfWeek, month, monthNumber, number, year, formattedDate,
       };
     });
 
     const formattedDaysInWeek = days.map(day => day.formattedDate);
     const lastDay = days[days.length - 1];
-    return [...days, { id: WEEK_ENDING_ROW, text: `WE ${lastDay.month} ${lastDay.number} Total`, value: weeklySum(kids, formattedDaysInWeek) }];
+    return [
+      ...days,
+      {
+        id: WEEK_ENDING_ROW,
+        text: `WE ${lastDay.month} ${lastDay.number} Total`,
+        value: weeklySum(kids, formattedDaysInWeek),
+      },
+    ];
   });
 
   const HEADERS = [...BASE_HEADERS, ...flattenDeep(kids.map(() => HEADERS_PER_KID))].map(
@@ -51,6 +65,7 @@ export const buildDatasheet = (kids, date) => {
               {info.name}
             </Link>
           ),
+          className: 'sticky',
         },
         PLACEHOLDER_SPACE,
       ])),
