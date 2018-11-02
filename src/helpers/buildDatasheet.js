@@ -6,6 +6,9 @@ import moment from 'moment';
 import { dailySum, weeklySum } from './sums';
 
 const PLACEHOLDER_SPACE = { value: ' ', readOnly: true, id: 'space' };
+const STICKY_TOP_FIRST_ROW = 'sticky-top-first-row';
+const STICKY_TOP_SECOND_ROW = 'sticky-top-second-row';
+const STICKY_TOP_THIRD_ROW = 'sticky-top-third-row';
 
 const BASE_HEADERS = ['Day', 'Month', '#', 'Total', ''];
 const HEADERS_PER_KID = ['Hours per day', 'Paid/day', 'Notes', ' '];
@@ -47,13 +50,13 @@ export const buildDatasheet = (kids, date) => {
   });
 
   const HEADERS = [...BASE_HEADERS, ...flattenDeep(kids.map(() => HEADERS_PER_KID))].map(
-    text => ({ value: text, readOnly: true }),
+    text => ({ value: text, readOnly: true, className: STICKY_TOP_THIRD_ROW }),
   );
 
   return [
     // FIRST ROW: Names with Links to Child Pages
     [
-      { ...PLACEHOLDER_SPACE, colSpan: 5 },
+      { ...PLACEHOLDER_SPACE, colSpan: 5, className: STICKY_TOP_FIRST_ROW },
       ...flattenDeep(kids.map(({ info }) => [
         {
           value: info.name,
@@ -65,15 +68,20 @@ export const buildDatasheet = (kids, date) => {
               {info.name}
             </Link>
           ),
-          className: 'sticky',
+          className: STICKY_TOP_FIRST_ROW,
         },
         PLACEHOLDER_SPACE,
       ])),
     ],
     // SECOND ROW: Rates per child
     [
-      { ...PLACEHOLDER_SPACE, colSpan: 5 },
-      ...flattenDeep(kids.map(({ info }) => [{ value: `$${info.rate}/hr`, colSpan: 3, readOnly: true }, PLACEHOLDER_SPACE])),
+      { ...PLACEHOLDER_SPACE, colSpan: 5, className: STICKY_TOP_SECOND_ROW },
+      ...flattenDeep(kids.map(({ info }) => [{
+        value: `$${info.rate}/hr`,
+        colSpan: 3,
+        readOnly: true,
+        className: STICKY_TOP_SECOND_ROW,
+      }, PLACEHOLDER_SPACE])),
     ],
     // THIRD ROW: Headings for each columns
     HEADERS,

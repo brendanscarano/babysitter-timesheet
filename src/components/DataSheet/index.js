@@ -5,7 +5,18 @@ import ReactDataSheet from 'react-datasheet';
 import 'react-datasheet/lib/react-datasheet.css';
 
 const Wrapper = styled.div`
-
+  .sticky-top-first-row {
+    position: sticky;
+    top: 0;
+  }
+  .sticky-top-second-row {
+    position: sticky;
+    top: 20px;
+  }
+  .sticky-top-third-row {
+    position: sticky;
+    top: 40px;
+  }
 `;
 
 const formatCurr = new Intl.NumberFormat('en-US', {
