@@ -8,7 +8,8 @@ import {
 // import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
-import { Child } from './screens/child';
+import { Child } from './screens/Child';
+import { MyProfile } from './screens/MyProfile';
 import { NewChildForm } from './screens/NewChildForm';
 import { Main } from './screens/Main';
 
@@ -22,10 +23,11 @@ const App = () => (
     <Router>
       <Switch>
         {/* <Redirect from="/" to="/Oct-2018" /> */}
-        <Route exact path="/" component={Main} />
-        <Route exact path="/:date" component={Main} />
         <Route exact path="/child/:id" component={Child} />
         <Route exact path="/new-child" component={NewChildForm} />
+        <Route exact path="/my-profile" component={MyProfile} />
+        <Route exact path="/:date" component={Main} />
+        <Route exact path="/" component={Main} />
       </Switch>
     </Router>
   </ApolloProvider>

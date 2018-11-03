@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Layout } from 'antd';
+import { Avatar, Layout } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { Header } = Layout;
 
 const Wrapper = styled(Header)`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     border-bottom: 1px solid #e4e9ee;
     background-color: #fff;
@@ -16,6 +19,7 @@ const Wrapper = styled(Header)`
 const StyledLink = styled(Link)`
   display: flex;
   align-items: flex-start;
+  height: 100%;
   >span, h1 {
     font-size: 20px;
   }
@@ -30,6 +34,9 @@ const NavBar = () => (
       <span role="img" aria-label="baby">👶</span>
       <h1>Sitter Sheet</h1>
     </StyledLink>
+    <Link to="/my-profile">
+      <Avatar icon="user" />
+    </Link>
   </Wrapper>
 );
 
