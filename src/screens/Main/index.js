@@ -45,8 +45,9 @@ class Inner extends React.PureComponent {
   }
 
   onCellsChanged = (changes) => {
+    console.log('changes', changes)
     changes.forEach(change => {
-      const { number, year, dayOfWeek, formattedDate } = change.cell.day;
+      const { number, year, dayOfWeek, formattedDate } = change.cell.row;
       const { savedDateInDb } = change.cell;
 
       this.props.upsertDate({

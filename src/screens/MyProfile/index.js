@@ -6,6 +6,7 @@ import { Bar } from 'react-chartjs';
 import { FETCH_USER_QUERY } from './graphql';
 import { NavBar } from '../../components/NavBar';
 import { FlexRow } from '../../components/Flex';
+import { buildYearlyTotals } from './buildYearlyTotals';
 
 const Wrapper = styled.div`
   padding: 2rem 3rem;
@@ -15,26 +16,16 @@ const UserName = styled.h2`
     margin: 0 0 0 .5rem;
 `;
 
-const sampleData = {
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-  datasets: [
-    {
-      label: '2018',
-      fillColor: 'rgba(220,220,220,0.5)',
-      strokeColor: 'rgba(220,220,220,0.8)',
-      highlightFill: 'rgba(220,220,220,0.75)',
-      highlightStroke: 'rgba(220,220,220,1)',
-      data: [65, 59, 80, 81, 56, 55, 40, 59, 80, 81, 56, 55, 40],
-    },
-    {
-      label: '2017',
-      fillColor: 'rgba(151,187,205,0.5)',
-      strokeColor: 'rgba(151,187,205,0.8)',
-      highlightFill: 'rgba(151,187,205,0.75)',
-      highlightStroke: 'rgba(151,187,205,1)',
-      data: [28, 48, 40, 19, 86, 27, 90, 48, 40, 19, 86, 27, 90],
-    },
-  ],
+const Graph = ({ loading, error, data }) => {
+  if (loading) {
+    return (<div>Loading Data...</div>);
+  }
+  if (error) {
+    return (<div>There was an error loading the data...</div>);
+  }
+  return (
+    <Bar data={data} width="1000" height="250" />
+  );
 };
 
 const MyProfile = () => (
@@ -43,27 +34,28 @@ const MyProfile = () => (
     <Layout>
       <Query query={FETCH_USER_QUERY}>
         {((props) => {
-          if (props.loading) {
-            return <Wrapper>Loading...</Wrapper>;
-          }
+          console.log('props', props);
 
-          if (
-            !props.data
-            || !props.data.user
-            || !props.data.user.children) {
-            return <Wrapper>Something went wrong</Wrapper>;
-          }
+          const childrenData = (props.data && props.data.user && props.data.user.children.length > 0) ? props.data.user.children : null;
+          const annualData = buildYearlyTotals(childrenData);
+          console.log('annualData', annualData);
+          const annualAnnualSum = annualData.datasets[0].data.reduce((acc, curr) => acc + curr, 0);
+
 
           return (
             <Wrapper>
               <FlexRow>
                 <Avatar icon="user" />
                 <UserName>Brendan Scarano</UserName>
-
               </FlexRow>
 
-              <Card title="2018 Total: $25,845">
-                <Bar data={sampleData} width="1000" height="250" />
+              <Card title={`2018 Total: ${annualAnnualSum}`}>
+                <Graph
+                  loading={props.loading
+                    || (props.data && props.data.user && props.data.user.children.length === 0)}
+                  error={props.error}
+                  data={annualData}
+                />
               </Card>
             </Wrapper>
           );

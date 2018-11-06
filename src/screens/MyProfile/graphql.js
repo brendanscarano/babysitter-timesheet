@@ -11,14 +11,13 @@ export const FETCH_USER_QUERY = gql`
                 id
                 firstName
                 rateAmount
-                dates {
-                    id
+                dates(where: {
+                    year: 18
+                }) {
                     month
-                    day
                     year
                     hours
                     paid
-                    dateObjectId
                 }
             }
         }
