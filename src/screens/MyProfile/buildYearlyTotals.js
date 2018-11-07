@@ -1,7 +1,10 @@
 import flattenDeep from 'lodash.flattendeep';
+import { emojisForMonths } from '../../shared/emojisForMonths';
+
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const annualDateObject = data => ({
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  labels: monthNames.map((monthName, idx) => `${emojisForMonths[idx]} ${monthName}`),
   datasets: [
     {
       label: '2018',
@@ -30,6 +33,7 @@ export const buildYearlyTotals = (data) => {
     annualData2018[date.month - 1] = annualData2018[date.month - 1] + date.paid;
   });
   console.log('annualData2018', annualData2018);
+
 
   return annualDateObject(annualData2018);
 };

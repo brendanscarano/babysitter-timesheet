@@ -5,9 +5,11 @@ import moment from 'moment';
 import { Mutation, Query } from 'react-apollo';
 import { DataSheet } from '../../components/DataSheet';
 import { NavBar } from '../../components/NavBar';
+import flattenDeep from 'lodash.flattendeep';
 import { MonthPicker } from '../../components/MonthPicker';
 import { theme } from '../../shared/theme';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
+import { formatCurr } from '../../helpers/formatCurr';
 import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 
@@ -45,7 +47,6 @@ class Inner extends React.PureComponent {
   }
 
   onCellsChanged = (changes) => {
-    console.log('changes', changes)
     changes.forEach(change => {
       const { number, year, dayOfWeek, formattedDate } = change.cell.row;
       const { savedDateInDb } = change.cell;
@@ -90,13 +91,25 @@ class Inner extends React.PureComponent {
 
                   const children = mapQueryToKids(props.data.user.children);
                   console.log('children', children)
+                  const allChildrensMonthDays = flattenDeep(props.data.user.children.map(child =>
+                    child.dates.map(date => ({
+                      ...date,
+                      paid: date.paid ? date.paid : (date.hours * child.rateAmount),
+                    })
+                  )))
+                  const monthlyTotal = allChildrensMonthDays.reduce((acc, curr) => acc + curr.paid, 0)
+                  console.log('monthlyTotal', monthlyTotal)
                   const data = buildDatasheet(children, this.state.monthToView);
 
                   return (
                     <>
                       <Layout>
                         <StyledContent>
-                          <MonthPicker onCalendarMonthClick={this.onCalendarMonthClick} />
+                          <MonthPicker
+                            onCalendarMonthClick={this.onCalendarMonthClick}
+                            monthToView={this.state.monthToView}
+                          />
+                          <h3>Monthly Total: <b>{formatCurr(monthlyTotal)}</b></h3>
                           <DataSheet data={data} onCellsChanged={this.onCellsChanged} />
                         </StyledContent>
                       </Layout>
