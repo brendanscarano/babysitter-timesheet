@@ -6,7 +6,7 @@ const Row = styled.div`
     align-items: center;
 `;
 
-export const FlexRow = ({ children }) => <Row>{children}</Row>;
+export const FlexRow = ({ children, className }) => <Row className={className}>{children}</Row>;
 
 const Column = styled.div`
     display: flex;
@@ -14,4 +14,4 @@ const Column = styled.div`
     align-items: center;
 `;
 
-export const FlexColumn = ({ children }) => <Column>{children}</Column>;
+export const FlexColumn = ({ children, className }) => <Column className={className}>{children}</Column>;

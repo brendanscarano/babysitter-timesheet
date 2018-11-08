@@ -1,24 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Layout } from 'antd';
 import moment from 'moment';
 import { Mutation, Query } from 'react-apollo';
-import { DataSheet } from '../../components/DataSheet';
 import { NavBar } from '../../components/NavBar';
 import flattenDeep from 'lodash.flattendeep';
-import { MonthPicker } from '../../components/MonthPicker';
-import { theme } from '../../shared/theme';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
-import { formatCurr } from '../../helpers/formatCurr';
 import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
-
-const { Content } = Layout;
-
-const StyledContent = styled(Content)`
-  padding: 2rem 3rem;
-  background-color: ${theme.colors.white};
-`;
+import { Presentation } from './Presentation';
 
 const Main = (props) => (
   <Mutation
@@ -40,10 +29,6 @@ class Inner extends React.PureComponent {
   state = {
     /** TODO: SET MONTH TO VIEW BASED ON PROPS */
     monthToView: moment().format('YYYY-MM')
-  }
-
-  componentDidMount() {
-    console.log('this.props', this.props);
   }
 
   onCellsChanged = (changes) => {
@@ -102,18 +87,13 @@ class Inner extends React.PureComponent {
                   const data = buildDatasheet(children, this.state.monthToView);
 
                   return (
-                    <>
-                      <Layout>
-                        <StyledContent>
-                          <MonthPicker
-                            onCalendarMonthClick={this.onCalendarMonthClick}
-                            monthToView={this.state.monthToView}
-                          />
-                          <h3>Monthly Total: <b>{formatCurr(monthlyTotal)}</b></h3>
-                          <DataSheet data={data} onCellsChanged={this.onCellsChanged} />
-                        </StyledContent>
-                      </Layout>
-                    </>
+                    <Presentation
+                      onCalendarMonthClick={this.onCalendarMonthClick}
+                      monthToView={this.state.monthToView}
+                      monthlyTotal={monthlyTotal}
+                      data={data}
+                      onCellsChanged={this.onCellsChanged}
+                    />
                   );
                 })}
               </Query>
