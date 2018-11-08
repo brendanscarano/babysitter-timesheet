@@ -2,11 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import { Layout } from 'antd';
 import {
-  Formik, Form, Field, ErrorMessage,
+  Formik, Field, ErrorMessage,
 } from 'formik';
 import { Mutation } from 'react-apollo';
+import {
+  Form, Input, Radio, Button, InputNumber,
+} from 'antd';
 import { NavBar } from '../../components/NavBar';
 import { CREATE_NEW_CHILD } from './graphql';
+
+const FormItem = Form.Item;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 const StyledLayout = styled(Layout)`
   display: flex;
@@ -61,23 +68,54 @@ const NewChildForm = () => (
               });
             }}
           >
-            {({ isSubmitting }) => (
+            {({
+              values, errors, handleChange, handleBlur, isSubmitting,
+            }) => console.log('values', values) || (
               <VerticalForm>
-                <label htmlFor="firstName">First Name:</label>
-                <Field type="text" id="firstName" name="firstName" />
-                <ErrorMessage name="firstName" component="div" />
+                <FormItem label="First Name">
+                  <Input
+                    type="text"
+                    onChange={handleChange}
+                    name="firstName"
+                  />
+                  {errors.name && <div id="feedback">{errors.name}</div>}
+                </FormItem>
 
-                <label htmlFor="lastName">Last Name:</label>
-                <Field type="text" id="lastName" name="lastName" />
-                <ErrorMessage name="lastName" component="div" />
+                <FormItem label="Last Name">
+                  <Input
+                    type="text"
+                    onChange={handleChange}
+                    name="lastName"
+                  />
+                  {errors.name && <div id="feedback">{errors.name}</div>}
+                </FormItem>
 
-                <FlexRow>
+                <RadioGroup>
                   <Field type="radio" name="gender" id="boy" value="MALE" />
                   <label htmlFor="boy">Boy</label>
 
                   <Field type="radio" name="gender" id="girl" value="FEMALE" />
                   <label htmlFor="girl">Girl</label>
-                </FlexRow>
+                </RadioGroup>
+
+                <FormItem label="Gender">
+                  <RadioGroup name="gender" onChange={props => console.log('changing to', props)}>
+                    <Radio value="MALE">👦 Boy</Radio>
+                    <Radio value="FEMALE">👧 Girl</Radio>
+                  </RadioGroup>
+                </FormItem>
+
+                <FormItem label="Hourly Rate">
+                  <InputNumber
+                    name="hourlyRate"
+                    defaultValue={8}
+                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                    onChange={(value) => {
+                      console.log('changed', value);
+                    }}
+                  />
+                </FormItem>
 
                 {/* <label htmlFor="rateAmount">Rate:</label>
                 <Field component="select" id="rateAmount" name="rateAmount">
@@ -87,9 +125,9 @@ const NewChildForm = () => (
                 </Field> */}
 
 
-                <button type="submit" disabled={isSubmitting}>
+                <Button type="submit" disabled={isSubmitting}>
                   Add
-                </button>
+                </Button>
               </VerticalForm>
             )}
           </Formik>
