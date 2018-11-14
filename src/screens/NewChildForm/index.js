@@ -1,40 +1,37 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Layout } from 'antd';
 import {
   Formik, Field, ErrorMessage,
 } from 'formik';
 import { Mutation } from 'react-apollo';
 import {
-  Form, Input, Radio, Button, InputNumber,
+  Form, Input, Radio, Button, InputNumber, Layout,
 } from 'antd';
 import { NavBar } from '../../components/NavBar';
 import { CREATE_NEW_CHILD } from './graphql';
+import { media } from '../../shared/theme';
 
 const FormItem = Form.Item;
-const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 const StyledLayout = styled(Layout)`
   display: flex;
   flex-direction: column;
   align-items: center;
-    width: 100%;
-    margin: 2rem 0;
+  width: 100%;
+  padding: 2rem;
+
+  ${media.phone`
+    width: 400px;
+    margin: auto;
+  `};
 `;
 
 const VerticalForm = styled(Form)`
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 100%;
 `;
-
-const FlexRow = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const hourlySelections = () => new Array(40).fill(null).map((_, idx) => idx + 1);
 
 const NewChildForm = () => (
   <Mutation mutation={CREATE_NEW_CHILD}>
@@ -52,16 +49,16 @@ const NewChildForm = () => (
               }
               return errors;
             }}
-            onSubmit={(values, props) => {
-              console.log('props', props);
+            onSubmit={(values, actions) => {
               console.log('values', values);
+              console.log('actions', actions);
               createChild({
                 variables: {
                   firstName: values.firstName,
                   lastName: values.lastName,
                   gender: values.gender,
-                  /** TODO: Dont hardcode this */
-                  rateAmount: 7,
+                  rateAmount: values.rateAmount,
+                  rateType: values.rateType,
                   /** TODO: Dont hardcode this */
                   ownerId: 'cjntestdudeug0a54rjlfk74x',
                 },
@@ -69,9 +66,9 @@ const NewChildForm = () => (
             }}
           >
             {({
-              values, errors, handleChange, handleBlur, isSubmitting,
+              values, errors, handleChange, isSubmitting, handleSubmit,
             }) => console.log('values', values) || (
-              <VerticalForm>
+              <VerticalForm onSubmit={handleSubmit}>
                 <FormItem label="First Name">
                   <Input
                     type="text"
@@ -90,43 +87,64 @@ const NewChildForm = () => (
                   {errors.name && <div id="feedback">{errors.name}</div>}
                 </FormItem>
 
-                <RadioGroup>
-                  <Field type="radio" name="gender" id="boy" value="MALE" />
-                  <label htmlFor="boy">Boy</label>
-
-                  <Field type="radio" name="gender" id="girl" value="FEMALE" />
-                  <label htmlFor="girl">Girl</label>
-                </RadioGroup>
-
                 <FormItem label="Gender">
-                  <RadioGroup name="gender" onChange={props => console.log('changing to', props)}>
-                    <Radio value="MALE">👦 Boy</Radio>
-                    <Radio value="FEMALE">👧 Girl</Radio>
-                  </RadioGroup>
-                </FormItem>
-
-                <FormItem label="Hourly Rate">
-                  <InputNumber
-                    name="hourlyRate"
-                    defaultValue={8}
-                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                    onChange={(value) => {
-                      console.log('changed', value);
-                    }}
+                  <Field
+                    name="gender"
+                    render={renderProps => (
+                      <RadioGroup name="gender" onChange={props => renderProps.form.setFieldValue(props.target.name, props.target.value)}>
+                        <Radio value="MALE">
+                          <span role="img" aria-label="boy">👦 boy</span>
+                        </Radio>
+                        <Radio value="FEMALE">
+                          <span role="img" aria-label="girl">👧 girl</span>
+                        </Radio>
+                      </RadioGroup>
+                    )}
                   />
                 </FormItem>
 
-                {/* <label htmlFor="rateAmount">Rate:</label>
-                <Field component="select" id="rateAmount" name="rateAmount">
-                  {hourlySelections().map(value => (
-                    <option key={value} value={value}>{`$${value}`}</option>
-                  ))}
-                </Field> */}
+                <FormItem label="Rate Type">
+                  <Field
+                    name="rateType"
+                    render={renderProps => (
+                      <RadioGroup
+                        name="rateType"
+                        onChange={(props) => {
+                          renderProps.form.setFieldValue(props.target.name, props.target.value);
+                          renderProps.form.setFieldValue('rateAmount', props.target.value === 'HOURLY' ? 8 : 40);
+                        }}
+                      >
+                        <Radio value="HOURLY">
+                            Hourly
+                        </Radio>
+                        <Radio value="FLAT">
+                            Flat
+                        </Radio>
+                      </RadioGroup>
+                    )}
+                  />
+                </FormItem>
 
+                {values.rateType && (
+                  <FormItem label="Hourly Rate">
+                    <Field
+                      name="rateAmount"
+                      render={renderProps => (
+                        <InputNumber
+                          name="rateAmount"
+                          value={values.rateAmount}
+                          defaultValue={values.rateType === 'HOURLY' ? 8 : 40}
+                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                          onChange={value => renderProps.form.setFieldValue('rateAmount', value)}
+                        />
+                      )}
+                    />
+                  </FormItem>
+                )}
 
-                <Button type="submit" disabled={isSubmitting}>
-                  Add
+                <Button htmlType="submit" type="primary" disabled={isSubmitting}>
+                  Submit
                 </Button>
               </VerticalForm>
             )}

@@ -1,19 +1,21 @@
 import gql from 'graphql-tag';
 
 export const CREATE_NEW_CHILD = gql`
-    mutation CreateChild(
+  mutation CreateChild(
     $firstName: String!,
     $lastName: String!,
     # $birthday: DateTime,
-    $rateAmount: Float!,
     $gender: Gender!,
+    $rateAmount: Float!,
+    $rateType: RateType!,
     $ownerId: ID!,
 ) {
   createChild(data: {
     firstName: $firstName,
     lastName: $lastName,
-    rateAmount: $rateAmount,
     gender: $gender,
+    rateAmount: $rateAmount,
+    rateType: $rateType,
     owner: {
       connect: {
         id: $ownerId
