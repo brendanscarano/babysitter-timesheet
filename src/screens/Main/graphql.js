@@ -11,6 +11,7 @@ export const FETCH_USER_QUERY = gql`
                 id
                 firstName
                 rateAmount
+                gender
                 dates {
                     id
                     month

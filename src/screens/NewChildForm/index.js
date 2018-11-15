@@ -1,18 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  Formik, Field, ErrorMessage,
-} from 'formik';
+import { Formik } from 'formik';
 import { Mutation } from 'react-apollo';
-import {
-  Form, Input, Radio, Button, InputNumber, Layout,
-} from 'antd';
+import { Layout } from 'antd';
 import { NavBar } from '../../components/NavBar';
 import { CREATE_NEW_CHILD } from './graphql';
 import { media } from '../../shared/theme';
-
-const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
+import { Presentation } from './Presentation';
 
 const StyledLayout = styled(Layout)`
   display: flex;
@@ -27,13 +21,10 @@ const StyledLayout = styled(Layout)`
   `};
 `;
 
-const VerticalForm = styled(Form)`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const NewChildForm = () => (
+/**
+ * @param {obj} props - history, location, match
+ */
+const NewChildForm = props => (
   <Mutation mutation={CREATE_NEW_CHILD}>
     {(createChild, mutationProps) => (
       <Layout>
@@ -44,15 +35,29 @@ const NewChildForm = () => (
             initialValues={{ firstName: '', lastName: '', gender: null }}
             validate={(values) => {
               const errors = {};
+
               if (!values.firstName) {
-                errors.firstName = 'Required';
+                errors.firstName = 'What\'s the child\'s first name?';
+              }
+              if (!values.lastName) {
+                errors.lastName = 'What\'s the child\'s last name?';
+              }
+              if (!values.gender) {
+                errors.gender = 'Is this child a boy or a girl?';
+              }
+              if (!values.rateType) {
+                errors.rateType = 'Will you charge by hour or a flat rate?';
+              }
+              if (typeof values.rateAmount !== 'number') {
+                errors.rateAmount = 'The rate amount has to be a number!';
+              }
+              if (!values.rateAmount) {
+                errors.rateAmount = 'How much will you be charging?';
               }
               return errors;
             }}
-            onSubmit={(values, actions) => {
-              console.log('values', values);
-              console.log('actions', actions);
-              createChild({
+            onSubmit={async (values, actions) => {
+              const response = await createChild({
                 variables: {
                   firstName: values.firstName,
                   lastName: values.lastName,
@@ -63,90 +68,25 @@ const NewChildForm = () => (
                   ownerId: 'cjntestdudeug0a54rjlfk74x',
                 },
               });
+
+              if (response.data.createChild) {
+                console.log('success!');
+                props.history.push('/');
+              }
             }}
           >
             {({
-              values, errors, handleChange, isSubmitting, handleSubmit,
-            }) => console.log('values', values) || (
-              <VerticalForm onSubmit={handleSubmit}>
-                <FormItem label="First Name">
-                  <Input
-                    type="text"
-                    onChange={handleChange}
-                    name="firstName"
-                  />
-                  {errors.name && <div id="feedback">{errors.name}</div>}
-                </FormItem>
+              values, errors, touched, handleChange, isSubmitting, handleSubmit,
 
-                <FormItem label="Last Name">
-                  <Input
-                    type="text"
-                    onChange={handleChange}
-                    name="lastName"
-                  />
-                  {errors.name && <div id="feedback">{errors.name}</div>}
-                </FormItem>
-
-                <FormItem label="Gender">
-                  <Field
-                    name="gender"
-                    render={renderProps => (
-                      <RadioGroup name="gender" onChange={props => renderProps.form.setFieldValue(props.target.name, props.target.value)}>
-                        <Radio value="MALE">
-                          <span role="img" aria-label="boy">👦 boy</span>
-                        </Radio>
-                        <Radio value="FEMALE">
-                          <span role="img" aria-label="girl">👧 girl</span>
-                        </Radio>
-                      </RadioGroup>
-                    )}
-                  />
-                </FormItem>
-
-                <FormItem label="Rate Type">
-                  <Field
-                    name="rateType"
-                    render={renderProps => (
-                      <RadioGroup
-                        name="rateType"
-                        onChange={(props) => {
-                          renderProps.form.setFieldValue(props.target.name, props.target.value);
-                          renderProps.form.setFieldValue('rateAmount', props.target.value === 'HOURLY' ? 8 : 40);
-                        }}
-                      >
-                        <Radio value="HOURLY">
-                            Hourly
-                        </Radio>
-                        <Radio value="FLAT">
-                            Flat
-                        </Radio>
-                      </RadioGroup>
-                    )}
-                  />
-                </FormItem>
-
-                {values.rateType && (
-                  <FormItem label="Hourly Rate">
-                    <Field
-                      name="rateAmount"
-                      render={renderProps => (
-                        <InputNumber
-                          name="rateAmount"
-                          value={values.rateAmount}
-                          defaultValue={values.rateType === 'HOURLY' ? 8 : 40}
-                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                          onChange={value => renderProps.form.setFieldValue('rateAmount', value)}
-                        />
-                      )}
-                    />
-                  </FormItem>
-                )}
-
-                <Button htmlType="submit" type="primary" disabled={isSubmitting}>
-                  Submit
-                </Button>
-              </VerticalForm>
+            }) => (
+              <Presentation
+                values={values}
+                errors={errors}
+                touched={touched}
+                handleChange={handleChange}
+                isSubmitting={isSubmitting}
+                handleSubmit={handleSubmit}
+              />
             )}
           </Formik>
         </StyledLayout>

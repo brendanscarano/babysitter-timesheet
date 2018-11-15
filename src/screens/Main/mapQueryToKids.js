@@ -14,6 +14,7 @@ interface IChild {
     id: string;
     firstName: string;
     rateAmount: number;
+    gender: string;
     dates: IDate[];
 }
  */
@@ -24,6 +25,7 @@ export const mapQueryToKids = children => children.map(child => ({
     id: child.id,
     name: child.firstName,
     rate: child.rateAmount,
+    gender: child.gender,
   },
   dates: child.dates.reduce((acc, curr) => ({
     ...acc,
