@@ -1,7 +1,7 @@
 import Month from 'calendar-months';
 import moment from 'moment';
 import flattenDeep from 'lodash.flattendeep';
-import { weeklySumAllKids, weeklyHourSumOneKid, weeklyProfitSumOneKid } from './sums';
+import { weeklySumAllChildren, weeklyHourSumOneChild, weeklyProfitSumOneChild } from './sums';
 
 const WEEK_ENDING_ROW = 'week-ending-row';
 const PLACEHOLDER_SPACE = { value: ' ', readOnly: true, id: 'space' };
@@ -46,19 +46,20 @@ export const buildRows = (kids, date) => {
           id: WEEK_ENDING_ROW,
           columns: [
             {
-              value: `WE ${lastDay.month} ${lastDay.number} Total`, colSpan: 3, readOnly: true,
+              // value: `WE ${lastDay.month} ${lastDay.number} Total`, colSpan: 3, readOnly: true,
+              value: 'WE Total', colSpan: 3, readOnly: true,
             },
             {
-              value: weeklySumAllKids(kids, formattedDaysInWeek), readOnly: true, format: 'curr',
+              value: weeklySumAllChildren(kids, formattedDaysInWeek), readOnly: true, format: 'curr',
             },
             PLACEHOLDER_SPACE,
             ...flattenDeep(kids.map(kid => [
               {
-                value: weeklyHourSumOneKid(kid, week),
+                value: weeklyHourSumOneChild(kid, week),
                 readOnly: true,
               },
               {
-                value: weeklyProfitSumOneKid(kid, week),
+                value: weeklyProfitSumOneChild(kid, week),
                 format: 'curr',
                 readOnly: true,
               },

@@ -5,9 +5,14 @@ import ReactDataSheet from 'react-datasheet';
 import 'react-datasheet/lib/react-datasheet.css';
 
 const Wrapper = styled.div`
-  .sticky-top-first-row {
+  .data-grid-container .data-grid .cell.read-only.sticky-top-first-row {
     position: sticky;
     top: 0;
+    border: none;
+  }
+  .data-grid-container .data-grid .cell.read-only {
+    border: none;
+    width: 2rem;
   }
   .sticky-top-second-row {
     position: sticky;

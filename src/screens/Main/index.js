@@ -35,6 +35,7 @@ class Inner extends React.PureComponent {
     changes.forEach(change => {
       const { number, year, dayOfWeek, formattedDate } = change.cell.row;
       const { savedDateInDb } = change.cell;
+      console.log('savedDateInDb', savedDateInDb)
 
       this.props.upsertDate({
         variables: {
@@ -50,6 +51,25 @@ class Inner extends React.PureComponent {
       });
     })
   };
+
+  onFixedCheckboxChange = (rowData) => (e) => {
+    const { childId, year, formattedDate, number, dayOfWeek, savedDateInDb } = rowData;
+
+    this.props.upsertDate({
+      variables: {
+        dateId: savedDateInDb ? savedDateInDb.dateId : "",
+        childId,
+        month: parseFloat(formattedDate.slice(0, 2)),
+        day: parseFloat(number),
+        year: parseFloat(year),
+        hours: 0,
+        dayOfWeek,
+        dateObjectId: formattedDate,
+        // TODO: Toggle true or false
+        fixedRateChecked: true,
+      }
+    });
+  }
 
   onCalendarMonthClick = (value) => {
       const formattedDate = moment(value).format('YYYY-MM');
@@ -75,7 +95,7 @@ class Inner extends React.PureComponent {
                   }
 
                   const children = mapQueryToKids(props.data.user.children);
-                  console.log('children', children)
+
                   const allChildrensMonthDays = flattenDeep(props.data.user.children.map(child =>
                     child.dates.map(date => ({
                       ...date,
@@ -83,8 +103,8 @@ class Inner extends React.PureComponent {
                     })
                   )))
                   const monthlyTotal = allChildrensMonthDays.reduce((acc, curr) => acc + curr.paid, 0)
-                  console.log('monthlyTotal', monthlyTotal)
-                  const data = buildDatasheet(children, this.state.monthToView);
+
+                  const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
 
                   return (
                     <Presentation

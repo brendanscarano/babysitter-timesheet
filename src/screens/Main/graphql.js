@@ -11,6 +11,7 @@ export const FETCH_USER_QUERY = gql`
                 id
                 firstName
                 rateAmount
+                rateType
                 gender
                 dates {
                     id
@@ -20,6 +21,7 @@ export const FETCH_USER_QUERY = gql`
                     hours
                     paid
                     dateObjectId
+                    fixedRateChecked
                 }
             }
         }
@@ -36,6 +38,7 @@ export const CREATE_OR_UPDATE_DATE_MUTATION = gql`
         $hours: Float!,
         $dayOfWeek: String!,
         $dateObjectId: String!,
+        $fixedRateChecked: Boolean,
     ) {
         upsertDate(where: {
             id: $dateId
@@ -52,8 +55,10 @@ export const CREATE_OR_UPDATE_DATE_MUTATION = gql`
             hours: $hours,
             dayOfWeek: $dayOfWeek,
             dateObjectId: $dateObjectId,
+            fixedRateChecked: $fixedRateChecked,
         }
         update: {
+            fixedRateChecked: $fixedRateChecked,
             hours: $hours
         }) {
             id

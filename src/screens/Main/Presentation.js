@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Layout } from 'antd';
-import { Link } from 'react-router-dom';
 import { DataSheet } from '../../components/DataSheet';
 import { MonthPicker } from '../../components/MonthPicker';
 import { FlexRow, FlexColumn } from '../../components/Flex';
 import { theme } from '../../shared/theme';
 import { formatCurr } from '../../helpers/formatCurr';
+// import { dataSheetModel } from '../../shared/models';
 
 const { Content } = Layout;
 
@@ -45,11 +46,19 @@ Monthly Total:
             <b>{formatCurr(monthlyTotal)}</b>
           </h3>
         </DateWrapper>
-        <Link to="/new-child">New Child</Link>
       </TopBar>
       <DataSheet data={data} onCellsChanged={onCellsChanged} />
     </StyledContent>
   </Layout>
 );
+
+Presentation.propTypes = {
+  onCalendarMonthClick: PropTypes.func.isRequired,
+  // YYYY-MM
+  monthToView: PropTypes.string.isRequired,
+  monthlyTotal: PropTypes.number.isRequired,
+  // data: dataSheetModel,
+  onCellsChanged: PropTypes.func.isRequired,
+};
 
 export { Presentation };

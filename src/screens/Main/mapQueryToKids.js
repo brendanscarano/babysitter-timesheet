@@ -10,10 +10,16 @@ interface IDate {
     dateObjectId: string;
 }
 
+enum RateType {
+  HOURLY
+  FIXED
+}
+
 interface IChild {
     id: string;
     firstName: string;
     rateAmount: number;
+    rateType: RateType;
     gender: string;
     dates: IDate[];
 }
@@ -25,6 +31,7 @@ export const mapQueryToKids = children => children.map(child => ({
     id: child.id,
     name: child.firstName,
     rate: child.rateAmount,
+    rateType: child.rateType,
     gender: child.gender,
   },
   dates: child.dates.reduce((acc, curr) => ({
@@ -34,6 +41,7 @@ export const mapQueryToKids = children => children.map(child => ({
       dateObjectId: curr.dateObjectId,
       hours: curr.hours,
       paid: curr.paid,
+      fixedRateChecked: curr.fixedRateChecked,
       notes: '',
     },
   }), {}),

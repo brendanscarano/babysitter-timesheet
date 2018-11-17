@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, Layout } from 'antd';
+import { Avatar, Layout, Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import { FlexRow } from '../Flex';
 
 const { Header } = Layout;
 
@@ -34,9 +35,16 @@ const NavBar = () => (
       <span role="img" aria-label="baby">👶</span>
       <h1>Sitter Sheet</h1>
     </StyledLink>
-    <Link to="/my-profile">
-      <Avatar icon="user" />
-    </Link>
+    <FlexRow>
+      <Link to="/new-child">
+        <Icon type="plus-circle" />
+        {' '}
+New Child
+      </Link>
+      <Link to="/my-profile">
+        <Avatar icon="user" />
+      </Link>
+    </FlexRow>
   </Wrapper>
 );
 

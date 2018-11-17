@@ -19,3 +19,6 @@ body {
   width: 100%;
 }
 
+.data-grid-container .data-grid .cell {
+  border: none;
+}

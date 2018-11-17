@@ -2,10 +2,10 @@ import moment from 'moment';
 
 /**
  *
- * @param {array} kids - An array of kids being displayed in the time sheet
+ * @param {array} children - An array of children being displayed in the time sheet
  * @param {string} dateString - String in format "MMDDYY" representing day to sum
  */
-export const dailySumAllKids = (kids, dateString) => kids.reduce((sum, currentChild) => {
+export const dailySumAllChildren = (children, dateString) => children.reduce((sum, currentChild) => {
   const childTargetDate = currentChild.dates[dateString];
   if (currentChild.dates[dateString]) {
     return sum + (currentChild.info.rate * childTargetDate.hours);
@@ -18,17 +18,17 @@ export const dailySumAllKids = (kids, dateString) => kids.reduce((sum, currentCh
  *
  * @param {array} datesToShow - Array of dateStrings to call dailySum on each one individually
  */
-export const weeklySumAllKids = (kids, datesToShow) => datesToShow
-  .map(dateString => dailySumAllKids(kids, dateString))
+export const weeklySumAllChildren = (children, datesToShow) => datesToShow
+  .map(dateString => dailySumAllChildren(children, dateString))
   .reduce((acc, curr) => acc + curr, 0);
 
 
-export const weeklyHourSumOneKid = (kid, daysInWeek) => daysInWeek.reduce((sum, currDay) => {
+export const weeklyHourSumOneChild = (child, daysInWeek) => daysInWeek.reduce((sum, currDay) => {
   const formattedDay = moment(currDay).format('MMDDYY');
-  return sum + (kid.dates[formattedDay] ? kid.dates[formattedDay].hours : 0);
+  return sum + (child.dates[formattedDay] ? child.dates[formattedDay].hours : 0);
 }, 0);
 
-export const weeklyProfitSumOneKid = (kid, daysInWeek) => daysInWeek.reduce((sum, currDay) => {
+export const weeklyProfitSumOneChild = (child, daysInWeek) => daysInWeek.reduce((sum, currDay) => {
   const formattedDay = moment(currDay).format('MMDDYY');
-  return sum + (kid.dates[formattedDay] ? kid.info.rate * kid.dates[formattedDay].hours : 0);
+  return sum + (child.dates[formattedDay] ? child.info.rate * child.dates[formattedDay].hours : 0);
 }, 0);
