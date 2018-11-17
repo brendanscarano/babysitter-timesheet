@@ -25,9 +25,8 @@ const WEEK_ENDING_ROW = 'week-ending-row';
  */
 export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
   const rowsInTable = buildRows(Children, date);
-  console.log('rowsInTable', rowsInTable);
 
-  const HEADERS = [...BASE_HEADERS, ...flattenDeep(Children.map(kid => console.log('kid', kid) || headersPerChild(kid.info.rateType)))].map(
+  const HEADERS = [...BASE_HEADERS, ...flattenDeep(Children.map(kid => headersPerChild(kid.info.rateType)))].map(
     text => ({ value: text, readOnly: true, className: STICKY_TOP_THIRD_ROW }),
   );
 
@@ -122,6 +121,7 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
                   childId: info.id,
                   ...row,
                   savedDateInDb: dates[row.formattedDate],
+                  isChecked: dates[row.formattedDate] ? dates[row.formattedDate].fixedRateChecked : false,
                 })}
               />
             ),
@@ -130,9 +130,13 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
           {
             value: (() => {
               if (dates[row.formattedDate]) {
-                return info.rateType === 'HOURLY'
-                  ? info.rate * dates[row.formattedDate].hours
-                  : info.rate;
+                if (info.rateType === 'HOURLY') {
+                  return info.rate * dates[row.formattedDate].hours;
+                }
+
+                if (dates[row.formattedDate].fixedRateChecked) {
+                  return info.rate;
+                }
               }
               return 0;
             })(),

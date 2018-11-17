@@ -32,8 +32,6 @@ export const buildYearlyTotals = (data) => {
   allChildDatesForYear.forEach((date) => {
     annualData2018[date.month - 1] = annualData2018[date.month - 1] + date.paid;
   });
-  console.log('annualData2018', annualData2018);
-
 
   return annualDateObject(annualData2018);
 };

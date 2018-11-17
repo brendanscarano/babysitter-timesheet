@@ -70,7 +70,7 @@ const NewChildForm = props => (
               });
 
               if (response.data.createChild) {
-                console.log('success!');
+                // TODO: PASS PROP TO ROUTE TO DISPLAY MESSAGE THAT CHILD WAS CREATED
                 props.history.push('/');
               }
             }}

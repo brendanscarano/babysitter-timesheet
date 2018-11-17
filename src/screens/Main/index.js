@@ -35,7 +35,6 @@ class Inner extends React.PureComponent {
     changes.forEach(change => {
       const { number, year, dayOfWeek, formattedDate } = change.cell.row;
       const { savedDateInDb } = change.cell;
-      console.log('savedDateInDb', savedDateInDb)
 
       this.props.upsertDate({
         variables: {
@@ -53,7 +52,7 @@ class Inner extends React.PureComponent {
   };
 
   onFixedCheckboxChange = (rowData) => (e) => {
-    const { childId, year, formattedDate, number, dayOfWeek, savedDateInDb } = rowData;
+    const { childId, year, formattedDate, number, dayOfWeek, savedDateInDb, isChecked } = rowData;
 
     this.props.upsertDate({
       variables: {
@@ -66,7 +65,7 @@ class Inner extends React.PureComponent {
         dayOfWeek,
         dateObjectId: formattedDate,
         // TODO: Toggle true or false
-        fixedRateChecked: true,
+        fixedRateChecked: !isChecked,
       }
     });
   }

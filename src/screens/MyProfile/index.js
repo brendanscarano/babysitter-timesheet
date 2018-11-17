@@ -34,11 +34,9 @@ const MyProfile = () => (
     <Layout>
       <Query query={FETCH_USER_QUERY}>
         {((props) => {
-          console.log('props', props);
-
           const childrenData = (props.data && props.data.user && props.data.user.children.length > 0) ? props.data.user.children : null;
           const annualData = buildYearlyTotals(childrenData);
-          console.log('annualData', annualData);
+
           const annualAnnualSum = annualData.datasets[0].data.reduce((acc, curr) => acc + curr, 0);
 
 
