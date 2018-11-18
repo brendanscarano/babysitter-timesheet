@@ -5,6 +5,7 @@ import { Mutation, Query } from 'react-apollo';
 import { NavBar } from '../../components/NavBar';
 import flattenDeep from 'lodash.flattendeep';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
+import { monthlyTotalAllChildren } from '../../helpers/buildDatasheet/sums';
 import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 import { Presentation } from './Presentation';
@@ -93,16 +94,10 @@ class Inner extends React.PureComponent {
                     return <div>Something went wrong</div>;
                   }
 
+                  const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
+                  const monthlyTotal = monthlyTotalAllChildren(props.data.user.children, parseInt(month), parseInt(year));
+
                   const children = mapQueryToKids(props.data.user.children);
-
-                  const allChildrensMonthDays = flattenDeep(props.data.user.children.map(child =>
-                    child.dates.map(date => ({
-                      ...date,
-                      paid: date.paid ? date.paid : (date.hours * child.rateAmount),
-                    })
-                  )))
-                  const monthlyTotal = allChildrensMonthDays.reduce((acc, curr) => acc + curr.paid, 0)
-
                   const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
 
                   return (

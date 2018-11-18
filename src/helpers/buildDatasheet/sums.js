@@ -1,4 +1,5 @@
 import moment from 'moment';
+import flattenDeep from 'lodash.flattendeep';
 
 /**
  *
@@ -20,6 +21,7 @@ export const dailySumAllChildren = (children, dateString) => children.reduce((su
   return sum + 0;
 }, 0);
 
+
 /**
  *
  * @param {array} datesToShow - Array of dateStrings to call dailySum on each one individually
@@ -27,6 +29,7 @@ export const dailySumAllChildren = (children, dateString) => children.reduce((su
 export const weeklySumAllChildren = (children, datesToShow) => datesToShow
   .map(dateString => dailySumAllChildren(children, dateString))
   .reduce((acc, curr) => acc + curr, 0);
+
 
 export const weeklyHourSumOneChild = (child, daysInWeek) => daysInWeek.reduce((sum, currDay) => {
   const formattedDay = moment(currDay).format('MMDDYY');
@@ -48,3 +51,35 @@ export const weeklyProfitSumOneChild = (child, daysInWeek) => daysInWeek.reduce(
 
   return sum + 0;
 }, 0);
+
+
+/**
+ *
+ * @param {array} children - dates from initial graphql call
+ * @param {number} month - 11
+ * @param {number} year - 18
+ */
+export const monthlyTotalAllChildren = (children, month, year) => {
+  console.log('year', year, typeof year);
+  console.log('month', month, typeof month);
+  const allChildrensMonthDays = flattenDeep(children.map(child => child.dates
+    .filter(date => date.month === month && date.year === year)
+    .map(date => ({
+      ...date,
+      paid: (() => {
+        if (date.paid) {
+          return date.paid;
+        }
+        if (child.rateType === 'HOURLY') {
+          return date.hours * child.rateAmount;
+        }
+        if (date.fixedRateChecked) {
+          return child.rateAmount;
+        }
+        return 0;
+      })(),
+    }))));
+
+  console.log('allChildrensMonthDays', allChildrensMonthDays);
+  return allChildrensMonthDays.reduce((acc, curr) => acc + curr.paid, 0);
+};
