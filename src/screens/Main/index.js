@@ -1,16 +1,16 @@
 import React from 'react';
 import { Layout } from 'antd';
 import moment from 'moment';
+import { Redirect } from 'react-router-dom';
 import { Mutation, Query } from 'react-apollo';
 import { NavBar } from '../../components/NavBar';
-import flattenDeep from 'lodash.flattendeep';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
 import { monthlyTotalAllChildren } from '../../helpers/buildDatasheet/sums';
 import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 import { Presentation } from './Presentation';
 
-const Main = (props) => (
+const Main = (props) => console.log('main props', props) || (
   <Mutation
     mutation={CREATE_OR_UPDATE_DATE_MUTATION}
     refetchQueries={() => {
@@ -20,7 +20,21 @@ const Main = (props) => (
     }}
   >
     {(upsertDate) => {
-      return <Inner upsertDate={upsertDate} {...props} />
+      if (!props.match.params.date) {
+        const dateToRedirect = moment().format("MM-YYYY");
+        return <Redirect to={`/${dateToRedirect}`} />
+      }
+
+      const [month, year] = props.match.params.date.split('-');
+      const monthToView = moment(`${month}-01-${year}`).format('YYYY-MM');
+
+      return (
+        <Inner
+          upsertDate={upsertDate}
+          monthToView={monthToView}
+          {...props}
+        />
+      )
     }}
   </Mutation>
 )
@@ -29,7 +43,13 @@ const Main = (props) => (
 class Inner extends React.PureComponent {
   state = {
     /** TODO: SET MONTH TO VIEW BASED ON PROPS */
-    monthToView: moment().format('YYYY-MM')
+    monthToView: this.props.monthToView
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.monthToView !== prevProps.monthToView) {
+      this.setState({ monthToView: this.props.monthToView })
+    }
   }
 
   onCellsChanged = (changes) => {
@@ -72,8 +92,8 @@ class Inner extends React.PureComponent {
   }
 
   onCalendarMonthClick = (value) => {
-      const formattedDate = moment(value).format('YYYY-MM');
-      this.setState({ monthToView: formattedDate });
+      const formattedDate = moment(value).format('MM-YYYY');
+      this.props.history.push(`/${formattedDate}`);
   }
 
   render() {

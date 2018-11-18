@@ -60,8 +60,6 @@ export const weeklyProfitSumOneChild = (child, daysInWeek) => daysInWeek.reduce(
  * @param {number} year - 18
  */
 export const monthlyTotalAllChildren = (children, month, year) => {
-  console.log('year', year, typeof year);
-  console.log('month', month, typeof month);
   const allChildrensMonthDays = flattenDeep(children.map(child => child.dates
     .filter(date => date.month === month && date.year === year)
     .map(date => ({
@@ -80,6 +78,5 @@ export const monthlyTotalAllChildren = (children, month, year) => {
       })(),
     }))));
 
-  console.log('allChildrensMonthDays', allChildrensMonthDays);
   return allChildrensMonthDays.reduce((acc, curr) => acc + curr.paid, 0);
 };
