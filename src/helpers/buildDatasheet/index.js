@@ -6,9 +6,6 @@ import { buildRows } from './buildRows';
 import { Checkbox } from '../../components/Checkbox';
 
 const PLACEHOLDER_SPACE = { value: ' ', readOnly: true, id: 'space' };
-const PLACEHOLDER_SPACE_STICKY = {
-  value: ' ', readOnly: true, id: 'space', className: 'sticky',
-};
 const STICKY_TOP_FIRST_ROW = 'sticky-top-first-row';
 const STICKY_TOP_SECOND_ROW = 'sticky-top-second-row';
 const STICKY_TOP_THIRD_ROW = 'sticky-top-third-row';
@@ -41,7 +38,7 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
           backgroundColor: 'red',
         },
       },
-      PLACEHOLDER_SPACE,
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_FIRST_ROW },
       ...flattenDeep(Children.map(({ info }) => [
         {
           value: info.name,
@@ -55,19 +52,19 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
           ),
           className: STICKY_TOP_FIRST_ROW,
         },
-        PLACEHOLDER_SPACE_STICKY,
+        { ...PLACEHOLDER_SPACE, className: STICKY_TOP_FIRST_ROW },
       ])),
     ],
     // SECOND ROW: Rates per child
     [
       { ...PLACEHOLDER_SPACE, colSpan: 4, className: STICKY_TOP_SECOND_ROW },
-      PLACEHOLDER_SPACE,
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_SECOND_ROW },
       ...flattenDeep(Children.map(({ info }) => [{
         value: `$${info.rate}/hr`,
         colSpan: 3,
         readOnly: true,
         className: STICKY_TOP_SECOND_ROW,
-      }, PLACEHOLDER_SPACE])),
+      }, { ...PLACEHOLDER_SPACE, className: STICKY_TOP_SECOND_ROW }])),
     ],
     // THIRD ROW: Headings for each columns
     HEADERS,

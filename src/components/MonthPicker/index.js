@@ -17,7 +17,7 @@ const getMonthNumber = monthToView => parseInt(moment(monthToView).format('MM'),
 
 const MonthPicker = ({ onCalendarMonthClick, monthToView }) => (
   <Wrapper>
-    <h2>{`${emojisForMonths[getMonthNumber(monthToView) - 1]} ${moment(monthToView).format('MMM YYYY')}`}</h2>
+    {/* <h2>{`${emojisForMonths[getMonthNumber(monthToView) - 1]} ${moment(monthToView).format('MMM YYYY')}`}</h2> */}
     <MonthDatePicker
       format="MMM YYYY"
       onChange={onCalendarMonthClick}

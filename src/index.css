@@ -4,11 +4,6 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-.data-grid-container .data-grid .empty-cell.cell.read-only {
-  border: none;
-  background-color: transparent;
-}
-
 .data-grid-container .data-grid .cell > input {
   width: auto;
   height: auto;
@@ -17,8 +12,4 @@ body {
 .data-grid-container .data-grid .cell .value-viewer, .data-grid-container .data-grid .cell .data-editor {
   height: 100%;
   width: 100%;
-}
-
-.data-grid-container .data-grid .cell {
-  border: none;
 }

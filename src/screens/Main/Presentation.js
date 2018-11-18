@@ -21,8 +21,11 @@ const TopBar = styled(FlexRow)`
   align-items: flex-start;
 `;
 
-const DateWrapper = styled(FlexColumn)`
+const DateWrapper = styled(FlexRow)`
     align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 2rem;
 `;
 
 const Presentation = ({

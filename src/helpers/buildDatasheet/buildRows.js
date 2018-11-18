@@ -47,21 +47,23 @@ export const buildRows = (kids, date) => {
           columns: [
             {
               // value: `WE ${lastDay.month} ${lastDay.number} Total`, colSpan: 3, readOnly: true,
-              value: 'WE Total', colSpan: 3, readOnly: true,
+              value: 'WE Total', colSpan: 3, readOnly: true, className: 'WE-ROW',
             },
             {
-              value: weeklySumAllChildren(kids, formattedDaysInWeek), readOnly: true, format: 'curr',
+              value: weeklySumAllChildren(kids, formattedDaysInWeek), readOnly: true, format: 'curr', className: 'WE-ROW',
             },
             PLACEHOLDER_SPACE,
             ...flattenDeep(kids.map(kid => [
               {
                 value: weeklyHourSumOneChild(kid, week),
                 readOnly: true,
+                className: 'WE-ROW',
               },
               {
                 value: weeklyProfitSumOneChild(kid, week),
                 format: 'curr',
                 readOnly: true,
+                className: 'WE-ROW',
               },
               PLACEHOLDER_SPACE,
               PLACEHOLDER_SPACE,
