@@ -5,6 +5,9 @@ import ReactDataSheet from 'react-datasheet';
 import 'react-datasheet/lib/react-datasheet.css';
 
 const Wrapper = styled.div`
+  * tr > td > span {
+    height: 20px;
+  }
   .data-grid-container .data-grid .cell,
   .data-grid-container .data-grid .cell.read-only,
   .data-grid-container .data-grid .empty-cell.cell.read-only {
@@ -17,19 +20,22 @@ const Wrapper = styled.div`
   }
   .sticky-top-first-row {
     position: sticky;
-    top: 0;
+    top: ${({ topBarHeight }) => topBarHeight}px;
     border: none;
     background: whitesmoke !important;
+    z-index: 2;
   }
   .sticky-top-second-row {
     position: sticky;
-    top: 20px;
+    top: ${({ topBarHeight }) => topBarHeight + 20}px;
     background: whitesmoke !important;
+    z-index: 2;
   }
   .sticky-top-third-row {
     position: sticky;
-    top: 40px;
+    top: ${({ topBarHeight }) => topBarHeight + 40}px;
     background: whitesmoke !important;
+    z-index: 2;
   }
   .WE-ROW {
     font-weight: bold;
@@ -43,12 +49,19 @@ const formatCurr = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
 });
 
-const DataSheet = ({ data, onCellsChanged }) => (
-  <Wrapper>
+const DataSheet = ({ data, onCellsChanged, topBarHeight }) => (
+  <Wrapper topBarHeight={topBarHeight}>
     <ReactDataSheet
       data={data}
       valueRenderer={cell => (cell.format === 'curr' ? formatCurr.format(cell.value) : cell.value)}
       onCellsChanged={changes => onCellsChanged(changes)}
+      rowRenderer={(rowProps) => {
+        console.log('rowProps', rowProps);
+        if (rowProps.row === 0 || rowProps.row === 1 || rowProps.row === 2) {
+          return (<tr>{rowProps.children}</tr>);
+        }
+        return (<tr style={{ height: '28px' }}>{rowProps.children}</tr>);
+      }}
     />
   </Wrapper>
 );
@@ -56,6 +69,9 @@ const DataSheet = ({ data, onCellsChanged }) => (
 DataSheet.propTypes = {
   // TODO: Fill out this object
   data: PropTypes.array.isRequired,
+  onCellsChanged: PropTypes.func.isRequired,
+  /** Height of the bar with the date picker, and monthly total that is also sticky */
+  topBarHeight: PropTypes.number.isRequired,
 };
 
 export { DataSheet };

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Layout } from 'antd';
+import styled from 'styled-components';
+import { Layout, Spin } from 'antd';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import { Mutation, Query } from 'react-apollo';
@@ -9,6 +10,20 @@ import { monthlyTotalAllChildren } from '../../helpers/buildDatasheet/sums';
 import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 import { Presentation } from './Presentation';
+import { theme } from '../../shared/theme';
+
+const LoadingWrapper = styled.div`
+  height: calc(100vh - ${theme.heights.navBar}px);
+  background-color: ${theme.colors.background};
+  padding: 5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 18px;
+  > span {
+    margin-top: 1rem;
+  }
+`;
 
 const Main = (props) => console.log('main props', props) || (
   <Mutation
@@ -104,7 +119,12 @@ class Inner extends React.PureComponent {
               <Query query={FETCH_USER_QUERY}>
                 {((props) => {
                   if (props.loading) {
-                    return <div>Loading...</div>;
+                    return (
+                      <LoadingWrapper>
+                        <Spin size="large" />
+                        <span>Loading...</span>
+                      </LoadingWrapper>
+                    )
                   }
 
                   if (

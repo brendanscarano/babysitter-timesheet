@@ -5,6 +5,7 @@ export const theme = {
     navBar: 64,
   },
   colors: {
+    background: '#fff',
     white: '#fff',
   },
 };
