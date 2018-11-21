@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { Avatar, Layout, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import { FlexRow } from '../Flex';
+import { theme } from '../../shared/theme';
 
 const { Header } = Layout;
 
 const Wrapper = styled(Header)`
+    height: ${theme.heights.navBar};
     display: flex;
     align-items: center;
     justify-content: space-between;

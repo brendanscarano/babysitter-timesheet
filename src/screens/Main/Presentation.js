@@ -9,15 +9,15 @@ import { theme } from '../../shared/theme';
 import { formatCurr } from '../../helpers/formatCurr';
 // import { dataSheetModel } from '../../shared/models';
 const TOP_BAR_HEIGHT = 64;
-const TOP_BAR_PADDING_VERTICAL = 24;
 
 const { Content } = Layout;
 
 const StyledContent = styled(Content)`
   height: calc(100vh - ${theme.heights.navBar}px);
   overflow: scroll;
-  padding: ${TOP_BAR_PADDING_VERTICAL}px 3rem;
-  background-color: ${theme.colors.white};
+  padding: 0 3rem;
+  margin: 2rem 0;
+  background-color: ${theme.colors.background};
 `;
 
 const TopBar = styled(FlexRow)`
@@ -27,6 +27,7 @@ const TopBar = styled(FlexRow)`
   background-color: ${theme.colors.background};
   position: sticky;
   top: 0;
+  z-index: 1;
 `;
 
 const DateWrapper = styled(FlexRow)`
@@ -43,7 +44,7 @@ const Presentation = ({
   data,
   onCellsChanged,
 }) => (
-  <Layout>
+  <Layout style={{ backgroundColor: theme.colors.background }}>
     <StyledContent>
       <TopBar>
         <DateWrapper>

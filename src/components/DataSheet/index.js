@@ -40,6 +40,7 @@ const Wrapper = styled.div`
   .WE-ROW {
     font-weight: bold;
     color: black;
+    font-style: italic;
   }
 `;
 
@@ -56,7 +57,6 @@ const DataSheet = ({ data, onCellsChanged, topBarHeight }) => (
       valueRenderer={cell => (cell.format === 'curr' ? formatCurr.format(cell.value) : cell.value)}
       onCellsChanged={changes => onCellsChanged(changes)}
       rowRenderer={(rowProps) => {
-        console.log('rowProps', rowProps);
         if (rowProps.row === 0 || rowProps.row === 1 || rowProps.row === 2) {
           return (<tr>{rowProps.children}</tr>);
         }
