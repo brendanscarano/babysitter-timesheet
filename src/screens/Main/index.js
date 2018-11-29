@@ -41,8 +41,9 @@ const Main = (props) => console.log('main props', props) || (
       }
 
       const [month, year] = props.match.params.date.split('-');
-      const monthToView = moment(`${month}-01-${year}`).format('YYYY-MM');
 
+      const monthToView = moment(`${year}-${month}-01`).format('YYYY-MM');
+      
       return (
         <Inner
           upsertDate={upsertDate}
@@ -138,6 +139,7 @@ class Inner extends React.PureComponent {
                   const monthlyTotal = monthlyTotalAllChildren(props.data.user.children, parseInt(month), parseInt(year));
 
                   const children = mapQueryToKids(props.data.user.children);
+
                   const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
 
                   return (
@@ -157,4 +159,4 @@ class Inner extends React.PureComponent {
   }
 }
 
-export { Main };
+export default Main;

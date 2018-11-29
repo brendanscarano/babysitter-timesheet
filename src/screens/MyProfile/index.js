@@ -86,4 +86,4 @@ const MyProfile = () => (
   </Layout>
 );
 
-export { MyProfile };
+export default MyProfile;
