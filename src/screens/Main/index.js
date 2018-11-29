@@ -139,7 +139,7 @@ class Inner extends React.PureComponent {
                   const monthlyTotal = monthlyTotalAllChildren(props.data.user.children, parseInt(month), parseInt(year));
 
                   const children = mapQueryToKids(props.data.user.children);
-                  console.log(this.state);
+
                   const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
 
                   return (
