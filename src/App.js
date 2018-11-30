@@ -10,7 +10,8 @@ import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 import MyProfile from './screens/MyProfile';
 import NewChildForm from './screens/NewChildForm';
-import Child from './screens/Child';
+import LoginSignup from './screens/LoginSignup';
+import Child from './screens/ChildInfo';
 import Main from './screens/Main';
 
 const client = new ApolloClient({
@@ -28,7 +29,7 @@ const App = () => (
         <Route exact path="/new-child" component={NewChildForm} />
         <Route exact path="/my-profile" component={MyProfile} />
         <Route exact path="/:date" component={Main} />
-        <Route exact path="/" component={Main} />
+        <Route exact path="/" component={LoginSignup} />
       </Switch>
     </Router>
   </ApolloProvider>

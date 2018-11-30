@@ -1,25 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Formik } from 'formik';
 import { Mutation } from 'react-apollo';
 import { Layout } from 'antd';
 import { NavBar } from '../../components/NavBar';
+import { StyledPageLayout } from '../../components/StyledPageLayout';
 import { CREATE_NEW_CHILD } from './graphql';
-import { media } from '../../shared/theme';
 import { Presentation } from './Presentation';
-
-const StyledLayout = styled(Layout)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 2rem;
-
-  ${media.phone`
-    width: 400px;
-    margin: auto;
-  `};
-`;
 
 /**
  * @param {obj} props - history, location, match
@@ -29,7 +15,7 @@ const NewChildForm = props => (
     {(createChild, mutationProps) => (
       <Layout>
         <NavBar />
-        <StyledLayout>
+        <StyledPageLayout>
           <h1>New Child</h1>
           <Formik
             initialValues={{ firstName: '', lastName: '', gender: null }}
@@ -89,7 +75,7 @@ const NewChildForm = props => (
               />
             )}
           </Formik>
-        </StyledLayout>
+        </StyledPageLayout>
       </Layout>
     )}
   </Mutation>
