@@ -19,6 +19,7 @@ const PLACEHOLDER_SPACE = { value: ' ', readOnly: true, id: 'space' };
  */
 export const buildRows = (kids, date) => {
   const targetMonthNumber = date.slice(-2);
+
   const weeks = Month.create(date).calendarWeeks();
 
   return weeks.map((week) => {
