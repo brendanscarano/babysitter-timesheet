@@ -22,6 +22,7 @@ const App = () => (
   <ApolloProvider client={client}>
     <Router>
       <Switch>
+        {/* Redirect if no user logged in */}
         {/* <Redirect from="/" to="/Oct-2018" /> */}
         <Route exact path="/child/:id" component={Child} />
         <Route exact path="/new-child" component={NewChildForm} />

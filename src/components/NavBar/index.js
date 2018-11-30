@@ -24,7 +24,8 @@ const StyledLink = styled(Link)`
   align-items: flex-start;
   height: 100%;
   >span, h1 {
-    font-size: 20px;
+    font-family: Lobster;
+    font-size: 24px;
   }
   > span {
     margin-right: .25rem;
