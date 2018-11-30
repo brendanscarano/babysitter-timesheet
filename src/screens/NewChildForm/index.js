@@ -95,4 +95,4 @@ const NewChildForm = props => (
   </Mutation>
 );
 
-export { NewChildForm };
+export default NewChildForm;

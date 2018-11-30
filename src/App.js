@@ -8,10 +8,10 @@ import {
 // import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
-import { Child } from './screens/Child';
-import { MyProfile } from './screens/MyProfile';
-import { NewChildForm } from './screens/NewChildForm';
-import { Main } from './screens/Main';
+import MyProfile from './screens/MyProfile';
+import NewChildForm from './screens/NewChildForm';
+import Child from './screens/Child';
+import Main from './screens/Main';
 
 const client = new ApolloClient({
   uri: 'https://us1.prisma.sh/brendan-f224bf/hello-world/dev',
