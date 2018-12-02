@@ -1,13 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  Formik, Field,
+  Formik,
 } from 'formik';
 import {
-  Form, Input, Radio, Button, InputNumber,
+  Form, Input, Button,
 } from 'antd';
 
 const FormItem = Form.Item;
+
+const StyledForm = styled(Form)`
+  width: 100%;
+`;
 
 const AuthLoginForm = () => (
   <Formik
@@ -18,7 +22,7 @@ const AuthLoginForm = () => (
     onSubmit={() => console.log('submitting!')}
   >
     {props => console.log('props', props) || (
-      <Form>
+      <StyledForm>
         <FormItem label="Email">
           <Input
             type="text"
@@ -36,7 +40,7 @@ const AuthLoginForm = () => (
         <Button htmlType="submit" type="primary" disabled={props.isSubmitting}>
           Sign In
         </Button>
-      </Form>
+      </StyledForm>
     )}
   </Formik>
 );
