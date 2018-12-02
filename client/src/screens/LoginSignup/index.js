@@ -39,24 +39,31 @@ class LoginSignupScreen extends React.PureComponent {
 
         <StyledPageLayout>
 
-          <Title>{this.state.activeForm === LOG_IN ? "Welcome Back" : "Create an Account"}</Title>
+          <Title>
+            {this.state.activeForm === LOG_IN
+              ? "Welcome Back"
+              : "Create an Account"
+            }
+          </Title>
 
-          {this.state.activeForm === LOG_IN && <AuthLoginForm />}
+          {this.state.activeForm === LOG_IN
+            ? <AuthLoginForm />
+            : <AuthSignupForm />
+          }
 
-          {this.state.activeForm === SIGN_UP &&  <AuthSignupForm />}
-
-          {this.state.activeForm === LOG_IN ?
-            <SwitchFormText
-              onClick={this.setSignUpActive}
-            >
-              Don't have an account? <span>Sign up</span>
-            </SwitchFormText>
+          {this.state.activeForm === LOG_IN
+            ?
+              <SwitchFormText
+                onClick={this.setSignUpActive}
+              >
+                Don't have an account? <span>Sign up</span>
+              </SwitchFormText>
             :
-            <SwitchFormText
-              onClick={this.setLogInActive}
-            >
-              Already have an account? <span>Sign in</span>
-            </SwitchFormText>
+              <SwitchFormText
+                onClick={this.setLogInActive}
+              >
+                Already have an account? <span>Log in</span>
+              </SwitchFormText>
           }
         </StyledPageLayout>
       </Layout>

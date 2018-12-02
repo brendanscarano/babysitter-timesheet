@@ -11,6 +11,10 @@ const FormItem = Form.Item;
 
 const StyledForm = styled(Form)`
   width: 100%;
+
+  > button {
+    width: 100%;
+  }
 `;
 
 class AuthSignupForm extends React.PureComponent {
@@ -71,8 +75,12 @@ class AuthSignupForm extends React.PureComponent {
             />
           </FormItem>
 
-          <Button htmlType="submit" type="primary" disabled={props.isSubmitting}>
-            Log In
+          <Button
+            htmlType="submit"
+            type="primary"
+            disabled={props.isSubmitting}
+          >
+            Sign Up
           </Button>
         </StyledForm>
       )}

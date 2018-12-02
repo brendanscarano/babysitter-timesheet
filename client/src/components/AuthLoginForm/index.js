@@ -11,6 +11,10 @@ const FormItem = Form.Item;
 
 const StyledForm = styled(Form)`
   width: 100%;
+
+  > button {
+    width: 100%;
+  }
 `;
 
 const AuthLoginForm = () => (
@@ -37,8 +41,12 @@ const AuthLoginForm = () => (
           />
         </FormItem>
 
-        <Button htmlType="submit" type="primary" disabled={props.isSubmitting}>
-          Sign In
+        <Button
+          htmlType="submit"
+          type="primary"
+          disabled={props.isSubmitting}
+        >
+          Log In
         </Button>
       </StyledForm>
     )}
