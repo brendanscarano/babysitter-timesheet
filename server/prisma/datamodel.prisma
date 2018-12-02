@@ -1,17 +1,47 @@
-type Post {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  published: Boolean! @default(value: "false")
-  title: String!
-  content: String
-  author: User!
-}
-
 type User {
   id: ID! @unique
-  email: String! @unique
+  firstName: String!
+  lastName: String!
+  email: String!
   password: String!
-  name: String
-  posts: [Post!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  children: [Child!]!
+}
+
+enum RateType {
+  HOURLY
+  FLAT
+}
+
+enum Gender {
+  MALE, FEMALE
+}
+
+type Child {
+  id: ID! @unique
+  firstName: String!
+  lastName: String!
+  birthday: DateTime
+  owner: User!
+  rateAmount: Float!
+  rateType: RateType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  dates: [Date!]!
+  gender: Gender!
+}
+
+type Date {
+  id: ID! @unique
+  dateObjectId: String!
+  owner: Child!
+  month: Float!
+  day: Float!
+  year: Float!
+  hours: Float!
+  dayOfWeek: String
+  notes: String
+  paid: Float
+  fixedRateChecked: Boolean
 }
