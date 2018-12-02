@@ -6,6 +6,8 @@ import { AuthLoginForm } from '../../components/AuthLoginForm';
 import { AuthSignupForm } from '../../components/AuthSignupForm';
 import { StyledPageLayout } from '../../components/StyledPageLayout';
 import { NavBar } from '../../components/NavBar';
+import { theme } from '../../shared/theme';
+
 const LOG_IN = 'LOG_IN';
 const SIGN_UP = 'SIGN_UP';
 
@@ -23,9 +25,14 @@ const SwitchFormText = styled.p`
   }
 `;
 
+const StyledPageLayoutFixedHeight = styled(StyledPageLayout)`
+  height: calc(100vh - ${theme.heights.navBar}px);
+  overflow: scroll;
+`;
+
 class LoginSignupScreen extends React.PureComponent {
   state = {
-    activeForm: LOG_IN
+    activeForm: SIGN_UP
   }
 
   setLogInActive = () => this.setState({ activeForm: LOG_IN })
@@ -37,8 +44,7 @@ class LoginSignupScreen extends React.PureComponent {
       <Layout>
         <NavBar />
 
-        <StyledPageLayout>
-
+        <StyledPageLayoutFixedHeight>
           <Title>
             {this.state.activeForm === LOG_IN
               ? "Welcome Back"
@@ -65,7 +71,7 @@ class LoginSignupScreen extends React.PureComponent {
                 Already have an account? <span>Log in</span>
               </SwitchFormText>
           }
-        </StyledPageLayout>
+        </StyledPageLayoutFixedHeight>
       </Layout>
     );
   }

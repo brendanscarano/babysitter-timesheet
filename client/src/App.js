@@ -11,7 +11,7 @@ import ApolloClient from 'apollo-boost';
 import MyProfile from './screens/MyProfile';
 import NewChildForm from './screens/NewChildForm';
 import LoginSignup from './screens/LoginSignup';
-import Child from './screens/ChildInfo';
+import ChildInfo from './screens/ChildInfo';
 import Main from './screens/Main';
 
 const client = new ApolloClient({
@@ -25,7 +25,7 @@ const App = () => (
       <Switch>
         {/* Redirect if no user logged in */}
         {/* <Redirect from="/" to="/Oct-2018" /> */}
-        <Route exact path="/child/:id" component={Child} />
+        <Route exact path="/child/:id" component={ChildInfo} />
         <Route exact path="/new-child" component={NewChildForm} />
         <Route exact path="/my-profile" component={MyProfile} />
         <Route exact path="/:date" component={Main} />
