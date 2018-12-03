@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Layout } from 'antd';
-import { media } from '../../shared/theme';
+import { theme, media } from '../../shared/theme';
 
 const StyledPageLayout = styled(Layout)`
   display: flex;
@@ -9,10 +9,14 @@ const StyledPageLayout = styled(Layout)`
   width: 100%;
   padding: 2rem;
 
-  ${media.phone`
+  ${media.desktop`
     width: 400px;
     margin: auto;
   `};
 `;
 
-export { StyledPageLayout };
+const StyledPageLayoutWithFixedHeader = styled(StyledPageLayout)`
+  padding-top: calc(${theme.heights.navBar}px + 2rem);
+`;
+
+export { StyledPageLayout, StyledPageLayoutWithFixedHeader };

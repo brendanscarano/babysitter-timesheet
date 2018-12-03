@@ -1,120 +1,68 @@
 import React from 'react';
-import styled from 'styled-components';
-import {
-  Formik, Field,
-} from 'formik';
-import {
-  Form, Input, Radio, Button, InputNumber,
-} from 'antd';
+import { Formik } from 'formik';
 import { Mutation } from 'react-apollo';
 import { SIGN_UP_USER } from './graphql';
-
-const FormItem = Form.Item;
-
-const StyledForm = styled(Form)`
-  width: 100%;
-
-  > button {
-    width: 100%;
-  }
-`;
+import { Presentation } from './Presentation';
 
 class AuthSignupForm extends React.PureComponent {
   state = {
     showPassword: false,
   }
 
+  toggleShowPassword = () =>
+    this.setState({ showPassword: !this.state.showPassword });
+
   render = () => (
-    <Mutation
-      mutation={SIGN_UP_USER}
-    >
-        {(CreateUser, mutationProps) => {
-          console.log('CreateUser', CreateUser)
-          console.log('mutationProps', mutationProps)
-          return (
-            <Formik
-              initialValues={{
-                firstName: '',
-                lastName: '',
-                email: '',
-                password: '',
-              }}
-              onSubmit={async (values, actions) => {
-                console.log('values: ', values)
-                console.log('actions: ', actions)
-                const response = await CreateUser({
-                  variables: {
-                    firstName: values.firstName,
-                    lastName: values.lastName,
-                    email: values.email,
-                  }
-                })
-                console.log('response', response)
-              }}
-            >
-              {props => (
-                <StyledForm onSubmit={props.handleSubmit}>
-                  <FormItem label="First Name">
-                    <Input
-                      type="text"
-                      name="firstName"
-                      onChange={props.handleChange}
-                    />
-                  </FormItem>
+    <Mutation mutation={SIGN_UP_USER}>
+      {(CreateUser, mutationProps) => {
+        console.log('CreateUser', CreateUser)
+        console.log('mutationProps', mutationProps)
+        return (
+          <Formik
+            initialValues={{
+              firstName: '',
+              lastName: '',
+              email: '',
+              password: '',
+              confirmPassword: '',
+            }}
+            validate={(values) => {
+              const errors = {};
 
-                  <FormItem label="Last Name">
-                    <Input
-                      type="text"
-                      name="lastName"
-                      onChange={props.handleChange}
-                    />
-                  </FormItem>
+              if (values.password !== values.confirmPassword) {
+                errors.confirmPassword = 'Passwords much match'
+              }
 
-                  <FormItem label="Email">
-                    <Input
-                      type="text"
-                      name="email"
-                      onChange={props.handleChange}
-                    />
-                  </FormItem>
-
-                  <FormItem label="Password">
-                    <Input
-                      type={this.state.showPassword ? 'text' : 'password'}
-                      name="password"
-                      onChange={props.handleChange}
-                    />
-                  </FormItem>
-
-                  <p
-                    onClick={() =>
-                      this.setState({ showPassword: !this.state.showPassword })
-                    }
-                  >
-                    {this.state.showPassword ? 'Hide' : 'Show'} Password
-                  </p>
-
-                  <FormItem label="Confirm Password">
-                    <Input
-                      type={this.state.showPassword ? 'text' : 'password'}
-                      name="confirmPassword"
-                      onChange={props.handleChange}
-                    />
-                  </FormItem>
-
-                  <Button
-                    htmlType="submit"
-                    type="primary"
-                    disabled={props.isSubmitting}
-                  >
-                    Sign Up
-                  </Button>
-                </StyledForm>
-              )}
-            </Formik>
-
-          )
-        }}
+              return errors;
+            }}
+            onSubmit={async (values, actions) => {
+              console.log('values: ', values)
+              console.log('actions: ', actions)
+              const response = await CreateUser({
+                variables: {
+                  firstName: values.firstName,
+                  lastName: values.lastName,
+                  email: values.email,
+                  password: values.password,
+                }
+              })
+              console.log('response', response)
+              // On success redirect to main page
+            }}
+          >
+            {props => (
+              <Presentation
+                handleSubmit={props.handleSubmit}
+                handleChange={props.handleChange}
+                showPassword={this.state.showPassword}
+                toggleShowPassword={this.toggleShowPassword}
+                isSubmitting={props.isSubmitting}
+                errors={props.errors}
+              />
+            )}
+          </Formik>
+        )
+      }}
     </Mutation>
   )
 }

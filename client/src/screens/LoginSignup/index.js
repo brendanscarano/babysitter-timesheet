@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Layout } from 'antd';
 import { AuthLoginForm } from '../../components/AuthLoginForm';
 import { AuthSignupForm } from '../../components/AuthSignupForm';
-import { StyledPageLayout } from '../../components/StyledPageLayout';
+import { StyledPageLayoutWithFixedHeader } from '../../components/StyledPageLayout';
 import { NavBar } from '../../components/NavBar';
 import { theme } from '../../shared/theme';
 
@@ -15,6 +15,11 @@ const Title = styled.h2`
   font-weight: bold;
 `;
 
+const StyledLayout = styled(Layout)`
+  height: 100vh;
+  overflow: scroll;
+`;
+
 const SwitchFormText = styled.p`
   margin-top: 2rem;
   > span {
@@ -23,11 +28,6 @@ const SwitchFormText = styled.p`
       font-weight: bold;
     }
   }
-`;
-
-const StyledPageLayoutFixedHeight = styled(StyledPageLayout)`
-  height: calc(100vh - ${theme.heights.navBar}px);
-  overflow: scroll;
 `;
 
 class LoginSignupScreen extends React.PureComponent {
@@ -41,10 +41,10 @@ class LoginSignupScreen extends React.PureComponent {
 
   render() {
     return (
-      <Layout>
-        <NavBar />
+      <StyledLayout>
+        <NavBar isUserSignedIn={false} />
 
-        <StyledPageLayoutFixedHeight>
+        <StyledPageLayoutWithFixedHeader>
           <Title>
             {this.state.activeForm === LOG_IN
               ? "Welcome Back"
@@ -62,17 +62,17 @@ class LoginSignupScreen extends React.PureComponent {
               <SwitchFormText
                 onClick={this.setSignUpActive}
               >
-                Don't have an account? <span>Sign up</span>
+              <i>Don't have an account?</i> <span>Sign up</span>
               </SwitchFormText>
             :
               <SwitchFormText
                 onClick={this.setLogInActive}
               >
-                Already have an account? <span>Log in</span>
+              <i>Already have an account?</i> <span>Log in</span>
               </SwitchFormText>
           }
-        </StyledPageLayoutFixedHeight>
-      </Layout>
+        </StyledPageLayoutWithFixedHeader>
+      </StyledLayout>
     );
   }
 }

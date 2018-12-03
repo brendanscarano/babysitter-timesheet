@@ -53,7 +53,7 @@ const Graph = ({ loading, error, data }) => {
 
 const MyProfile = () => (
   <Layout>
-    <NavBar />
+    <NavBar isUserSignedIn />
     <Layout>
       <Query query={FETCH_USER_QUERY}>
         {((props) => {

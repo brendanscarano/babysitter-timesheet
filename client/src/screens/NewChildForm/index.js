@@ -14,7 +14,7 @@ const NewChildForm = props => (
   <Mutation mutation={CREATE_NEW_CHILD}>
     {(createChild, mutationProps) => (
       <Layout>
-        <NavBar />
+        <NavBar isUserSignedIn />
         <StyledPageLayout>
           <h1>New Child</h1>
           <Formik

@@ -16,7 +16,7 @@ const StyledContent = styled(Content)`
   height: calc(100vh - ${theme.heights.navBar}px);
   overflow: scroll;
   padding: 0 3rem;
-  margin: 2rem 0;
+  margin-top: calc(${theme.heights.navBar}px + 2rem);
   background-color: ${theme.colors.background};
 `;
 
