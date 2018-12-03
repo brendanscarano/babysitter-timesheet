@@ -9,6 +9,7 @@ export const theme = {
   },
   colors: {
     background: '#fff',
+    dataSheetBackground: 'whitesmoke',
     white: '#fff',
   },
 };

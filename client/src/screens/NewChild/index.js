@@ -4,13 +4,13 @@ import { Mutation } from 'react-apollo';
 import { Layout } from 'antd';
 import { NavBar } from '../../components/NavBar';
 import { StyledPageLayout } from '../../components/StyledPageLayout';
+import { NewChildForm } from '../../components/NewChildForm';
 import { CREATE_NEW_CHILD } from './graphql';
-import { Presentation } from './Presentation';
 
 /**
  * @param {obj} props - history, location, match
  */
-const NewChildForm = props => (
+const NewChild = props => (
   <Mutation mutation={CREATE_NEW_CHILD}>
     {(createChild, mutationProps) => (
       <Layout>
@@ -65,7 +65,7 @@ const NewChildForm = props => (
               values, errors, touched, handleChange, isSubmitting, handleSubmit,
 
             }) => (
-              <Presentation
+              <NewChildForm
                 values={values}
                 errors={errors}
                 touched={touched}
@@ -81,4 +81,4 @@ const NewChildForm = props => (
   </Mutation>
 );
 
-export default NewChildForm;
+export default NewChild;

@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   .data-grid-container .data-grid .cell.read-only {
     border: none;
     width: 2rem;
+    height: 26px;
   }
   .sticky-top-first-row {
     position: sticky;
@@ -27,13 +28,13 @@ const Wrapper = styled.div`
   }
   .sticky-top-second-row {
     position: sticky;
-    top: ${({ topBarHeight }) => topBarHeight + 20}px;
+    top: ${({ topBarHeight }) => topBarHeight + 26}px;
     background: whitesmoke !important;
     z-index: 2;
   }
   .sticky-top-third-row {
     position: sticky;
-    top: ${({ topBarHeight }) => topBarHeight + 40}px;
+    top: ${({ topBarHeight }) => topBarHeight + 52}px;
     background: whitesmoke !important;
     z-index: 2;
   }
@@ -41,6 +42,7 @@ const Wrapper = styled.div`
     font-weight: bold;
     color: black;
     font-style: italic;
+    text-align: left;
   }
 `;
 
@@ -60,7 +62,7 @@ const DataSheet = ({ data, onCellsChanged, topBarHeight }) => (
         if (rowProps.row === 0 || rowProps.row === 1 || rowProps.row === 2) {
           return (<tr>{rowProps.children}</tr>);
         }
-        return (<tr style={{ height: '28px' }}>{rowProps.children}</tr>);
+        return (<tr style={{ height: '28px', backgroundColor: 'white' }}>{rowProps.children}</tr>);
       }}
     />
   </Wrapper>
