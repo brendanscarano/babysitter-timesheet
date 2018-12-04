@@ -3,10 +3,7 @@ type User {
   firstName: String!
   lastName: String!
   email: String!
-<<<<<<< HEAD
   password: String!
-=======
->>>>>>> master
   createdAt: DateTime!
   updatedAt: DateTime!
   children: [Child!]!
@@ -22,7 +19,6 @@ enum Gender {
 }
 
 type Child {
-<<<<<<< HEAD
   id: ID! @unique
   firstName: String!
   lastName: String!
@@ -38,23 +34,6 @@ type Child {
 
 type Date {
   id: ID! @unique
-=======
-  id: ID! @unique
-  firstName: String!
-  lastName: String!
-  birthday: DateTime
-  owner: User!
-  rateAmount: Float!
-  rateType: RateType!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  dates: [Date!]!
-  gender: Gender!
-}
-
-type Date {
-  id: ID! @unique
->>>>>>> master
   dateObjectId: String!
   owner: Child!
   month: Float!
