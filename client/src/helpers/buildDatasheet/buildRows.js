@@ -46,13 +46,17 @@ export const buildRows = (kids, date) => {
         {
           id: WEEK_ENDING_ROW,
           columns: [
-            {
-              // value: `WE ${lastDay.month} ${lastDay.number} Total`, colSpan: 3, readOnly: true,
-              value: 'WE Total', colSpan: 3, readOnly: true, className: 'WE-ROW',
-            },
+            // PLACEHOLDER DAY OF WEEK NAME
+            { value: 'WE', readOnly: true, className: 'WE-ROW' },
+            // PLACEHOLDER MONTH
+            { value: 'Total', readOnly: true, className: 'WE-ROW' },
+            // PLACEHOLDER DAY OF WEEK NUMBER
+            PLACEHOLDER_SPACE,
+            // PLACEHOLDER DAILY TOTAL
             {
               value: weeklySumAllChildren(kids, formattedDaysInWeek), readOnly: true, format: 'curr', className: 'WE-ROW',
             },
+            // PLACEHOLDER SPACE
             PLACEHOLDER_SPACE,
             ...flattenDeep(kids.map(kid => [
               {

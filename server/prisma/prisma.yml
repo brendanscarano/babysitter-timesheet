@@ -10,6 +10,7 @@ generate:
     output: ../src/generated/prisma-client/
 
 # Ensures Prisma client is re-generated after a datamodel change.
+# TODO: Why is this failing when running "prisma deploy"
 hooks:
   post-deploy:
     - prisma generate

@@ -34,7 +34,7 @@ const validateRateAmount = (value) => {
 /**
  * @param {obj} props - history, location, match
  */
-const Presentation = ({
+const NewChildForm = ({
   values, errors, touched, handleChange, isSubmitting, handleSubmit,
 }) => (
   <VerticalForm onSubmit={handleSubmit}>
@@ -87,10 +87,10 @@ const Presentation = ({
             }}
           >
             <Radio value="HOURLY">
-                                                        Hourly
+                                Hourly
             </Radio>
             <Radio value="FLAT">
-                                                        Flat
+                                Flat
             </Radio>
           </RadioGroup>
         )}
@@ -119,9 +119,9 @@ const Presentation = ({
     )}
 
     <Button htmlType="submit" type="primary" disabled={isSubmitting}>
-                                        Submit
+                Submit
     </Button>
   </VerticalForm>
 );
 
-export { Presentation };
+export { NewChildForm };

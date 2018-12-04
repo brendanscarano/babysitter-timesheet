@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import flattenDeep from 'lodash.flattendeep';
+import { Icon } from 'antd';
 import { dailySumAllChildren } from './sums';
 import { buildRows } from './buildRows';
 import { Checkbox } from '../../components/Checkbox';
@@ -11,7 +12,7 @@ const STICKY_TOP_SECOND_ROW = 'sticky-top-second-row';
 const STICKY_TOP_THIRD_ROW = 'sticky-top-third-row';
 
 const BASE_HEADERS = ['Date', '', '', 'Total', ''];
-const headersPerChild = rateType => (rateType === 'HOURLY' ? ['Hours', 'Paid', 'Notes', ' '] : ['Seen?', 'Paid', 'Notes', ' ']);
+const headersPerChild = [<Icon type="clock-circle" />, <Icon type="dollar" />, <Icon type="edit" />, ' '];
 const WEEK_ENDING_ROW = 'week-ending-row';
 
 /**
@@ -23,21 +24,22 @@ const WEEK_ENDING_ROW = 'week-ending-row';
 export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
   const rowsInTable = buildRows(Children, date);
 
-  const HEADERS = [...BASE_HEADERS, ...flattenDeep(Children.map(kid => headersPerChild(kid.info.rateType)))].map(
+  const HEADERS = [...BASE_HEADERS, ...flattenDeep(Children.map(() => headersPerChild))].map(
     text => ({ value: text, readOnly: true, className: STICKY_TOP_THIRD_ROW }),
   );
 
   return [
     // FIRST ROW: Names with Links to Child Pages
     [
-      {
-        ...PLACEHOLDER_SPACE,
-        colSpan: 4,
-        className: STICKY_TOP_FIRST_ROW,
-        style: {
-          backgroundColor: 'red',
-        },
-      },
+      // PLACEHOLDER DAY OF WEEK NAME
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_FIRST_ROW },
+      // PLACEHOLDER MONTH
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_FIRST_ROW },
+      // PLACEHOLDER DAY OF WEEK NUMBER
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_FIRST_ROW },
+      // PLACEHOLDER DAILY TOTAL
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_FIRST_ROW },
+      // PLACEHOLDER SPACE
       { ...PLACEHOLDER_SPACE, className: STICKY_TOP_FIRST_ROW },
       ...flattenDeep(Children.map(({ info }) => [
         {
@@ -57,7 +59,15 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
     ],
     // SECOND ROW: Rates per child
     [
-      { ...PLACEHOLDER_SPACE, colSpan: 4, className: STICKY_TOP_SECOND_ROW },
+      // PLACEHOLDER DAY OF WEEK NAME
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_SECOND_ROW },
+      // PLACEHOLDER MONTH
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_SECOND_ROW },
+      // PLACEHOLDER DAY OF WEEK NUMBER
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_SECOND_ROW },
+      // PLACEHOLDER DAILY TOTAL
+      { ...PLACEHOLDER_SPACE, className: STICKY_TOP_SECOND_ROW },
+      // PLACEHOLDER SPACE
       { ...PLACEHOLDER_SPACE, className: STICKY_TOP_SECOND_ROW },
       ...flattenDeep(Children.map(({ info }) => [{
         value: `$${info.rate}/hr`,

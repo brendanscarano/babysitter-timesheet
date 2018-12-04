@@ -15,7 +15,7 @@ import { theme } from '../../shared/theme';
 const LoadingWrapper = styled.div`
   height: calc(100vh - ${theme.heights.navBar}px);
   background-color: ${theme.colors.background};
-  padding: 5rem 3rem;
+  padding-top: calc(${theme.heights.navBar}px + 5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +43,7 @@ const Main = (props) => console.log('main props', props) || (
       const [month, year] = props.match.params.date.split('-');
 
       const monthToView = moment(`${year}-${month}-01`).format('YYYY-MM');
-      
+
       return (
         <Inner
           upsertDate={upsertDate}
@@ -115,7 +115,7 @@ class Inner extends React.PureComponent {
   render() {
         return (
           <Layout>
-            <NavBar />
+            <NavBar isUserSignedIn={true} />
             <Layout>
               <Query query={FETCH_USER_QUERY}>
                 {((props) => {

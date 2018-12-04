@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Avatar, Layout, Icon } from 'antd';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,8 @@ import { theme } from '../../shared/theme';
 const { Header } = Layout;
 
 const Wrapper = styled(Header)`
+    position: fixed;
+    z-index: ${theme.zIndex.navBar};
     height: ${theme.heights.navBar};
     display: flex;
     align-items: center;
@@ -24,30 +27,37 @@ const StyledLink = styled(Link)`
   align-items: flex-start;
   height: 100%;
   >span, h1 {
-    font-size: 20px;
+    font-family: Lobster;
+    font-size: 24px;
   }
   > span {
     margin-right: .25rem;
   }
 `;
 
-const NavBar = () => (
+const NavBar = ({ isUserSignedIn }) => (
   <Wrapper>
     <StyledLink to="/">
       <span role="img" aria-label="baby">👶</span>
       <h1>Sitter Sheet</h1>
     </StyledLink>
-    <FlexRow>
-      <Link to="/new-child">
-        <Icon type="plus-circle" />
-        {' '}
-New Child
-      </Link>
-      <Link to="/my-profile">
-        <Avatar icon="user" />
-      </Link>
-    </FlexRow>
+    {isUserSignedIn && (
+      <FlexRow>
+        <Link to="/new-child">
+          <Icon type="plus-circle" />
+          {' '}
+  New Child
+        </Link>
+        <Link to="/my-profile">
+          <Avatar icon="user" />
+        </Link>
+      </FlexRow>
+    )}
   </Wrapper>
 );
+
+NavBar.propTypes = {
+  isUserSignedIn: PropTypes.bool.isRequired,
+};
 
 export { NavBar };

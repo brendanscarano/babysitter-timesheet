@@ -4,8 +4,12 @@ export const theme = {
   heights: {
     navBar: 64,
   },
+  zIndex: {
+    navBar: 1,
+  },
   colors: {
     background: '#fff',
+    dataSheetBackground: 'whitesmoke',
     white: '#fff',
   },
 };
