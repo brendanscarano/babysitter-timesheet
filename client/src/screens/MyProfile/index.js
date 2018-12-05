@@ -9,6 +9,7 @@ import { FlexRow } from '../../components/Flex';
 import { buildYearlyTotals } from './buildYearlyTotals';
 import { theme } from '../../shared/theme';
 import { formatCurr } from '../../helpers/formatCurr';
+import SubscribeUser from '../../components/SubscribeUser/index';
 
 const Wrapper = styled.div`
   padding: 2rem 3rem;
@@ -55,6 +56,7 @@ const MyProfile = () => (
   <Layout>
     <NavBar isUserSignedIn />
     <Layout>
+      <SubscribeUser />
       <Query query={FETCH_USER_QUERY}>
         {((props) => {
           const childrenData = (props.data && props.data.user && props.data.user.children.length > 0) ? props.data.user.children : null;

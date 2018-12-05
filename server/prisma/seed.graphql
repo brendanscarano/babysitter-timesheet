@@ -1,16 +1,34 @@
 mutation {
   user1: createUser(data: {
-    firstName: "Alice"
-    lastName: "Wonderland"
     email: "alice@prisma.io"
+    firstName: "Alice"
+    lastName: "Wilkson"
+    password: "$2b$10$dqyYw5XovLjpmkYNiRDEWuwKaRAvLaG45fnXE5b3KTccKZcRPka2m" # "secret42"
     children: {
       create: [{
         firstName: "John"
-        lastName: "Doe"
-        rateAmount: 40
+        lastName: "Wilkson"
+        rateAmount: 40.00
         rateType: FLAT
-        dates: []
         gender: MALE
+      }]
+    }
+  }) {
+    id
+  }
+
+  user2: createUser(data: {
+    email: "bob@prisma.io"
+    firstName: "Bob"
+    lastName: "Sanchez"
+    password: "$2b$10$o6KioO.taArzboM44Ig85O3ZFZYZpR3XD7mI8T29eP4znU/.xyJbW"  # "secret43"
+    children: {
+      create: [{
+        firstName: "Sue"
+        lastName: "Sanchez"
+        rateAmount: 8.00
+        rateType: HOURLY
+        gender: FEMALE
       }]
     }
   }) {

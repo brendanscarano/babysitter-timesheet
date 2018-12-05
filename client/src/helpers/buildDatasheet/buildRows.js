@@ -37,7 +37,7 @@ export const buildRows = (kids, date) => {
     });
 
     const formattedDaysInWeek = days.map(day => day.formattedDate);
-    const lastDay = days[days.length - 1];
+    // const lastDay = days[days.length - 1];
 
     // CREATE WEEK ARRAYS WITH 7 DAYS + WEEK ENDING ROWS
     return [

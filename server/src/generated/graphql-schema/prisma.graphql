@@ -1,5 +1,4 @@
-module.exports = {
-        typeDefs: /* GraphQL */ `enum AccountType {
+enum AccountType {
   TRIAL
   MONTHLY_PAID
 }
@@ -935,6 +934,3 @@ input UserWhereUniqueInput {
   id: ID
   email: String
 }
-`
-      }
-    

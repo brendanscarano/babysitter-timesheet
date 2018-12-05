@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 /**
  * @param {monthToView} string - YYYY-MM
  */
-const getMonthNumber = monthToView => parseInt(moment(monthToView).format('MM'), 10);
+// const getMonthNumber = monthToView => parseInt(moment(monthToView).format('MM'), 10);
 
 const MonthPicker = ({ onCalendarMonthClick, monthToView }) => (
   <Wrapper>

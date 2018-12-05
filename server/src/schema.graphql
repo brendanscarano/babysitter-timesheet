@@ -1,18 +1,16 @@
+# import * from "./generated/graphql-schema/prisma.graphql"
 scalar DateTime
 
 type Query {
   me: User
-  feed: [Post!]!
-  filterPosts(searchString: String): [Post!]!
-  post(id: ID!): Post
 }
 
 type Mutation {
-  createDraft(title: String!, content: String): Post!
-  deletePost(id: ID!): Post
-  publish(id: ID!): Post
-  signup(email: String!, password: String!, name: String): AuthPayload!
+  signup(email: String!, password: String!, firstName: String, lastName: String): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
+  createSubscription(source: String!, ccLast4: String!): User
+  cancelSubscription: User
+  changeCreditCard(source: String!, ccLast4: String!): User
 }
 
 type AuthPayload {
@@ -20,19 +18,9 @@ type AuthPayload {
   user: User!
 }
 
-type Post {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  published: Boolean!
-  title: String!
-  content: String
-  author: User!
-}
-
 type User {
   id: ID!
   email: String!
-  name: String
-  posts: [Post!]!
+  firstName: String
+  children: [Child!]!
 }

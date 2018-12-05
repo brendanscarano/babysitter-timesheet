@@ -1,12 +1,6 @@
-type User {
-  id: ID! @unique
-  firstName: String!
-  lastName: String!
-  email: String!
-  password: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  children: [Child!]!
+enum AccountType {
+  TRIAL
+  MONTHLY_PAID
 }
 
 enum RateType {
@@ -15,7 +9,58 @@ enum RateType {
 }
 
 enum Gender {
-  MALE, FEMALE
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum RateType {
+  HOURLY
+  FLAT
+}
+
+type User {
+  id: ID! @unique
+  email: String! @unique
+  password: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  type: AccountType! @default(value: "TRIAL")
+  ccLast4: String
+  stripeId: String
+  firstName: String
+  lastName: String
+  children: [Child!]!
+}
+
+
+type Child {
+  id: ID! @unique
+  firstName: String!
+  lastName: String!
+  birthday: DateTime
+  owner: User!
+  rateAmount: Float!
+  rateType: RateType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  dates: [Date!]!
+  gender: Gender!
+}
+
+type Date {
+  id: ID! @unique
+  email: String! @unique
+  password: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  type: AccountType! @default(value: "TRIAL")
+  ccLast4: String
+  stripeId: String
+
+  firstName: String
+  lastName: String
+  children: [Child!]!
 }
 
 type Child {
@@ -43,5 +88,5 @@ type Date {
   dayOfWeek: String
   notes: String
   paid: Float
-  fixedRateChecked: Boolean
+  isFixedRate: Boolean
 }

@@ -1,5 +1,5 @@
 # Specifies the HTTP endpoint of your Prisma API.
-endpoint: 'https://us1.prisma.sh/brendan-f224bf/hello-world/dev'
+endpoint: 'http://localhost:4466/sitter-sheet/dev'
 
 # Defines your models, each model is mapped to the database as a table.
 datamodel: datamodel.prisma
@@ -8,6 +8,8 @@ datamodel: datamodel.prisma
 generate:
   - generator: javascript-client
     output: ../src/generated/prisma-client/
+  - generator: graphql-schema
+    output: ../src/generated/graphql-schema/
 
 # Ensures Prisma client is re-generated after a datamodel change.
 # TODO: Why is this failing when running "prisma deploy"

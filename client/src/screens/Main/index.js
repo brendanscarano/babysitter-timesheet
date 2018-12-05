@@ -25,19 +25,19 @@ const LoadingWrapper = styled.div`
   }
 `;
 
-const Main = (props) => console.log('main props', props) || (
+const Main = props => console.log('main props', props) || (
   <Mutation
     mutation={CREATE_OR_UPDATE_DATE_MUTATION}
-    refetchQueries={() => {
-      return [{
-        query: FETCH_USER_QUERY
-      }]
-    }}
+    refetchQueries={() => [
+      {
+        query: FETCH_USER_QUERY,
+      },
+    ]}
   >
     {(upsertDate) => {
       if (!props.match.params.date) {
-        const dateToRedirect = moment().format("MM-YYYY");
-        return <Redirect to={`/${dateToRedirect}`} />
+        const dateToRedirect = moment().format('MM-YYYY');
+        return <Redirect to={`/${dateToRedirect}`} />;
       }
 
       const [month, year] = props.match.params.date.split('-');
@@ -45,55 +45,63 @@ const Main = (props) => console.log('main props', props) || (
       const monthToView = moment(`${year}-${month}-01`).format('YYYY-MM');
 
       return (
-        <Inner
-          upsertDate={upsertDate}
-          monthToView={monthToView}
-          {...props}
-        />
-      )
+        <Inner upsertDate={upsertDate} monthToView={monthToView} {...props} />
+      );
     }}
   </Mutation>
-)
-
+);
 
 class Inner extends React.PureComponent {
   state = {
     /** TODO: SET MONTH TO VIEW BASED ON PROPS */
-    monthToView: this.props.monthToView
-  }
+    monthToView: this.props.monthToView,
+  };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.monthToView !== prevProps.monthToView) {
-      this.setState({ monthToView: this.props.monthToView })
+  componentDidUpdate(prevProps, _) {
+    const { monthToView } = this.props;
+    if (monthToView !== prevProps.monthToView) {
+      this.setState({ monthToView });
     }
   }
 
   onCellsChanged = (changes) => {
-    changes.forEach(change => {
-      const { number, year, dayOfWeek, formattedDate } = change.cell.row;
+    const { upsertDate } = this.props;
+
+    changes.forEach((change) => {
+      const {
+        number, year, dayOfWeek, formattedDate,
+      } = change.cell.row;
       const { savedDateInDb } = change.cell;
 
-      this.props.upsertDate({
+      upsertDate({
         variables: {
-          dateId: savedDateInDb ? savedDateInDb.dateId : "",
+          dateId: savedDateInDb ? savedDateInDb.dateId : '',
           childId: change.cell.childId,
           month: parseFloat(formattedDate.slice(0, 2)),
           day: parseFloat(number),
           year: parseFloat(year),
           hours: parseFloat(change.value) || 0,
           dayOfWeek,
-          dateObjectId: formattedDate
-        }
+          dateObjectId: formattedDate,
+        },
       });
-    })
+    });
   };
 
-  onFixedCheckboxChange = (rowData) => (e) => {
-    const { childId, year, formattedDate, number, dayOfWeek, savedDateInDb, isChecked } = rowData;
-
-    this.props.upsertDate({
+  onFixedCheckboxChange = rowData => (e) => {
+    const {
+      childId,
+      year,
+      formattedDate,
+      number,
+      dayOfWeek,
+      savedDateInDb,
+      isChecked,
+    } = rowData;
+    const { upsertDate } = this.props;
+    upsertDate({
       variables: {
-        dateId: savedDateInDb ? savedDateInDb.dateId : "",
+        dateId: savedDateInDb ? savedDateInDb.dateId : '',
         childId,
         month: parseFloat(formattedDate.slice(0, 2)),
         day: parseFloat(number),
@@ -103,59 +111,60 @@ class Inner extends React.PureComponent {
         dateObjectId: formattedDate,
         // TODO: Toggle true or false
         fixedRateChecked: !isChecked,
-      }
+      },
     });
-  }
+  };
 
   onCalendarMonthClick = (value) => {
-      const formattedDate = moment(value).format('MM-YYYY');
-      this.props.history.push(`/${formattedDate}`);
-  }
+    const { history } = this.props;
+    const formattedDate = moment(value).format('MM-YYYY');
+    history.push(`/${formattedDate}`);
+  };
 
   render() {
-        return (
-          <Layout>
-            <NavBar isUserSignedIn={true} />
-            <Layout>
-              <Query query={FETCH_USER_QUERY}>
-                {((props) => {
-                  if (props.loading) {
-                    return (
-                      <LoadingWrapper>
-                        <Spin size="large" />
-                        <span>Loading...</span>
-                      </LoadingWrapper>
-                    )
-                  }
+    return (
+      <Layout>
+        <NavBar isUserSignedIn />
+        <Layout>
+          <Query query={FETCH_USER_QUERY}>
+            {((props) => {
+              if (props.loading) {
+                return (
+                  <LoadingWrapper>
+                    <Spin size="large" />
+                    <span>Loading...</span>
+                  </LoadingWrapper>
+                );
+              }
 
-                  if (
-                    !props.data
+              if (
+                !props.data
                     || !props.data.user
                     || !props.data.user.children) {
-                    return <div>Something went wrong</div>;
-                  }
+                return <div>Something went wrong</div>;
+              }
 
-                  const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
-                  const monthlyTotal = monthlyTotalAllChildren(props.data.user.children, parseInt(month), parseInt(year));
+              const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
+              const monthlyTotal = monthlyTotalAllChildren(props.data.user.children, parseInt(month), parseInt(year));
 
-                  const children = mapQueryToKids(props.data.user.children);
+              const children = mapQueryToKids(props.data.user.children);
 
-                  const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
+              const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
 
-                  return (
-                    <Presentation
-                      onCalendarMonthClick={this.onCalendarMonthClick}
-                      monthToView={this.state.monthToView}
-                      monthlyTotal={monthlyTotal}
-                      data={data}
-                      onCellsChanged={this.onCellsChanged}
-                    />
-                  );
-                })}
-              </Query>
-            </Layout>
-          </Layout>
-        )
+              return (
+                <Presentation
+                  onCalendarMonthClick={this.onCalendarMonthClick}
+                  monthToView={this.state.monthToView}
+                  monthlyTotal={monthlyTotal}
+                  data={data}
+                  onCellsChanged={this.onCellsChanged}
+                />
+              );
+            })}
+          </Query>
+        </Layout>
+      </Layout>
+    );
   }
 }
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Redirect,
   Route,
   Switch,
 } from 'react-router-dom';
@@ -15,8 +14,7 @@ import ChildInfo from './screens/ChildInfo';
 import Main from './screens/Main';
 
 const client = new ApolloClient({
-  uri: 'https://us1.prisma.sh/brendan-f224bf/hello-world/dev',
-  // cache: new InMemoryCache(),
+  uri: 'http://localhost:4000',
 });
 
 const App = () => (
