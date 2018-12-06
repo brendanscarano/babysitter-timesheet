@@ -9,6 +9,7 @@ module.exports = {
         "no-console": 0,
         "no-danger": 0,
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "import/prefer-default-export": false
+        "import/prefer-default-export": false,
+        "react/destructuring-assignment": false
     }
 };

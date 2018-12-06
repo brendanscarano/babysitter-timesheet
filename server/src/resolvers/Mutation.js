@@ -4,16 +4,23 @@ const { APP_SECRET } = require('../utils')
 const stripe = require("./Stripe");
 
 const Mutation = {
-  signup: async (parent, { name, email, password }, context) => {
-    const hashedPassword = await hash(password, 10)
-    const user = await context.prisma.createUser({
-      name,
-      email,
-      password: hashedPassword,
-    })
-    return {
-      token: sign({ userId: user.id }, APP_SECRET),
-      user,
+  signup: async (parent, { firstName, lastName, email, password }, context) => {
+    const hashedPassword = await hash(password, 10);
+
+    try {
+      const user = await context.prisma.createUser({
+        firstName,
+        lastName,
+        email,
+        password: hashedPassword,
+      })
+
+      return {
+        token: sign({ userId: user.id }, APP_SECRET),
+        user,
+      }
+    } catch (err) {
+      throw new Error(err.message);
     }
   },
   login: async (parent, { email, password }, context) => {

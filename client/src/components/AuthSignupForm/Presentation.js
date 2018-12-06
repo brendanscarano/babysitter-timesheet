@@ -17,7 +17,6 @@ const StyledForm = styled(Form)`
 
 const Error = styled.div`
   color: red;
-  margin-bottom: 1rem;
 `;
 
 const ShowPasswordButton = styled.button`
@@ -41,30 +40,40 @@ const Presentation = ({
   toggleShowPassword,
   isSubmitting,
   errors,
+  touched,
 }) => (
   <StyledForm onSubmit={handleSubmit}>
     <FormItem label="First Name">
-      <Input
-        type="text"
-        name="firstName"
-        onChange={handleChange}
-      />
+      <>
+        <Input
+          type="text"
+          name="firstName"
+          onChange={handleChange}
+        />
+        {errors.firstName && <Error>{errors.firstName}</Error>}
+      </>
     </FormItem>
 
     <FormItem label="Last Name">
-      <Input
-        type="text"
-        name="lastName"
-        onChange={handleChange}
-      />
+      <>
+        <Input
+          type="text"
+          name="lastName"
+          onChange={handleChange}
+        />
+        {errors.lastName && <Error>{errors.lastName}</Error>}
+      </>
     </FormItem>
 
     <FormItem label="Email">
-      <Input
-        type="text"
-        name="email"
-        onChange={handleChange}
-      />
+      <>
+        <Input
+          type="text"
+          name="email"
+          onChange={handleChange}
+        />
+        {errors.email && <Error>{errors.email}</Error>}
+      </>
     </FormItem>
 
     <FormItem label="Password">
@@ -75,6 +84,7 @@ const Presentation = ({
           onChange={handleChange}
           autoComplete="off"
         />
+        {errors.password && <Error>{errors.password}</Error>}
         <ShowPasswordButton onClick={toggleShowPassword} type="button">
           {showPassword ? 'Hide' : 'Show'}
           {' '}
