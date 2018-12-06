@@ -36,7 +36,7 @@ const AuthLoginForm = () => (
 
         <FormItem label="Password">
           <Input
-            type="text"
+            type="password"
             name="password"
           />
         </FormItem>
