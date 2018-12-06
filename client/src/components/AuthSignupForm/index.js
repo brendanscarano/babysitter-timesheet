@@ -2,8 +2,31 @@ import React from 'react';
 import { Formik } from 'formik';
 import { Mutation } from 'react-apollo';
 import moment from 'moment';
-import { SIGN_UP_USER } from './graphql';
+import gql from 'graphql-tag';
 import { Presentation } from './Presentation';
+
+
+export const SIGN_UP_USER = gql`
+  mutation Signup(
+    $firstName: String!,
+    $lastName: String!,
+    $email: String!,
+    $password: String!,
+  ) {
+    signup(
+        firstName: $firstName,
+        lastName: $lastName,
+        email: $email
+        password: $password
+    ) {
+        token
+        user {
+            email
+            firstName
+        }
+    }
+}`;
+
 
 class AuthSignupForm extends React.PureComponent {
   state = {
