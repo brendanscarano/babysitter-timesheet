@@ -61,7 +61,7 @@ class LoginSignupScreen extends React.PureComponent {
               <SwitchFormText
                 onClick={this.setSignUpActive}
               >
-                <i>Don't have an account?</i>
+                <i>Don&apos;t have an account?</i>
                 {' '}
                 <span>Sign up</span>
               </SwitchFormText>
