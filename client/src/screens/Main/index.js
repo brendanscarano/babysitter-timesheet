@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Layout, Spin } from 'antd';
+import { Spin } from 'antd';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import { Mutation, Query } from 'react-apollo';
-import { NavBar } from '../../components/NavBar';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
 import { monthlyTotalAllChildren } from '../../helpers/buildDatasheet/sums';
 import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
@@ -123,47 +122,44 @@ class Inner extends React.PureComponent {
 
   render() {
     return (
-      <Layout>
-        <NavBar isUserSignedIn />
-        <Layout>
-          <Query query={FETCH_USER_QUERY}>
-            {((props) => {
-              if (props.loading) {
-                return (
-                  <LoadingWrapper>
-                    <Spin size="large" />
-                    <span>Loading...</span>
-                  </LoadingWrapper>
-                );
-              }
+      <div>
+        <Query query={FETCH_USER_QUERY}>
+          {((props) => {
+            if (props.loading) {
+              return (
+                <LoadingWrapper>
+                  <Spin size="large" />
+                  <span>Loading...</span>
+                </LoadingWrapper>
+              );
+            }
 
-              if (
-                !props.data
+            if (
+              !props.data
                     || !props.data.user
                     || !props.data.user.children) {
-                return <div>Something went wrong</div>;
-              }
+              return <div>Something went wrong</div>;
+            }
 
-              const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
-              const monthlyTotal = monthlyTotalAllChildren(props.data.user.children, parseInt(month), parseInt(year));
+            const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
+            const monthlyTotal = monthlyTotalAllChildren(props.data.user.children, parseInt(month), parseInt(year));
 
-              const children = mapQueryToKids(props.data.user.children);
+            const children = mapQueryToKids(props.data.user.children);
 
-              const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
+            const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
 
-              return (
-                <Presentation
-                  onCalendarMonthClick={this.onCalendarMonthClick}
-                  monthToView={this.state.monthToView}
-                  monthlyTotal={monthlyTotal}
-                  data={data}
-                  onCellsChanged={this.onCellsChanged}
-                />
-              );
-            })}
-          </Query>
-        </Layout>
-      </Layout>
+            return (
+              <Presentation
+                onCalendarMonthClick={this.onCalendarMonthClick}
+                monthToView={this.state.monthToView}
+                monthlyTotal={monthlyTotal}
+                data={data}
+                onCellsChanged={this.onCellsChanged}
+              />
+            );
+          })}
+        </Query>
+      </div>
     );
   }
 }

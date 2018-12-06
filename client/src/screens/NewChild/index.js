@@ -1,8 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { Mutation } from 'react-apollo';
-import { Layout } from 'antd';
-import { NavBar } from '../../components/NavBar';
 import { StyledPageLayout } from '../../components/StyledPageLayout';
 import { NewChildForm } from '../../components/NewChildForm';
 import { CREATE_NEW_CHILD } from './graphql';
@@ -13,8 +11,7 @@ import { CREATE_NEW_CHILD } from './graphql';
 const NewChild = props => (
   <Mutation mutation={CREATE_NEW_CHILD}>
     {(createChild, mutationProps) => (
-      <Layout>
-        <NavBar isUserSignedIn />
+      <div>
         <StyledPageLayout>
           <h1>New Child</h1>
           <Formik
@@ -76,7 +73,7 @@ const NewChild = props => (
             )}
           </Formik>
         </StyledPageLayout>
-      </Layout>
+      </div>
     )}
   </Mutation>
 );

@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, Card, Layout } from 'antd';
+import { Avatar, Card } from 'antd';
 import { Query } from 'react-apollo';
 import { Bar } from 'react-chartjs';
 import { FETCH_USER_QUERY } from './graphql';
-import { NavBar } from '../../components/NavBar';
 import { FlexRow } from '../../components/Flex';
 import { buildYearlyTotals } from './buildYearlyTotals';
 import { theme } from '../../shared/theme';
@@ -53,39 +52,36 @@ const Graph = ({ loading, error, data }) => {
 };
 
 const MyProfile = () => (
-  <Layout>
-    <NavBar isUserSignedIn />
-    <Layout>
-      <SubscribeUser />
-      <Query query={FETCH_USER_QUERY}>
-        {((props) => {
-          const childrenData = (props.data && props.data.user && props.data.user.children.length > 0) ? props.data.user.children : null;
-          const annualData = buildYearlyTotals(childrenData);
-          console.log('annualData', annualData);
+  <div>
+    <SubscribeUser />
+    <Query query={FETCH_USER_QUERY}>
+      {((props) => {
+        const childrenData = (props.data && props.data.user && props.data.user.children.length > 0) ? props.data.user.children : null;
+        const annualData = buildYearlyTotals(childrenData);
+        console.log('annualData', annualData);
 
-          const annualAnnualSum = annualData.datasets[0].data.reduce((acc, curr) => acc + curr, 0);
+        const annualAnnualSum = annualData.datasets[0].data.reduce((acc, curr) => acc + curr, 0);
 
-          return (
-            <Wrapper>
-              <TitleBar>
-                <Avatar icon="user" />
-                <UserName>Brendan Scarano</UserName>
-              </TitleBar>
+        return (
+          <Wrapper>
+            <TitleBar>
+              <Avatar icon="user" />
+              <UserName>Brendan Scarano</UserName>
+            </TitleBar>
 
-              <Card title={`2018 Total: ${formatCurr(annualAnnualSum)}`}>
-                <Graph
-                  loading={props.loading
+            <Card title={`2018 Total: ${formatCurr(annualAnnualSum)}`}>
+              <Graph
+                loading={props.loading
                     || (props.data && props.data.user && props.data.user.children.length === 0)}
-                  error={props.error}
-                  data={annualData}
-                />
-              </Card>
-            </Wrapper>
-          );
-        })}
-      </Query>
-    </Layout>
-  </Layout>
+                error={props.error}
+                data={annualData}
+              />
+            </Card>
+          </Wrapper>
+        );
+      })}
+    </Query>
+  </div>
 );
 
 export default MyProfile;
