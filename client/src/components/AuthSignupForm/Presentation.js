@@ -44,66 +44,56 @@ const Presentation = ({
 }) => (
   <StyledForm onSubmit={handleSubmit}>
     <FormItem label="First Name">
-      <>
-        <Input
-          type="text"
-          name="firstName"
-          onChange={handleChange}
-        />
-        {errors.firstName && <Error>{errors.firstName}</Error>}
-      </>
+      <Input
+        type="text"
+        name="firstName"
+        onChange={handleChange}
+      />
+      {errors.firstName && touched.firstName && <Error>{errors.firstName}</Error>}
     </FormItem>
 
     <FormItem label="Last Name">
-      <>
-        <Input
-          type="text"
-          name="lastName"
-          onChange={handleChange}
-        />
-        {errors.lastName && <Error>{errors.lastName}</Error>}
-      </>
+      <Input
+        type="text"
+        name="lastName"
+        onChange={handleChange}
+      />
+      {errors.lastName && touched.lastName && <Error>{errors.lastName}</Error>}
     </FormItem>
 
     <FormItem label="Email">
-      <>
-        <Input
-          type="text"
-          name="email"
-          onChange={handleChange}
-        />
-        {errors.email && <Error>{errors.email}</Error>}
-      </>
+      <Input
+        type="text"
+        name="email"
+        onChange={handleChange}
+      />
+      {errors.email && touched.email && <Error>{errors.email}</Error>}
     </FormItem>
 
     <FormItem label="Password">
-      <>
-        <Input
-          type={showPassword ? 'text' : 'password'}
-          name="password"
-          onChange={handleChange}
-          autoComplete="off"
-        />
-        {errors.password && <Error>{errors.password}</Error>}
-        <ShowPasswordButton onClick={toggleShowPassword} type="button">
-          {showPassword ? 'Hide' : 'Show'}
-          {' '}
+      <Input
+        type={showPassword ? 'text' : 'password'}
+        name="password"
+        onChange={handleChange}
+        autoComplete="off"
+      />
+      {errors.password && touched.password && <Error>{errors.password}</Error>}
+      <ShowPasswordButton onClick={toggleShowPassword} type="button">
+        {showPassword ? 'Hide' : 'Show'}
+        {' '}
             Password
-        </ShowPasswordButton>
-      </>
+      </ShowPasswordButton>
     </FormItem>
 
 
     <FormItem label="Confirm Password">
-      <>
-        <Input
-          type={showPassword ? 'text' : 'password'}
-          name="confirmPassword"
-          onChange={handleChange}
-          autoComplete="off"
-        />
-        {errors.confirmPassword && <Error>{errors.confirmPassword}</Error>}
-      </>
+      <Input
+        type={showPassword ? 'text' : 'password'}
+        name="confirmPassword"
+        onChange={handleChange}
+        autoComplete="off"
+      />
+      {errors.confirmPassword && touched.confirmPassword && <Error>{errors.confirmPassword}</Error>}
     </FormItem>
 
     <Button
@@ -126,6 +116,7 @@ Presentation.propTypes = {
   /** From Formik renderComponent props */
   isSubmitting: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
+  touched: PropTypes.object.isRequired,
 };
 
 export { Presentation };

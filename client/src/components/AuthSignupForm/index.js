@@ -7,7 +7,7 @@ import { Presentation } from './Presentation';
 
 
 export const SIGN_UP_USER = gql`
-  mutation Signup(
+  mutation createSignup(
     $firstName: String!,
     $lastName: String!,
     $email: String!,
@@ -40,7 +40,7 @@ class AuthSignupForm extends React.PureComponent {
 
   render = () => (
     <Mutation mutation={SIGN_UP_USER}>
-      {(CreateUser, mutationProps) => (
+      {(createSignup, mutationProps) => (
         <Formik
           initialValues={{
             firstName: '',
@@ -75,7 +75,7 @@ class AuthSignupForm extends React.PureComponent {
             return errors;
           }}
           onSubmit={async (values, actions) => {
-            const response = await CreateUser({
+            const response = await createSignup({
               variables: {
                 firstName: values.firstName,
                 lastName: values.lastName,
