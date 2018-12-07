@@ -10,8 +10,8 @@ type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
-  child: (where?: ChildWhereInput) => Promise<boolean>;
   date: (where?: DateWhereInput) => Promise<boolean>;
+  sitte: (where?: SitteWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -34,29 +34,6 @@ export interface Prisma {
    * Queries
    */
 
-  child: (where: ChildWhereUniqueInput) => ChildPromise;
-  children: (
-    args?: {
-      where?: ChildWhereInput;
-      orderBy?: ChildOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => FragmentableArray<Child>;
-  childrenConnection: (
-    args?: {
-      where?: ChildWhereInput;
-      orderBy?: ChildOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => ChildConnectionPromise;
   date: (where: DateWhereUniqueInput) => DatePromise;
   dates: (
     args?: {
@@ -80,6 +57,29 @@ export interface Prisma {
       last?: Int;
     }
   ) => DateConnectionPromise;
+  sitte: (where: SitteWhereUniqueInput) => SittePromise;
+  sittes: (
+    args?: {
+      where?: SitteWhereInput;
+      orderBy?: SitteOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Sitte>;
+  sittesConnection: (
+    args?: {
+      where?: SitteWhereInput;
+      orderBy?: SitteOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => SitteConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
     args?: {
@@ -109,22 +109,6 @@ export interface Prisma {
    * Mutations
    */
 
-  createChild: (data: ChildCreateInput) => ChildPromise;
-  updateChild: (
-    args: { data: ChildUpdateInput; where: ChildWhereUniqueInput }
-  ) => ChildPromise;
-  updateManyChildren: (
-    args: { data: ChildUpdateManyMutationInput; where?: ChildWhereInput }
-  ) => BatchPayloadPromise;
-  upsertChild: (
-    args: {
-      where: ChildWhereUniqueInput;
-      create: ChildCreateInput;
-      update: ChildUpdateInput;
-    }
-  ) => ChildPromise;
-  deleteChild: (where: ChildWhereUniqueInput) => ChildPromise;
-  deleteManyChildren: (where?: ChildWhereInput) => BatchPayloadPromise;
   createDate: (data: DateCreateInput) => DatePromise;
   updateDate: (
     args: { data: DateUpdateInput; where: DateWhereUniqueInput }
@@ -141,6 +125,22 @@ export interface Prisma {
   ) => DatePromise;
   deleteDate: (where: DateWhereUniqueInput) => DatePromise;
   deleteManyDates: (where?: DateWhereInput) => BatchPayloadPromise;
+  createSitte: (data: SitteCreateInput) => SittePromise;
+  updateSitte: (
+    args: { data: SitteUpdateInput; where: SitteWhereUniqueInput }
+  ) => SittePromise;
+  updateManySittes: (
+    args: { data: SitteUpdateManyMutationInput; where?: SitteWhereInput }
+  ) => BatchPayloadPromise;
+  upsertSitte: (
+    args: {
+      where: SitteWhereUniqueInput;
+      create: SitteCreateInput;
+      update: SitteUpdateInput;
+    }
+  ) => SittePromise;
+  deleteSitte: (where: SitteWhereUniqueInput) => SittePromise;
+  deleteManySittes: (where?: SitteWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
     args: { data: UserUpdateInput; where: UserWhereUniqueInput }
@@ -166,12 +166,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  child: (
-    where?: ChildSubscriptionWhereInput
-  ) => ChildSubscriptionPayloadSubscription;
   date: (
     where?: DateSubscriptionWhereInput
   ) => DateSubscriptionPayloadSubscription;
+  sitte: (
+    where?: SitteSubscriptionWhereInput
+  ) => SitteSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -187,11 +187,11 @@ export interface ClientConstructor<T> {
 
 export type RateType = "HOURLY" | "FLAT";
 
-export type Gender = "MALE" | "FEMALE" | "OTHER";
-
 export type AccountType = "TRIAL" | "MONTHLY_PAID";
 
-export type ChildOrderByInput =
+export type Gender = "MALE" | "FEMALE" | "OTHER";
+
+export type SitteOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "firstName_ASC"
@@ -261,166 +261,9 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface ChildUpdateInput {
-  firstName?: String;
-  lastName?: String;
-  birthday?: DateTimeInput;
-  owner?: UserUpdateOneRequiredWithoutChildrenInput;
-  rateAmount?: Float;
-  rateType?: RateType;
-  dates?: DateUpdateManyWithoutOwnerInput;
-  gender?: Gender;
-}
-
-export type ChildWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface ChildUpdateWithoutDatesDataInput {
-  firstName?: String;
-  lastName?: String;
-  birthday?: DateTimeInput;
-  owner?: UserUpdateOneRequiredWithoutChildrenInput;
-  rateAmount?: Float;
-  rateType?: RateType;
-  gender?: Gender;
-}
-
-export interface DateCreateInput {
-  dateObjectId: String;
-  owner: ChildCreateOneWithoutDatesInput;
-  month: Float;
-  day: Float;
-  year: Float;
-  hours: Float;
-  dayOfWeek?: String;
-  notes?: String;
-  paid?: Float;
-  isFixedRate?: Boolean;
-}
-
-export interface ChildUpdateOneRequiredWithoutDatesInput {
-  create?: ChildCreateWithoutDatesInput;
-  update?: ChildUpdateWithoutDatesDataInput;
-  upsert?: ChildUpsertWithoutDatesInput;
-  connect?: ChildWhereUniqueInput;
-}
-
-export interface DateUpdateWithWhereUniqueWithoutOwnerInput {
-  where: DateWhereUniqueInput;
-  data: DateUpdateWithoutOwnerDataInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
-export interface DateSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: DateWhereInput;
-  AND?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
-  OR?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
-  NOT?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
-}
-
-export interface ChildCreateInput {
-  firstName: String;
-  lastName: String;
-  birthday?: DateTimeInput;
-  owner: UserCreateOneWithoutChildrenInput;
-  rateAmount: Float;
-  rateType: RateType;
-  dates?: DateCreateManyWithoutOwnerInput;
-  gender: Gender;
-}
-
-export interface UserUpdateManyMutationInput {
-  email?: String;
-  password?: String;
-  type?: AccountType;
-  ccLast4?: String;
-  stripeId?: String;
-  firstName?: String;
-  lastName?: String;
-}
-
-export interface UserCreateOneWithoutChildrenInput {
-  create?: UserCreateWithoutChildrenInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface ChildUpdateWithoutOwnerDataInput {
-  firstName?: String;
-  lastName?: String;
-  birthday?: DateTimeInput;
-  rateAmount?: Float;
-  rateType?: RateType;
-  dates?: DateUpdateManyWithoutOwnerInput;
-  gender?: Gender;
-}
-
-export interface UserCreateWithoutChildrenInput {
-  email: String;
-  password: String;
-  type?: AccountType;
-  ccLast4?: String;
-  stripeId?: String;
-  firstName?: String;
-  lastName?: String;
-}
-
-export interface ChildUpdateManyWithoutOwnerInput {
-  create?: ChildCreateWithoutOwnerInput[] | ChildCreateWithoutOwnerInput;
-  delete?: ChildWhereUniqueInput[] | ChildWhereUniqueInput;
-  connect?: ChildWhereUniqueInput[] | ChildWhereUniqueInput;
-  disconnect?: ChildWhereUniqueInput[] | ChildWhereUniqueInput;
-  update?:
-    | ChildUpdateWithWhereUniqueWithoutOwnerInput[]
-    | ChildUpdateWithWhereUniqueWithoutOwnerInput;
-  upsert?:
-    | ChildUpsertWithWhereUniqueWithoutOwnerInput[]
-    | ChildUpsertWithWhereUniqueWithoutOwnerInput;
-}
-
-export interface DateCreateManyWithoutOwnerInput {
-  create?: DateCreateWithoutOwnerInput[] | DateCreateWithoutOwnerInput;
-  connect?: DateWhereUniqueInput[] | DateWhereUniqueInput;
-}
-
-export type DateWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface DateCreateWithoutOwnerInput {
-  dateObjectId: String;
-  month: Float;
-  day: Float;
-  year: Float;
-  hours: Float;
-  dayOfWeek?: String;
-  notes?: String;
-  paid?: Float;
-  isFixedRate?: Boolean;
-}
-
-export interface ChildCreateManyWithoutOwnerInput {
-  create?: ChildCreateWithoutOwnerInput[] | ChildCreateWithoutOwnerInput;
-  connect?: ChildWhereUniqueInput[] | ChildWhereUniqueInput;
-}
-
 export interface DateUpdateInput {
   dateObjectId?: String;
-  owner?: ChildUpdateOneRequiredWithoutDatesInput;
+  owner?: SitteUpdateOneRequiredWithoutDatesInput;
   month?: Float;
   day?: Float;
   year?: Float;
@@ -431,158 +274,13 @@ export interface DateUpdateInput {
   isFixedRate?: Boolean;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
+export type DateWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
-  email?: String;
 }>;
 
-export interface UserUpdateOneRequiredWithoutChildrenInput {
-  create?: UserCreateWithoutChildrenInput;
-  update?: UserUpdateWithoutChildrenDataInput;
-  upsert?: UserUpsertWithoutChildrenInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface ChildUpsertWithoutDatesInput {
-  update: ChildUpdateWithoutDatesDataInput;
-  create: ChildCreateWithoutDatesInput;
-}
-
-export interface UserUpdateWithoutChildrenDataInput {
-  email?: String;
-  password?: String;
-  type?: AccountType;
-  ccLast4?: String;
-  stripeId?: String;
-  firstName?: String;
-  lastName?: String;
-}
-
-export interface ChildWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  firstName?: String;
-  firstName_not?: String;
-  firstName_in?: String[] | String;
-  firstName_not_in?: String[] | String;
-  firstName_lt?: String;
-  firstName_lte?: String;
-  firstName_gt?: String;
-  firstName_gte?: String;
-  firstName_contains?: String;
-  firstName_not_contains?: String;
-  firstName_starts_with?: String;
-  firstName_not_starts_with?: String;
-  firstName_ends_with?: String;
-  firstName_not_ends_with?: String;
-  lastName?: String;
-  lastName_not?: String;
-  lastName_in?: String[] | String;
-  lastName_not_in?: String[] | String;
-  lastName_lt?: String;
-  lastName_lte?: String;
-  lastName_gt?: String;
-  lastName_gte?: String;
-  lastName_contains?: String;
-  lastName_not_contains?: String;
-  lastName_starts_with?: String;
-  lastName_not_starts_with?: String;
-  lastName_ends_with?: String;
-  lastName_not_ends_with?: String;
-  birthday?: DateTimeInput;
-  birthday_not?: DateTimeInput;
-  birthday_in?: DateTimeInput[] | DateTimeInput;
-  birthday_not_in?: DateTimeInput[] | DateTimeInput;
-  birthday_lt?: DateTimeInput;
-  birthday_lte?: DateTimeInput;
-  birthday_gt?: DateTimeInput;
-  birthday_gte?: DateTimeInput;
-  owner?: UserWhereInput;
-  rateAmount?: Float;
-  rateAmount_not?: Float;
-  rateAmount_in?: Float[] | Float;
-  rateAmount_not_in?: Float[] | Float;
-  rateAmount_lt?: Float;
-  rateAmount_lte?: Float;
-  rateAmount_gt?: Float;
-  rateAmount_gte?: Float;
-  rateType?: RateType;
-  rateType_not?: RateType;
-  rateType_in?: RateType[] | RateType;
-  rateType_not_in?: RateType[] | RateType;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  dates_every?: DateWhereInput;
-  dates_some?: DateWhereInput;
-  dates_none?: DateWhereInput;
-  gender?: Gender;
-  gender_not?: Gender;
-  gender_in?: Gender[] | Gender;
-  gender_not_in?: Gender[] | Gender;
-  AND?: ChildWhereInput[] | ChildWhereInput;
-  OR?: ChildWhereInput[] | ChildWhereInput;
-  NOT?: ChildWhereInput[] | ChildWhereInput;
-}
-
-export interface UserUpsertWithoutChildrenInput {
-  update: UserUpdateWithoutChildrenDataInput;
-  create: UserCreateWithoutChildrenInput;
-}
-
-export interface ChildUpsertWithWhereUniqueWithoutOwnerInput {
-  where: ChildWhereUniqueInput;
-  update: ChildUpdateWithoutOwnerDataInput;
-  create: ChildCreateWithoutOwnerInput;
-}
-
-export interface DateUpdateManyWithoutOwnerInput {
-  create?: DateCreateWithoutOwnerInput[] | DateCreateWithoutOwnerInput;
-  delete?: DateWhereUniqueInput[] | DateWhereUniqueInput;
-  connect?: DateWhereUniqueInput[] | DateWhereUniqueInput;
-  disconnect?: DateWhereUniqueInput[] | DateWhereUniqueInput;
-  update?:
-    | DateUpdateWithWhereUniqueWithoutOwnerInput[]
-    | DateUpdateWithWhereUniqueWithoutOwnerInput;
-  upsert?:
-    | DateUpsertWithWhereUniqueWithoutOwnerInput[]
-    | DateUpsertWithWhereUniqueWithoutOwnerInput;
-}
-
-export interface UserUpdateInput {
-  email?: String;
-  password?: String;
-  type?: AccountType;
-  ccLast4?: String;
-  stripeId?: String;
-  firstName?: String;
-  lastName?: String;
-  children?: ChildUpdateManyWithoutOwnerInput;
+export interface UserUpsertWithoutSittesInput {
+  update: UserUpdateWithoutSittesDataInput;
+  create: UserCreateWithoutSittesInput;
 }
 
 export interface UserWhereInput {
@@ -704,15 +402,197 @@ export interface UserWhereInput {
   lastName_not_starts_with?: String;
   lastName_ends_with?: String;
   lastName_not_ends_with?: String;
-  children_every?: ChildWhereInput;
-  children_some?: ChildWhereInput;
-  children_none?: ChildWhereInput;
+  sittes_every?: SitteWhereInput;
+  sittes_some?: SitteWhereInput;
+  sittes_none?: SitteWhereInput;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface UserCreateInput {
+export interface SitteUpsertWithoutDatesInput {
+  update: SitteUpdateWithoutDatesDataInput;
+  create: SitteCreateWithoutDatesInput;
+}
+
+export interface SitteWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  firstName?: String;
+  firstName_not?: String;
+  firstName_in?: String[] | String;
+  firstName_not_in?: String[] | String;
+  firstName_lt?: String;
+  firstName_lte?: String;
+  firstName_gt?: String;
+  firstName_gte?: String;
+  firstName_contains?: String;
+  firstName_not_contains?: String;
+  firstName_starts_with?: String;
+  firstName_not_starts_with?: String;
+  firstName_ends_with?: String;
+  firstName_not_ends_with?: String;
+  lastName?: String;
+  lastName_not?: String;
+  lastName_in?: String[] | String;
+  lastName_not_in?: String[] | String;
+  lastName_lt?: String;
+  lastName_lte?: String;
+  lastName_gt?: String;
+  lastName_gte?: String;
+  lastName_contains?: String;
+  lastName_not_contains?: String;
+  lastName_starts_with?: String;
+  lastName_not_starts_with?: String;
+  lastName_ends_with?: String;
+  lastName_not_ends_with?: String;
+  birthday?: DateTimeInput;
+  birthday_not?: DateTimeInput;
+  birthday_in?: DateTimeInput[] | DateTimeInput;
+  birthday_not_in?: DateTimeInput[] | DateTimeInput;
+  birthday_lt?: DateTimeInput;
+  birthday_lte?: DateTimeInput;
+  birthday_gt?: DateTimeInput;
+  birthday_gte?: DateTimeInput;
+  owner?: UserWhereInput;
+  rateAmount?: Float;
+  rateAmount_not?: Float;
+  rateAmount_in?: Float[] | Float;
+  rateAmount_not_in?: Float[] | Float;
+  rateAmount_lt?: Float;
+  rateAmount_lte?: Float;
+  rateAmount_gt?: Float;
+  rateAmount_gte?: Float;
+  rateType?: RateType;
+  rateType_not?: RateType;
+  rateType_in?: RateType[] | RateType;
+  rateType_not_in?: RateType[] | RateType;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  dates_every?: DateWhereInput;
+  dates_some?: DateWhereInput;
+  dates_none?: DateWhereInput;
+  gender?: Gender;
+  gender_not?: Gender;
+  gender_in?: Gender[] | Gender;
+  gender_not_in?: Gender[] | Gender;
+  AND?: SitteWhereInput[] | SitteWhereInput;
+  OR?: SitteWhereInput[] | SitteWhereInput;
+  NOT?: SitteWhereInput[] | SitteWhereInput;
+}
+
+export interface DateCreateManyWithoutOwnerInput {
+  create?: DateCreateWithoutOwnerInput[] | DateCreateWithoutOwnerInput;
+  connect?: DateWhereUniqueInput[] | DateWhereUniqueInput;
+}
+
+export interface DateUpdateManyMutationInput {
+  dateObjectId?: String;
+  month?: Float;
+  day?: Float;
+  year?: Float;
+  hours?: Float;
+  dayOfWeek?: String;
+  notes?: String;
+  paid?: Float;
+  isFixedRate?: Boolean;
+}
+
+export interface DateCreateInput {
+  dateObjectId: String;
+  owner: SitteCreateOneWithoutDatesInput;
+  month: Float;
+  day: Float;
+  year: Float;
+  hours: Float;
+  dayOfWeek?: String;
+  notes?: String;
+  paid?: Float;
+  isFixedRate?: Boolean;
+}
+
+export interface SitteSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: SitteWhereInput;
+  AND?: SitteSubscriptionWhereInput[] | SitteSubscriptionWhereInput;
+  OR?: SitteSubscriptionWhereInput[] | SitteSubscriptionWhereInput;
+  NOT?: SitteSubscriptionWhereInput[] | SitteSubscriptionWhereInput;
+}
+
+export interface SitteCreateOneWithoutDatesInput {
+  create?: SitteCreateWithoutDatesInput;
+  connect?: SitteWhereUniqueInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  email?: String;
+  password?: String;
+  type?: AccountType;
+  ccLast4?: String;
+  stripeId?: String;
+  firstName?: String;
+  lastName?: String;
+}
+
+export interface SitteCreateWithoutDatesInput {
+  firstName: String;
+  lastName: String;
+  birthday?: DateTimeInput;
+  owner: UserCreateOneWithoutSittesInput;
+  rateAmount: Float;
+  rateType: RateType;
+  gender: Gender;
+}
+
+export interface SitteUpdateWithoutOwnerDataInput {
+  firstName?: String;
+  lastName?: String;
+  birthday?: DateTimeInput;
+  rateAmount?: Float;
+  rateType?: RateType;
+  dates?: DateUpdateManyWithoutOwnerInput;
+  gender?: Gender;
+}
+
+export interface UserCreateOneWithoutSittesInput {
+  create?: UserCreateWithoutSittesInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export type SitteWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface UserCreateWithoutSittesInput {
   email: String;
   password: String;
   type?: AccountType;
@@ -720,7 +600,17 @@ export interface UserCreateInput {
   stripeId?: String;
   firstName?: String;
   lastName?: String;
-  children?: ChildCreateManyWithoutOwnerInput;
+}
+
+export interface UserUpdateInput {
+  email?: String;
+  password?: String;
+  type?: AccountType;
+  ccLast4?: String;
+  stripeId?: String;
+  firstName?: String;
+  lastName?: String;
+  sittes?: SitteUpdateManyWithoutOwnerInput;
 }
 
 export interface DateUpdateWithoutOwnerDataInput {
@@ -733,6 +623,93 @@ export interface DateUpdateWithoutOwnerDataInput {
   notes?: String;
   paid?: Float;
   isFixedRate?: Boolean;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  email?: String;
+}>;
+
+export interface SitteUpdateOneRequiredWithoutDatesInput {
+  create?: SitteCreateWithoutDatesInput;
+  update?: SitteUpdateWithoutDatesDataInput;
+  upsert?: SitteUpsertWithoutDatesInput;
+  connect?: SitteWhereUniqueInput;
+}
+
+export interface UserCreateInput {
+  email: String;
+  password: String;
+  type?: AccountType;
+  ccLast4?: String;
+  stripeId?: String;
+  firstName?: String;
+  lastName?: String;
+  sittes?: SitteCreateManyWithoutOwnerInput;
+}
+
+export interface SitteUpdateWithoutDatesDataInput {
+  firstName?: String;
+  lastName?: String;
+  birthday?: DateTimeInput;
+  owner?: UserUpdateOneRequiredWithoutSittesInput;
+  rateAmount?: Float;
+  rateType?: RateType;
+  gender?: Gender;
+}
+
+export interface DateUpsertWithWhereUniqueWithoutOwnerInput {
+  where: DateWhereUniqueInput;
+  update: DateUpdateWithoutOwnerDataInput;
+  create: DateCreateWithoutOwnerInput;
+}
+
+export interface UserUpdateOneRequiredWithoutSittesInput {
+  create?: UserCreateWithoutSittesInput;
+  update?: UserUpdateWithoutSittesDataInput;
+  upsert?: UserUpsertWithoutSittesInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface DateSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: DateWhereInput;
+  AND?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
+  OR?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
+  NOT?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
+}
+
+export interface UserUpdateWithoutSittesDataInput {
+  email?: String;
+  password?: String;
+  type?: AccountType;
+  ccLast4?: String;
+  stripeId?: String;
+  firstName?: String;
+  lastName?: String;
+}
+
+export interface SitteUpdateWithWhereUniqueWithoutOwnerInput {
+  where: SitteWhereUniqueInput;
+  data: SitteUpdateWithoutOwnerDataInput;
+}
+
+export interface DateUpdateWithWhereUniqueWithoutOwnerInput {
+  where: DateWhereUniqueInput;
+  data: DateUpdateWithoutOwnerDataInput;
+}
+
+export interface SitteCreateWithoutOwnerInput {
+  firstName: String;
+  lastName: String;
+  birthday?: DateTimeInput;
+  rateAmount: Float;
+  rateType: RateType;
+  dates?: DateCreateManyWithoutOwnerInput;
+  gender: Gender;
 }
 
 export interface DateWhereInput {
@@ -764,7 +741,7 @@ export interface DateWhereInput {
   dateObjectId_not_starts_with?: String;
   dateObjectId_ends_with?: String;
   dateObjectId_not_ends_with?: String;
-  owner?: ChildWhereInput;
+  owner?: SitteWhereInput;
   month?: Float;
   month_not?: Float;
   month_in?: Float[] | Float;
@@ -840,22 +817,7 @@ export interface DateWhereInput {
   NOT?: DateWhereInput[] | DateWhereInput;
 }
 
-export interface ChildCreateOneWithoutDatesInput {
-  create?: ChildCreateWithoutDatesInput;
-  connect?: ChildWhereUniqueInput;
-}
-
-export interface ChildCreateWithoutDatesInput {
-  firstName: String;
-  lastName: String;
-  birthday?: DateTimeInput;
-  owner: UserCreateOneWithoutChildrenInput;
-  rateAmount: Float;
-  rateType: RateType;
-  gender: Gender;
-}
-
-export interface ChildUpdateManyMutationInput {
+export interface SitteUpdateManyMutationInput {
   firstName?: String;
   lastName?: String;
   birthday?: DateTimeInput;
@@ -864,48 +826,86 @@ export interface ChildUpdateManyMutationInput {
   gender?: Gender;
 }
 
-export interface DateUpsertWithWhereUniqueWithoutOwnerInput {
-  where: DateWhereUniqueInput;
-  update: DateUpdateWithoutOwnerDataInput;
-  create: DateCreateWithoutOwnerInput;
-}
-
-export interface ChildSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ChildWhereInput;
-  AND?: ChildSubscriptionWhereInput[] | ChildSubscriptionWhereInput;
-  OR?: ChildSubscriptionWhereInput[] | ChildSubscriptionWhereInput;
-  NOT?: ChildSubscriptionWhereInput[] | ChildSubscriptionWhereInput;
-}
-
-export interface DateUpdateManyMutationInput {
-  dateObjectId?: String;
-  month?: Float;
-  day?: Float;
-  year?: Float;
-  hours?: Float;
-  dayOfWeek?: String;
-  notes?: String;
-  paid?: Float;
-  isFixedRate?: Boolean;
-}
-
-export interface ChildCreateWithoutOwnerInput {
+export interface SitteCreateInput {
   firstName: String;
   lastName: String;
   birthday?: DateTimeInput;
+  owner: UserCreateOneWithoutSittesInput;
   rateAmount: Float;
   rateType: RateType;
   dates?: DateCreateManyWithoutOwnerInput;
   gender: Gender;
 }
 
-export interface ChildUpdateWithWhereUniqueWithoutOwnerInput {
-  where: ChildWhereUniqueInput;
-  data: ChildUpdateWithoutOwnerDataInput;
+export interface DateCreateWithoutOwnerInput {
+  dateObjectId: String;
+  month: Float;
+  day: Float;
+  year: Float;
+  hours: Float;
+  dayOfWeek?: String;
+  notes?: String;
+  paid?: Float;
+  isFixedRate?: Boolean;
+}
+
+export interface SitteUpdateInput {
+  firstName?: String;
+  lastName?: String;
+  birthday?: DateTimeInput;
+  owner?: UserUpdateOneRequiredWithoutSittesInput;
+  rateAmount?: Float;
+  rateType?: RateType;
+  dates?: DateUpdateManyWithoutOwnerInput;
+  gender?: Gender;
+}
+
+export interface DateUpdateManyWithoutOwnerInput {
+  create?: DateCreateWithoutOwnerInput[] | DateCreateWithoutOwnerInput;
+  delete?: DateWhereUniqueInput[] | DateWhereUniqueInput;
+  connect?: DateWhereUniqueInput[] | DateWhereUniqueInput;
+  disconnect?: DateWhereUniqueInput[] | DateWhereUniqueInput;
+  update?:
+    | DateUpdateWithWhereUniqueWithoutOwnerInput[]
+    | DateUpdateWithWhereUniqueWithoutOwnerInput;
+  upsert?:
+    | DateUpsertWithWhereUniqueWithoutOwnerInput[]
+    | DateUpsertWithWhereUniqueWithoutOwnerInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface SitteCreateManyWithoutOwnerInput {
+  create?: SitteCreateWithoutOwnerInput[] | SitteCreateWithoutOwnerInput;
+  connect?: SitteWhereUniqueInput[] | SitteWhereUniqueInput;
+}
+
+export interface SitteUpdateManyWithoutOwnerInput {
+  create?: SitteCreateWithoutOwnerInput[] | SitteCreateWithoutOwnerInput;
+  delete?: SitteWhereUniqueInput[] | SitteWhereUniqueInput;
+  connect?: SitteWhereUniqueInput[] | SitteWhereUniqueInput;
+  disconnect?: SitteWhereUniqueInput[] | SitteWhereUniqueInput;
+  update?:
+    | SitteUpdateWithWhereUniqueWithoutOwnerInput[]
+    | SitteUpdateWithWhereUniqueWithoutOwnerInput;
+  upsert?:
+    | SitteUpsertWithWhereUniqueWithoutOwnerInput[]
+    | SitteUpsertWithWhereUniqueWithoutOwnerInput;
+}
+
+export interface SitteUpsertWithWhereUniqueWithoutOwnerInput {
+  where: SitteWhereUniqueInput;
+  update: SitteUpdateWithoutOwnerDataInput;
+  create: SitteCreateWithoutOwnerInput;
 }
 
 export interface NodeNode {
@@ -955,453 +955,19 @@ export interface UserPreviousValuesSubscription
   lastName: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateChild {
-  count: Int;
-}
-
-export interface AggregateChildPromise
-  extends Promise<AggregateChild>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateChildSubscription
-  extends Promise<AsyncIterator<AggregateChild>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ChildPreviousValues {
-  id: ID_Output;
-  firstName: String;
-  lastName: String;
-  birthday?: DateTimeOutput;
-  rateAmount: Float;
-  rateType: RateType;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  gender: Gender;
-}
-
-export interface ChildPreviousValuesPromise
-  extends Promise<ChildPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  birthday: () => Promise<DateTimeOutput>;
-  rateAmount: () => Promise<Float>;
-  rateType: () => Promise<RateType>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  gender: () => Promise<Gender>;
-}
-
-export interface ChildPreviousValuesSubscription
-  extends Promise<AsyncIterator<ChildPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  firstName: () => Promise<AsyncIterator<String>>;
-  lastName: () => Promise<AsyncIterator<String>>;
-  birthday: () => Promise<AsyncIterator<DateTimeOutput>>;
-  rateAmount: () => Promise<AsyncIterator<Float>>;
-  rateType: () => Promise<AsyncIterator<RateType>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  gender: () => Promise<AsyncIterator<Gender>>;
-}
-
-export interface ChildEdge {
+export interface SitteEdge {
   cursor: String;
 }
 
-export interface ChildEdgePromise extends Promise<ChildEdge>, Fragmentable {
-  node: <T = ChildPromise>() => T;
+export interface SitteEdgePromise extends Promise<SitteEdge>, Fragmentable {
+  node: <T = SittePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ChildEdgeSubscription
-  extends Promise<AsyncIterator<ChildEdge>>,
+export interface SitteEdgeSubscription
+  extends Promise<AsyncIterator<SitteEdge>>,
     Fragmentable {
-  node: <T = ChildSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ChildConnection {}
-
-export interface ChildConnectionPromise
-  extends Promise<ChildConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ChildEdge>>() => T;
-  aggregate: <T = AggregateChildPromise>() => T;
-}
-
-export interface ChildConnectionSubscription
-  extends Promise<AsyncIterator<ChildConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ChildEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateChildSubscription>() => T;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface UserConnection {}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface Date {
-  id: ID_Output;
-  dateObjectId: String;
-  month: Float;
-  day: Float;
-  year: Float;
-  hours: Float;
-  dayOfWeek?: String;
-  notes?: String;
-  paid?: Float;
-  isFixedRate?: Boolean;
-}
-
-export interface DatePromise extends Promise<Date>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  dateObjectId: () => Promise<String>;
-  owner: <T = ChildPromise>() => T;
-  month: () => Promise<Float>;
-  day: () => Promise<Float>;
-  year: () => Promise<Float>;
-  hours: () => Promise<Float>;
-  dayOfWeek: () => Promise<String>;
-  notes: () => Promise<String>;
-  paid: () => Promise<Float>;
-  isFixedRate: () => Promise<Boolean>;
-}
-
-export interface DateSubscription
-  extends Promise<AsyncIterator<Date>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  dateObjectId: () => Promise<AsyncIterator<String>>;
-  owner: <T = ChildSubscription>() => T;
-  month: () => Promise<AsyncIterator<Float>>;
-  day: () => Promise<AsyncIterator<Float>>;
-  year: () => Promise<AsyncIterator<Float>>;
-  hours: () => Promise<AsyncIterator<Float>>;
-  dayOfWeek: () => Promise<AsyncIterator<String>>;
-  notes: () => Promise<AsyncIterator<String>>;
-  paid: () => Promise<AsyncIterator<Float>>;
-  isFixedRate: () => Promise<AsyncIterator<Boolean>>;
-}
-
-export interface AggregateDate {
-  count: Int;
-}
-
-export interface AggregateDatePromise
-  extends Promise<AggregateDate>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateDateSubscription
-  extends Promise<AsyncIterator<AggregateDate>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface DateConnection {}
-
-export interface DateConnectionPromise
-  extends Promise<DateConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DateEdge>>() => T;
-  aggregate: <T = AggregateDatePromise>() => T;
-}
-
-export interface DateConnectionSubscription
-  extends Promise<AsyncIterator<DateConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DateEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDateSubscription>() => T;
-}
-
-export interface ChildSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface ChildSubscriptionPayloadPromise
-  extends Promise<ChildSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ChildPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ChildPreviousValuesPromise>() => T;
-}
-
-export interface ChildSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ChildSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ChildSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ChildPreviousValuesSubscription>() => T;
-}
-
-export interface Child {
-  id: ID_Output;
-  firstName: String;
-  lastName: String;
-  birthday?: DateTimeOutput;
-  rateAmount: Float;
-  rateType: RateType;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  gender: Gender;
-}
-
-export interface ChildPromise extends Promise<Child>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  birthday: () => Promise<DateTimeOutput>;
-  owner: <T = UserPromise>() => T;
-  rateAmount: () => Promise<Float>;
-  rateType: () => Promise<RateType>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  dates: <T = FragmentableArray<Date>>(
-    args?: {
-      where?: DateWhereInput;
-      orderBy?: DateOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  gender: () => Promise<Gender>;
-}
-
-export interface ChildSubscription
-  extends Promise<AsyncIterator<Child>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  firstName: () => Promise<AsyncIterator<String>>;
-  lastName: () => Promise<AsyncIterator<String>>;
-  birthday: () => Promise<AsyncIterator<DateTimeOutput>>;
-  owner: <T = UserSubscription>() => T;
-  rateAmount: () => Promise<AsyncIterator<Float>>;
-  rateType: () => Promise<AsyncIterator<RateType>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  dates: <T = Promise<AsyncIterator<DateSubscription>>>(
-    args?: {
-      where?: DateWhereInput;
-      orderBy?: DateOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  gender: () => Promise<AsyncIterator<Gender>>;
-}
-
-export interface User {
-  id: ID_Output;
-  email: String;
-  password: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  type: AccountType;
-  ccLast4?: String;
-  stripeId?: String;
-  firstName?: String;
-  lastName?: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  type: () => Promise<AccountType>;
-  ccLast4: () => Promise<String>;
-  stripeId: () => Promise<String>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  children: <T = FragmentableArray<Child>>(
-    args?: {
-      where?: ChildWhereInput;
-      orderBy?: ChildOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  type: () => Promise<AsyncIterator<AccountType>>;
-  ccLast4: () => Promise<AsyncIterator<String>>;
-  stripeId: () => Promise<AsyncIterator<String>>;
-  firstName: () => Promise<AsyncIterator<String>>;
-  lastName: () => Promise<AsyncIterator<String>>;
-  children: <T = Promise<AsyncIterator<ChildSubscription>>>(
-    args?: {
-      where?: ChildWhereInput;
-      orderBy?: ChildOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface DateSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface DateSubscriptionPayloadPromise
-  extends Promise<DateSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = DatePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = DatePreviousValuesPromise>() => T;
-}
-
-export interface DateSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<DateSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = DateSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = DatePreviousValuesSubscription>() => T;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface DateEdge {
-  cursor: String;
-}
-
-export interface DateEdgePromise extends Promise<DateEdge>, Fragmentable {
-  node: <T = DatePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface DateEdgeSubscription
-  extends Promise<AsyncIterator<DateEdge>>,
-    Fragmentable {
-  node: <T = DateSubscription>() => T;
+  node: <T = SitteSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -1448,6 +1014,400 @@ export interface DatePreviousValuesSubscription
   isFixedRate: () => Promise<AsyncIterator<Boolean>>;
 }
 
+export interface SitteConnection {}
+
+export interface SitteConnectionPromise
+  extends Promise<SitteConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SitteEdge>>() => T;
+  aggregate: <T = AggregateSittePromise>() => T;
+}
+
+export interface SitteConnectionSubscription
+  extends Promise<AsyncIterator<SitteConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SitteEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSitteSubscription>() => T;
+}
+
+export interface DateEdge {
+  cursor: String;
+}
+
+export interface DateEdgePromise extends Promise<DateEdge>, Fragmentable {
+  node: <T = DatePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface DateEdgeSubscription
+  extends Promise<AsyncIterator<DateEdge>>,
+    Fragmentable {
+  node: <T = DateSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateDate {
+  count: Int;
+}
+
+export interface AggregateDatePromise
+  extends Promise<AggregateDate>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateDateSubscription
+  extends Promise<AsyncIterator<AggregateDate>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserConnection {}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface AggregateSitte {
+  count: Int;
+}
+
+export interface AggregateSittePromise
+  extends Promise<AggregateSitte>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSitteSubscription
+  extends Promise<AsyncIterator<AggregateSitte>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface DateSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface DateSubscriptionPayloadPromise
+  extends Promise<DateSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = DatePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = DatePreviousValuesPromise>() => T;
+}
+
+export interface DateSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<DateSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = DateSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = DatePreviousValuesSubscription>() => T;
+}
+
+export interface Date {
+  id: ID_Output;
+  dateObjectId: String;
+  month: Float;
+  day: Float;
+  year: Float;
+  hours: Float;
+  dayOfWeek?: String;
+  notes?: String;
+  paid?: Float;
+  isFixedRate?: Boolean;
+}
+
+export interface DatePromise extends Promise<Date>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  dateObjectId: () => Promise<String>;
+  owner: <T = SittePromise>() => T;
+  month: () => Promise<Float>;
+  day: () => Promise<Float>;
+  year: () => Promise<Float>;
+  hours: () => Promise<Float>;
+  dayOfWeek: () => Promise<String>;
+  notes: () => Promise<String>;
+  paid: () => Promise<Float>;
+  isFixedRate: () => Promise<Boolean>;
+}
+
+export interface DateSubscription
+  extends Promise<AsyncIterator<Date>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  dateObjectId: () => Promise<AsyncIterator<String>>;
+  owner: <T = SitteSubscription>() => T;
+  month: () => Promise<AsyncIterator<Float>>;
+  day: () => Promise<AsyncIterator<Float>>;
+  year: () => Promise<AsyncIterator<Float>>;
+  hours: () => Promise<AsyncIterator<Float>>;
+  dayOfWeek: () => Promise<AsyncIterator<String>>;
+  notes: () => Promise<AsyncIterator<String>>;
+  paid: () => Promise<AsyncIterator<Float>>;
+  isFixedRate: () => Promise<AsyncIterator<Boolean>>;
+}
+
+export interface Sitte {
+  id: ID_Output;
+  firstName: String;
+  lastName: String;
+  birthday?: DateTimeOutput;
+  rateAmount: Float;
+  rateType: RateType;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  gender: Gender;
+}
+
+export interface SittePromise extends Promise<Sitte>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  birthday: () => Promise<DateTimeOutput>;
+  owner: <T = UserPromise>() => T;
+  rateAmount: () => Promise<Float>;
+  rateType: () => Promise<RateType>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  dates: <T = FragmentableArray<Date>>(
+    args?: {
+      where?: DateWhereInput;
+      orderBy?: DateOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  gender: () => Promise<Gender>;
+}
+
+export interface SitteSubscription
+  extends Promise<AsyncIterator<Sitte>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  birthday: () => Promise<AsyncIterator<DateTimeOutput>>;
+  owner: <T = UserSubscription>() => T;
+  rateAmount: () => Promise<AsyncIterator<Float>>;
+  rateType: () => Promise<AsyncIterator<RateType>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  dates: <T = Promise<AsyncIterator<DateSubscription>>>(
+    args?: {
+      where?: DateWhereInput;
+      orderBy?: DateOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  gender: () => Promise<AsyncIterator<Gender>>;
+}
+
+export interface DateConnection {}
+
+export interface DateConnectionPromise
+  extends Promise<DateConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DateEdge>>() => T;
+  aggregate: <T = AggregateDatePromise>() => T;
+}
+
+export interface DateConnectionSubscription
+  extends Promise<AsyncIterator<DateConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DateEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDateSubscription>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  email: String;
+  password: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  type: AccountType;
+  ccLast4?: String;
+  stripeId?: String;
+  firstName?: String;
+  lastName?: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  type: () => Promise<AccountType>;
+  ccLast4: () => Promise<String>;
+  stripeId: () => Promise<String>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  sittes: <T = FragmentableArray<Sitte>>(
+    args?: {
+      where?: SitteWhereInput;
+      orderBy?: SitteOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  type: () => Promise<AsyncIterator<AccountType>>;
+  ccLast4: () => Promise<AsyncIterator<String>>;
+  stripeId: () => Promise<AsyncIterator<String>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  sittes: <T = Promise<AsyncIterator<SitteSubscription>>>(
+    args?: {
+      where?: SitteWhereInput;
+      orderBy?: SitteOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface SitteSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface SitteSubscriptionPayloadPromise
+  extends Promise<SitteSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SittePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SittePreviousValuesPromise>() => T;
+}
+
+export interface SitteSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SitteSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SitteSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SittePreviousValuesSubscription>() => T;
+}
+
 export interface UserEdge {
   cursor: String;
 }
@@ -1464,28 +1424,57 @@ export interface UserEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-/*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
-*/
-export type Float = number;
+export interface SittePreviousValues {
+  id: ID_Output;
+  firstName: String;
+  lastName: String;
+  birthday?: DateTimeOutput;
+  rateAmount: Float;
+  rateType: RateType;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  gender: Gender;
+}
 
-export type Long = string;
+export interface SittePreviousValuesPromise
+  extends Promise<SittePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  birthday: () => Promise<DateTimeOutput>;
+  rateAmount: () => Promise<Float>;
+  rateType: () => Promise<RateType>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  gender: () => Promise<Gender>;
+}
 
-/*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number;
-export type ID_Output = string;
+export interface SittePreviousValuesSubscription
+  extends Promise<AsyncIterator<SittePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  birthday: () => Promise<AsyncIterator<DateTimeOutput>>;
+  rateAmount: () => Promise<AsyncIterator<Float>>;
+  rateType: () => Promise<AsyncIterator<RateType>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  gender: () => Promise<AsyncIterator<Gender>>;
+}
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
+export type Long = string;
+
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
 */
-export type String = string;
+export type Float = number;
 
 /*
 DateTime scalar input type, allowing Date
@@ -1496,6 +1485,17 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+*/
+export type ID_Input = string | number;
+export type ID_Output = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
@@ -1512,10 +1512,6 @@ export const models = [
     embedded: false
   },
   {
-    name: "Child",
-    embedded: false
-  },
-  {
     name: "Date",
     embedded: false
   },
@@ -1525,6 +1521,10 @@ export const models = [
   },
   {
     name: "RateType",
+    embedded: false
+  },
+  {
+    name: "Sitte",
     embedded: false
   },
   {
