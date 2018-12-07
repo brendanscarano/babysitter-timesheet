@@ -5,8 +5,7 @@ import moment from 'moment';
 import gql from 'graphql-tag';
 import { Presentation } from './Presentation';
 
-
-export const SIGN_UP_USER = gql`
+const SIGN_UP_USER = gql`
   mutation createSignup(
     $firstName: String!,
     $lastName: String!,
