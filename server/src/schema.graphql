@@ -23,6 +23,6 @@ type User {
   email: String!
   firstName: String
   lastName: String
-  children: [Child!]!
+  sittes: [Sitte!]!
   type: AccountType!
 }
