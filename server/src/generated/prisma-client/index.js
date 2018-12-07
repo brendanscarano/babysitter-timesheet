@@ -35,3 +35,29 @@ exports.Prisma = prisma_lib_1.makePrismaClientClass({
   endpoint: `http://localhost:4466/sitter-sheet/dev`
 });
 exports.prisma = new exports.Prisma();
+var models = [
+  {
+    name: "AccountType",
+    embedded: false
+  },
+  {
+    name: "Child",
+    embedded: false
+  },
+  {
+    name: "Date",
+    embedded: false
+  },
+  {
+    name: "Gender",
+    embedded: false
+  },
+  {
+    name: "RateType",
+    embedded: false
+  },
+  {
+    name: "User",
+    embedded: false
+  }
+];

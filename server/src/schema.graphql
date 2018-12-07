@@ -2,7 +2,8 @@
 scalar DateTime
 
 type Query {
-  me: User
+  me: User,
+  dates: [Date]
 }
 
 type Mutation {

@@ -6,7 +6,6 @@ import { AuthLoginForm } from '../../components/AuthLoginForm';
 import { AuthSignupForm } from '../../components/AuthSignupForm';
 import { StyledPageLayoutWithFixedHeader } from '../../components/StyledPageLayout';
 import { NavBar } from '../../components/NavBar';
-import { theme } from '../../shared/theme';
 
 const LOG_IN = 'LOG_IN';
 const SIGN_UP = 'SIGN_UP';
@@ -32,7 +31,7 @@ const SwitchFormText = styled.p`
 
 class LoginSignupScreen extends React.PureComponent {
   state = {
-    activeForm: SIGN_UP
+    activeForm: SIGN_UP,
   }
 
   setLogInActive = () => this.setState({ activeForm: LOG_IN })
@@ -47,29 +46,35 @@ class LoginSignupScreen extends React.PureComponent {
         <StyledPageLayoutWithFixedHeader>
           <Title>
             {this.state.activeForm === LOG_IN
-              ? "Welcome Back"
-              : "Create an Account"
+              ? 'Welcome Back'
+              : 'Create an Account'
             }
           </Title>
 
           {this.state.activeForm === LOG_IN
-            ? <AuthLoginForm />
-            : <AuthSignupForm />
+            ? <AuthLoginForm history={this.props.history} />
+            : <AuthSignupForm history={this.props.history} />
           }
 
           {this.state.activeForm === LOG_IN
-            ?
+            ? (
               <SwitchFormText
                 onClick={this.setSignUpActive}
               >
-              <i>Don't have an account?</i> <span>Sign up</span>
+                <i>Don&apos;t have an account?</i>
+                {' '}
+                <span>Sign up</span>
               </SwitchFormText>
-            :
+            )
+            : (
               <SwitchFormText
                 onClick={this.setLogInActive}
               >
-              <i>Already have an account?</i> <span>Log in</span>
+                <i>Already have an account?</i>
+                {' '}
+                <span>Log in</span>
               </SwitchFormText>
+            )
           }
         </StyledPageLayoutWithFixedHeader>
       </StyledLayout>
