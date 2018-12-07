@@ -1,10 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { AuthLoginForm } from '../../components/AuthLoginForm';
 import { AuthSignupForm } from '../../components/AuthSignupForm';
 import { StyledPageLayoutWithFixedHeader } from '../../components/StyledPageLayout';
-import { NavBar } from '../../components/NavBar';
 
 const LOG_IN = 'LOG_IN';
 const SIGN_UP = 'SIGN_UP';
@@ -44,8 +42,8 @@ class LoginSignupScreen extends React.PureComponent {
           </Title>
 
           {this.state.activeForm === LOG_IN
-            ? <AuthLoginForm />
-            : <AuthSignupForm />
+            ? <AuthLoginForm history={this.props.history} />
+            : <AuthSignupForm history={this.props.history} />
           }
 
           {this.state.activeForm === LOG_IN
@@ -53,7 +51,7 @@ class LoginSignupScreen extends React.PureComponent {
               <SwitchFormText
                 onClick={this.setSignUpActive}
               >
-                <i>Don't have an account?</i>
+                <i>Don&apos;t have an account?</i>
                 {' '}
                 <span>Sign up</span>
               </SwitchFormText>

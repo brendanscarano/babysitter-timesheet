@@ -17,7 +17,6 @@ const StyledForm = styled(Form)`
 
 const Error = styled.div`
   color: red;
-  margin-bottom: 1rem;
 `;
 
 const ShowPasswordButton = styled.button`
@@ -41,6 +40,7 @@ const Presentation = ({
   toggleShowPassword,
   isSubmitting,
   errors,
+  touched,
 }) => (
   <StyledForm onSubmit={handleSubmit}>
     <FormItem label="First Name">
@@ -49,6 +49,7 @@ const Presentation = ({
         name="firstName"
         onChange={handleChange}
       />
+      {errors.firstName && touched.firstName && <Error>{errors.firstName}</Error>}
     </FormItem>
 
     <FormItem label="Last Name">
@@ -57,6 +58,7 @@ const Presentation = ({
         name="lastName"
         onChange={handleChange}
       />
+      {errors.lastName && touched.lastName && <Error>{errors.lastName}</Error>}
     </FormItem>
 
     <FormItem label="Email">
@@ -65,35 +67,33 @@ const Presentation = ({
         name="email"
         onChange={handleChange}
       />
+      {errors.email && touched.email && <Error>{errors.email}</Error>}
     </FormItem>
 
     <FormItem label="Password">
-      <>
-        <Input
-          type={showPassword ? 'text' : 'password'}
-          name="password"
-          onChange={handleChange}
-          autoComplete="off"
-        />
-        <ShowPasswordButton onClick={toggleShowPassword} type="button">
-          {showPassword ? 'Hide' : 'Show'}
-          {' '}
+      <Input
+        type={showPassword ? 'text' : 'password'}
+        name="password"
+        onChange={handleChange}
+        autoComplete="off"
+      />
+      {errors.password && touched.password && <Error>{errors.password}</Error>}
+      <ShowPasswordButton onClick={toggleShowPassword} type="button">
+        {showPassword ? 'Hide' : 'Show'}
+        {' '}
             Password
-        </ShowPasswordButton>
-      </>
+      </ShowPasswordButton>
     </FormItem>
 
 
     <FormItem label="Confirm Password">
-      <>
-        <Input
-          type={showPassword ? 'text' : 'password'}
-          name="confirmPassword"
-          onChange={handleChange}
-          autoComplete="off"
-        />
-        {errors.confirmPassword && <Error>{errors.confirmPassword}</Error>}
-      </>
+      <Input
+        type={showPassword ? 'text' : 'password'}
+        name="confirmPassword"
+        onChange={handleChange}
+        autoComplete="off"
+      />
+      {errors.confirmPassword && touched.confirmPassword && <Error>{errors.confirmPassword}</Error>}
     </FormItem>
 
     <Button
@@ -116,6 +116,7 @@ Presentation.propTypes = {
   /** From Formik renderComponent props */
   isSubmitting: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
+  touched: PropTypes.object.isRequired,
 };
 
 export { Presentation };
