@@ -24,6 +24,14 @@ const LOGIN_USER = gql`
   }
 `;
 
+export const currentCredentialQuery = gql`
+  query CurrentCredentialQuery {
+    credential {
+      token
+    }
+  }
+`;
+
 const FormItem = Form.Item;
 
 const StyledForm = styled(Form)`
@@ -78,6 +86,20 @@ class AuthLoginForm extends React.PureComponent {
                 variables: {
                   email: values.email,
                   password: values.password,
+                },
+                update: (proxy, args) => {
+                  console.log('proxy', proxy);
+                  console.log('args', args);
+
+                  const credential = {
+                    token: args.data.login.token,
+                    __typename: 'Credential',
+                  };
+
+                  proxy.writeQuery({
+                    query: currentCredentialQuery,
+                    data: { credential },
+                  });
                 },
               });
 
