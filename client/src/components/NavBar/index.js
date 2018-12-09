@@ -71,7 +71,7 @@ const DropdownMenu = ({ history }) => (
 const StyledDropdown = styled(Dropdown)`
   cursor: pointer;
 
-  > svg {
+  svg {
     height: 18px;
     width: 18px;
   }

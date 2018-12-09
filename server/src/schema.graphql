@@ -12,6 +12,7 @@ type Mutation {
   createSubscription(source: String!, ccLast4: String!): User
   cancelSubscription: User
   changeCreditCard(source: String!, ccLast4: String!): User
+  createChild(firstName: String!, lastName: String!, birthday: DateTime, rateAmount: Float!, rateType: RateType!, gender: Gender!, ownerId: String!): Child
 }
 
 type AuthPayload {
@@ -24,4 +25,9 @@ type User {
   email: String!
   firstName: String
   children: [Child!]!
+}
+
+type CreateChildInput {
+  ownderId: String!
+  firstName: String!
 }

@@ -1,11 +1,11 @@
-const { getUserId } = require('../utils')
+const { getUserId } = require('../../utils')
 
 module.exports = {
   createSubscription: async (_, { source, ccLast4 }, ctx) => {
     const id = getUserId(ctx);
 
     const user = await ctx.prisma.user({ id });
-    
+
     if (!user) {
       throw new Error();
     }
