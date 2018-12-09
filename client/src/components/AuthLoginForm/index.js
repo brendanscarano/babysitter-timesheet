@@ -24,14 +24,6 @@ const LOGIN_USER = gql`
   }
 `;
 
-export const currentCredentialQuery = gql`
-  query CurrentCredentialQuery {
-    credential {
-      token
-    }
-  }
-`;
-
 const FormItem = Form.Item;
 
 const StyledForm = styled(Form)`
