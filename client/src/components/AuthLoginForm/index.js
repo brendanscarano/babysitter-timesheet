@@ -87,23 +87,11 @@ class AuthLoginForm extends React.PureComponent {
                   email: values.email,
                   password: values.password,
                 },
-                update: (proxy, args) => {
-                  console.log('proxy', proxy);
-                  console.log('args', args);
-
-                  const credential = {
-                    token: args.data.login.token,
-                    __typename: 'Credential',
-                  };
-
-                  proxy.writeQuery({
-                    query: currentCredentialQuery,
-                    data: { credential },
-                  });
-                },
               });
 
               if (response.data.login.token) {
+                // TODO: Linter complaining about localStorage not being defined even though its working
+                localStorage.setItem('token', response.data.login.token);
                 const dateToRedirect = moment().format('MM-YYYY');
                 this.props.history.push(`/${dateToRedirect}`);
               }

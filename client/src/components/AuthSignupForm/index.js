@@ -84,6 +84,7 @@ class AuthSignupForm extends React.PureComponent {
             });
             // TODO: ON SUCCESS -> SAVE TOKEN SOMEWHERE FOR PERSISTENCE
             if (response.data.signup.token) {
+              localStorage.setItem('token', response.data.signup.token);
               const dateToRedirect = moment().format('MM-YYYY');
               this.props.history.push(`/${dateToRedirect}`);
             }

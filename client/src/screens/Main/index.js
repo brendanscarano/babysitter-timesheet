@@ -124,7 +124,7 @@ class Inner extends React.PureComponent {
   render() {
     return (
       <Layout>
-        <NavBar isUserSignedIn />
+        <NavBar isUserSignedIn history={this.props.history} />
         <Layout>
           <Query query={FETCH_USER_QUERY}>
             {((props) => {

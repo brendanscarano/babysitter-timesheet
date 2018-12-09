@@ -39,9 +39,10 @@ class LoginSignupScreen extends React.PureComponent {
   setSignUpActive = () => this.setState({ activeForm: SIGN_UP })
 
   render() {
+    console.log('this.props', this.props);
     return (
       <StyledLayout>
-        <NavBar isUserSignedIn={false} />
+        <NavBar isUserSignedIn={false} history={this.props.history} />
 
         <StyledPageLayoutWithFixedHeader>
           <Title>
