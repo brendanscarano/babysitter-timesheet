@@ -65,9 +65,7 @@ class AuthLoginForm extends React.PureComponent {
 
   render = () => (
     <Mutation mutation={LOGIN_USER}>
-      {(createLogin, mutationProps) => {
-        console.log('mutationProps', mutationProps);
-        return (
+      {(createLogin, mutationProps) => (
           <Formik
             initialValues={{
               email: '',
@@ -125,8 +123,7 @@ class AuthLoginForm extends React.PureComponent {
               </StyledForm>
             )}
           </Formik>
-        );
-      }}
+        )}
     </Mutation>
   )
 }

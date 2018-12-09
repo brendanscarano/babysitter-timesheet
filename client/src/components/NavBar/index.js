@@ -78,7 +78,6 @@ const StyledDropdown = styled(Dropdown)`
 `;
 
 const NavBar = ({ isUserSignedIn, history }) => {
-  console.log('history', history);
   const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
   return (
     <Wrapper>
