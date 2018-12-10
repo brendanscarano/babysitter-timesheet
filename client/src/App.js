@@ -51,7 +51,7 @@ const loggedInRoutes = isLoggedIn => isLoggedIn && (
     component={RequireSubscription(() => (
       <Switch>
         <Route exact path="/child/:id" component={ChildInfo} />
-        <Route exact path="/new-child" component={NewChild} />
+        <Route exact path="/new-sitte" component={NewChild} />
         <Route exact path="/my-profile" render={MyProfile} />
         <Route exact path="/sheet/:date" component={Main} />
       </Switch>
@@ -66,7 +66,7 @@ const App = () => (
       <Query query={IS_LOGGED_IN}>
         {({ data, loading, error }) => {
           if (loading) {
-            return <Spin />;
+            return 'Loading...';
           }
           if (error) {
             return 'Something went wrong';
@@ -75,7 +75,7 @@ const App = () => (
           return (
             <Layout isLoggedIn={data.isLoggedIn}>
               <Switch>
-                <Route exact path="/" component={() => <div>Welcome to sitter sheet</div>} />
+                <Route exact path="/" component={() => <h1>Welcome to sitter sheet</h1>} />
                 <Route exact path="/register" component={LoginSignup} />
                 {loggedInRoutes(data.isLoggedIn)}
                 <Route component={NotFound} />
