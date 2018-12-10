@@ -83,7 +83,7 @@ Monthly Total:
         {data.length === 0
           ? (
             <NoDataWrapper>
-              <h2>You haven't added any children yet.</h2>
+              <h2>You haven&comma;t added any children yet.</h2>
               <Button type="primary">
                 <Link to="/new-child" type="primary">
                   Add a Child
