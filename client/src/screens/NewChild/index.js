@@ -12,7 +12,7 @@ const NewChild = props => (
   <Mutation mutation={CREATE_NEW_CHILD}>
     {(createChild, mutationProps) => (
       <StyledPageLayout>
-        <h1>New Child</h1>
+        <h1>New Sitte</h1>
         <Formik
           initialValues={{ firstName: '', lastName: '', gender: null }}
           validate={(values) => {
