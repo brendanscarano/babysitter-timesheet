@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import {
   Avatar, Dropdown, Layout, Menu,
 } from 'antd';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FlexRow } from '../Flex';
 import { theme } from '../../shared/theme';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 
 const { Header } = Layout;
 
@@ -81,7 +82,7 @@ const NavBar = ({ isUserSignedIn, history }) => {
   const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
   return (
     <Wrapper>
-      <StyledLink to="/">
+      <StyledLink to={isUserSignedIn ? `/${formatDateForUrl}` : '/'}>
         <span role="img" aria-label="baby">👶</span>
         <h1>Sitter Sheet</h1>
       </StyledLink>

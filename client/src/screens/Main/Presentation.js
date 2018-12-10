@@ -61,7 +61,6 @@ const Presentation = ({
   data,
   onCellsChanged,
 }) => {
-  console.log('data', data);
   const leftPanel = data.map(array => array.slice(0, 4));
   const rightPanel = data.map(array => array.slice(4));
 

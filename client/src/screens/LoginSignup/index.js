@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 import { AuthLoginForm } from '../../components/AuthLoginForm';
 import { AuthSignupForm } from '../../components/AuthSignupForm';
 import { StyledPageLayoutWithFixedHeader } from '../../components/StyledPageLayout';
 import { NavBar } from '../../components/NavBar';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 
 const LOG_IN = 'LOG_IN';
 const SIGN_UP = 'SIGN_UP';
@@ -39,6 +41,11 @@ class LoginSignupScreen extends React.PureComponent {
   setSignUpActive = () => this.setState({ activeForm: SIGN_UP })
 
   render() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return <Redirect to={`/${formatDateForUrl}`} />;
+    }
+
     return (
       <StyledLayout>
         <NavBar isUserSignedIn={false} history={this.props.history} />

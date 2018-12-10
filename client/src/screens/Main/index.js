@@ -7,6 +7,7 @@ import { Mutation, Query } from 'react-apollo';
 import { NavBar } from '../../components/NavBar';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
 import { monthlyTotalAllChildren } from '../../helpers/buildDatasheet/sums';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 import { Presentation } from './Presentation';
@@ -25,7 +26,7 @@ const LoadingWrapper = styled.div`
   }
 `;
 
-const Main = props => console.log('main props', props) || (
+const Main = props => (
   <Mutation
     mutation={CREATE_OR_UPDATE_DATE_MUTATION}
     refetchQueries={() => [
@@ -36,8 +37,7 @@ const Main = props => console.log('main props', props) || (
   >
     {(upsertDate) => {
       if (!props.match.params.date) {
-        const dateToRedirect = moment().format('MM-YYYY');
-        return <Redirect to={`/${dateToRedirect}`} />;
+        return <Redirect to={`/${formatDateForUrl}`} />;
       }
 
       const [month, year] = props.match.params.date.split('-');
@@ -128,7 +128,6 @@ class Inner extends React.PureComponent {
         <Layout>
           <Query query={FETCH_USER_QUERY}>
             {((props) => {
-              console.log('props', props);
               if (props.loading) {
                 return (
                   <LoadingWrapper>

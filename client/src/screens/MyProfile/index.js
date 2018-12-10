@@ -10,6 +10,7 @@ import { buildYearlyTotals } from './buildYearlyTotals';
 import { theme } from '../../shared/theme';
 import { formatCurr } from '../../helpers/formatCurr';
 import SubscribeUser from '../../components/SubscribeUser/index';
+import { StyledPageLayoutWithFixedHeader } from '../../components/StyledPageLayout';
 
 const Wrapper = styled.div`
   padding: 2rem 3rem;
@@ -55,7 +56,7 @@ const Graph = ({ loading, error, data }) => {
 const MyProfile = () => (
   <Layout>
     <NavBar isUserSignedIn />
-    <Layout>
+    <StyledPageLayoutWithFixedHeader>
       <SubscribeUser />
       <Query query={FETCH_USER_QUERY}>
         {((props) => {
@@ -84,7 +85,7 @@ const MyProfile = () => (
           );
         })}
       </Query>
-    </Layout>
+    </StyledPageLayoutWithFixedHeader>
   </Layout>
 );
 

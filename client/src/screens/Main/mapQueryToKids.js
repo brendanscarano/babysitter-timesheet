@@ -34,7 +34,7 @@ export const mapQueryToKids = children => children.map(child => ({
     rateType: child.rateType,
     gender: child.gender,
   },
-  dates: child.dates.reduce((acc, curr) => ({
+  dates: child.dates ? child.dates.reduce((acc, curr) => ({
     ...acc,
     [curr.dateObjectId]: {
       dateId: curr.id,
@@ -44,5 +44,5 @@ export const mapQueryToKids = children => children.map(child => ({
       fixedRateChecked: curr.fixedRateChecked,
       notes: '',
     },
-  }), {}),
+  }), {}) : [],
 }));

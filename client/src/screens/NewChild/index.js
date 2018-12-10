@@ -6,6 +6,7 @@ import { NavBar } from '../../components/NavBar';
 import { StyledPageLayoutWithFixedHeader } from '../../components/StyledPageLayout';
 import { NewChildForm } from '../../components/NewChildForm';
 import { CREATE_NEW_CHILD } from './graphql';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 
 /**
  * @param {obj} props - history, location, match
@@ -43,7 +44,6 @@ const NewChild = props => (
               return errors;
             }}
             onSubmit={async (values, actions) => {
-              console.log('values', values);
               const response = await createChild({
                 variables: {
                   firstName: values.firstName,
@@ -54,10 +54,9 @@ const NewChild = props => (
                 },
               });
 
-              console.log('response', response);
               if (response.data.createChild) {
                 // TODO: PASS PROP TO ROUTE TO DISPLAY MESSAGE THAT CHILD WAS CREATED
-                props.history.push('/');
+                props.history.push(`/${formatDateForUrl}`);
               }
             }}
           >
