@@ -9,10 +9,6 @@ var models = [
     embedded: false
   },
   {
-    name: "Child",
-    embedded: false
-  },
-  {
     name: "Date",
     embedded: false
   },
@@ -22,6 +18,10 @@ var models = [
   },
   {
     name: "RateType",
+    embedded: false
+  },
+  {
+    name: "Sitte",
     embedded: false
   },
   {
@@ -32,32 +32,7 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `http://localhost:4466/sitter-sheet/dev`
+  endpoint: `http://localhost:4466/sitter-sheet/dev`,
+  secret: `${process.env["PRISMA_MANAGEMENT_API_SECRET"]}`
 });
 exports.prisma = new exports.Prisma();
-var models = [
-  {
-    name: "AccountType",
-    embedded: false
-  },
-  {
-    name: "Child",
-    embedded: false
-  },
-  {
-    name: "Date",
-    embedded: false
-  },
-  {
-    name: "Gender",
-    embedded: false
-  },
-  {
-    name: "RateType",
-    embedded: false
-  },
-  {
-    name: "User",
-    embedded: false
-  }
-];

@@ -66,64 +66,66 @@ class AuthLoginForm extends React.PureComponent {
   render = () => (
     <Mutation mutation={LOGIN_USER}>
       {(createLogin, mutationProps) => (
-          <Formik
-            initialValues={{
-              email: '',
-              password: '',
-            }}
-            onSubmit={async (values, actions) => {
-              const response = await createLogin({
-                variables: {
-                  email: values.email,
-                  password: values.password,
-                },
-              });
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          onSubmit={async (values, actions) => {
+            const response = await createLogin({
+              variables: {
+                email: values.email,
+                password: values.password,
+              },
+            });
 
-              if (response.data.login.token) {
-                // TODO: Linter complaining about localStorage not being defined even though its working
-                localStorage.setItem('token', response.data.login.token);
-                const dateToRedirect = moment().format('MM-YYYY');
-                this.props.history.push(`/${dateToRedirect}`);
-              }
-            }}
-          >
-            {props => (
-              <StyledForm onSubmit={props.handleSubmit}>
-                <FormItem label="Email">
-                  <Input
-                    type="text"
-                    name="email"
-                    onChange={props.handleChange}
-                  />
-                </FormItem>
+            if (response.data.login.token) {
+              // TODO: Linter complaining about localStorage not being defined even though its working
+              await window.localStorage.setItem('token', response.data.login.token);
+              mutationProps.client.writeData({ data: { isLoggedIn: true } });
 
-                <FormItem label="Password">
-                  <Input
-                    type={this.state.showPassword ? 'text' : 'password'}
-                    name="password"
-                    onChange={props.handleChange}
-                  />
-                  <ShowPasswordButton onClick={this.toggleShowPassword} type="button">
-                    {this.state.showPassword ? 'Hide' : 'Show'}
-                    {' '}
+              const dateToRedirect = moment().format('MM-YYYY');
+              this.props.history.push(`/sheet/${dateToRedirect}`);
+            }
+          }}
+        >
+          {props => (
+            <StyledForm onSubmit={props.handleSubmit}>
+              <FormItem label="Email">
+                <Input
+                  type="text"
+                  name="email"
+                  onChange={props.handleChange}
+                />
+              </FormItem>
+
+              <FormItem label="Password">
+                <Input
+                  type={this.state.showPassword ? 'text' : 'password'}
+                  name="password"
+                  onChange={props.handleChange}
+                />
+                <ShowPasswordButton onClick={this.toggleShowPassword} type="button">
+                  {this.state.showPassword ? 'Hide' : 'Show'}
+                  {' '}
                     Password
-                  </ShowPasswordButton>
-                </FormItem>
+                </ShowPasswordButton>
+              </FormItem>
 
-                {mutationProps.error && mutationProps.error.graphQLErrors.map(error => (
-                  <Error key={error.message}>{error.message}</Error>
-                ))}
+              {mutationProps.error && mutationProps.error.graphQLErrors.map(error => (
+                <Error key={error.message}>{error.message}</Error>
+              ))}
 
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                >
+              <Button
+                htmlType="submit"
+                type="primary"
+              >
                   Log In
-                </Button>
-              </StyledForm>
-            )}
-          </Formik>
-        )}
+              </Button>
+            </StyledForm>
+          )}
+        </Formik>
+      )}
     </Mutation>
   )
 }

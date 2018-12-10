@@ -2,8 +2,9 @@
 scalar DateTime
 
 type Query {
-  me: User,
+  me: User!
   dates: [Date]
+  sittes: [Sitte]
 }
 
 type Mutation {
@@ -23,5 +24,7 @@ type User {
   id: ID!
   email: String!
   firstName: String
-  children: [Child!]!
+  lastName: String
+  sittes: [Sitte!]!
+  type: AccountType!
 }
