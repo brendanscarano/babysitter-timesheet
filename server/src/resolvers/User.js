@@ -1,6 +1,6 @@
 const User = {
-  sittes: (parent, args, context) => {
-    return context.prisma.user({ id: parent.id }).sittes()
+  sittes: (parent, args, ctx) => {
+    return ctx.prisma.user({ id: parent.id }).sittes()
   }
 }
 
