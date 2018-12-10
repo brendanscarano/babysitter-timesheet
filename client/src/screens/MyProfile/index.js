@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import SubscribeUser from '../../components/SubscribeUser/index';
 import { FlexRow } from '../../components/Flex';
+import { Payment } from '../../components/Payment';
 import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
 
 const TitleBar = styled(FlexRow)`
@@ -29,7 +29,7 @@ const MyProfile = () => (
             <h2>{`Hello, ${me.firstName} ${me.lastName}`}</h2>
           </TitleBar>
           <p>{`You are currently on a ${me.type} account`}</p>
-          <SubscribeUser />
+          <Payment user={me} />
         </Fragment>
       );
     }}
