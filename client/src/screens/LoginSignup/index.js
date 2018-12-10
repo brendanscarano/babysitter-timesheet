@@ -32,42 +32,40 @@ class LoginSignupScreen extends React.PureComponent {
 
   render() {
     return (
-      <div>
-        <StyledPageLayoutWithFixedHeader>
-          <Title>
-            {this.state.activeForm === LOG_IN
-              ? 'Welcome Back'
-              : 'Create an Account'
-            }
-          </Title>
-
+      <StyledPageLayoutWithFixedHeader>
+        <Title>
           {this.state.activeForm === LOG_IN
-            ? <AuthLoginForm history={this.props.history} />
-            : <AuthSignupForm history={this.props.history} />
+            ? 'Welcome Back'
+            : 'Create an Account'
           }
+        </Title>
 
-          {this.state.activeForm === LOG_IN
-            ? (
-              <SwitchFormText
-                onClick={this.setSignUpActive}
-              >
-                <i>Don&apos;t have an account?</i>
-                {' '}
-                <span>Sign up</span>
-              </SwitchFormText>
-            )
-            : (
-              <SwitchFormText
-                onClick={this.setLogInActive}
-              >
-                <i>Already have an account?</i>
-                {' '}
-                <span>Log in</span>
-              </SwitchFormText>
-            )
-          }
-        </StyledPageLayoutWithFixedHeader>
-      </div>
+        {this.state.activeForm === LOG_IN
+          ? <AuthLoginForm history={this.props.history} />
+          : <AuthSignupForm history={this.props.history} />
+        }
+
+        {this.state.activeForm === LOG_IN
+          ? (
+            <SwitchFormText
+              onClick={this.setSignUpActive}
+            >
+              <i>Don&apos;t have an account?</i>
+              {' '}
+              <span>Sign up</span>
+            </SwitchFormText>
+          )
+          : (
+            <SwitchFormText
+              onClick={this.setLogInActive}
+            >
+              <i>Already have an account?</i>
+              {' '}
+              <span>Log in</span>
+            </SwitchFormText>
+          )
+        }
+      </StyledPageLayoutWithFixedHeader>
     );
   }
 }
