@@ -86,7 +86,7 @@ class AuthSignupForm extends React.PureComponent {
             if (response.data.signup.token) {
               localStorage.setItem('token', response.data.signup.token);
               const dateToRedirect = moment().format('MM-YYYY');
-              this.props.history.push(`/${dateToRedirect}`);
+              this.props.history.push(`/sheet/${dateToRedirect}`);
             }
           }}
         >
