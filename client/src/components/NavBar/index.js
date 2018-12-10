@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {
-  Avatar, Dropdown, Layout, Menu,
-} from 'antd';
+import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
-import { ApolloConsumer } from 'react-apollo';
-import { FlexRow } from '../Flex';
+import { ApolloConsumer, Query } from 'react-apollo';
+import {
+  Avatar, Dropdown, Menu, Button,
+} from 'antd';
 
-const { Header } = Layout;
+import { FlexRow } from '../Flex';
+import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
 
 const StyledLink = styled(Link)`
   display: flex;
@@ -23,7 +24,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const LogOutButton = styled.button`
+const LogOutButton = styled(Button)`
   background-color: transparent;
   border: none;
 `;
@@ -31,14 +32,13 @@ const LogOutButton = styled.button`
 const DropdownMenu = ({ history }) => (
   <Menu>
     <Menu.Item>
-      <Link to="/my-profile">
-        My Profile
-      </Link>
+      <Link to={`/sheet/${moment().format('MM-YYYY')}`}>Sheets</Link>
     </Menu.Item>
     <Menu.Item>
-      <Link to="/new-child">
-        New Child
-      </Link>
+      <Link to="/new-sitte">New Sitte</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to="/my-profile">Profile</Link>
     </Menu.Item>
     <Menu.Item>
       <ApolloConsumer>
@@ -50,7 +50,7 @@ const DropdownMenu = ({ history }) => (
               client.resetStore();
               return history.push('/');
             }}
-            type="button"
+            type="danger"
           >
             Log Out
           </LogOutButton>
@@ -77,7 +77,7 @@ const Wrapper = styled.div`
   background: whitesmoke;
 `;
 
-const NavBar = withRouter(({ isLoggedIn, history }) => {
+const NavBar = withRouter(({ isLoggedIn, user, history }) => {
   const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
   return (
     <Wrapper>
@@ -88,11 +88,21 @@ const NavBar = withRouter(({ isLoggedIn, history }) => {
       {
         isLoggedIn
           ? (
-            <FlexRow>
-              <StyledDropdown overlay={DropdownMenuWithHistory()}>
-                <Avatar icon="user" />
-              </StyledDropdown>
-            </FlexRow>
+            <Query query={ME_QUERY}>
+              {({ data, loading }) => {
+                if (loading) {
+                  return null;
+                }
+                console.log(data);
+                return (
+                  <FlexRow>
+                    <StyledDropdown overlay={DropdownMenuWithHistory()}>
+                      <Avatar src={`https://api.adorable.io/avatars/70/${data.me.email}.png`} />
+                    </StyledDropdown>
+                  </FlexRow>
+                );
+              }}
+            </Query>
           )
           : <StyledLink to="/register">Signup</StyledLink>
       }
