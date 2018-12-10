@@ -4,7 +4,8 @@ import { Layout as BaseLayout } from 'antd';
 import { NavBar } from '../NavBar';
 import { theme } from '../../shared/theme';
 
-const Wrapper = styled(BaseLayout)`
+const Wrapper = styled.div`
+  background-color: #eee;
   height: 100vh;
   overflow: scroll;
   > .ant-layout-header {
@@ -26,9 +27,9 @@ const Content = styled.div`
   padding: calc(${theme.heights.navBar}px + 1rem);
 `;
 
-const Layout = ({ children, isUserSignedIn }) => (
+const Layout = ({ children, isLoggedIn }) => (
   <Wrapper>
-    <NavBar isUserSignedIn={isUserSignedIn} />
+    <NavBar isLoggedIn={isLoggedIn} />
     <Content>
       {children}
     </Content>
