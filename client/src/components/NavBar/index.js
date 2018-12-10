@@ -14,10 +14,11 @@ import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
 const StyledLink = styled(Link)`
   display: flex;
   align-items: flex-start;
-  height: 100%;
   > span, h1 {
     font-family: Lobster;
     font-size: 24px;
+    padding: 0;
+    margin: 0;
   }
   > span {
     margin-right: .25rem;
@@ -73,7 +74,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 1rem 3rem;
   background: whitesmoke;
 `;
 
