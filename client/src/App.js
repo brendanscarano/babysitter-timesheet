@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ApolloProvider, Query } from 'react-apollo';
-import { Spin } from 'antd';
 import gql from 'graphql-tag';
 import ApolloClient from 'apollo-boost';
 import MyProfile from './screens/MyProfile';

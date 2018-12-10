@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Layout as BaseLayout } from 'antd';
 import { NavBar } from '../NavBar';
 import { theme } from '../../shared/theme';
 
