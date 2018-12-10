@@ -23,7 +23,7 @@ const SwitchFormText = styled.p`
 
 class LoginSignupScreen extends React.PureComponent {
   state = {
-    activeForm: SIGN_UP,
+    activeForm: LOG_IN,
   }
 
   setLogInActive = () => this.setState({ activeForm: LOG_IN })
@@ -33,12 +33,18 @@ class LoginSignupScreen extends React.PureComponent {
   render() {
     return (
       <StyledPageLayoutWithFixedHeader>
+
         <Title>
           {this.state.activeForm === LOG_IN
             ? 'Welcome Back'
             : 'Create an Account'
           }
         </Title>
+
+        {this.state.activeForm === LOG_IN
+          ? 'Welcome Back'
+          : 'Create an Account'
+        }
 
         {this.state.activeForm === LOG_IN
           ? <AuthLoginForm history={this.props.history} />

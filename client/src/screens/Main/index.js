@@ -122,7 +122,8 @@ class Inner extends React.PureComponent {
 
   render() {
     return (
-      <div>
+      <Layout>
+        <NavBar isUserSignedIn history={this.props.history} />
         <Query query={FETCH_USER_QUERY}>
           {((props) => {
             if (props.loading) {
@@ -136,8 +137,8 @@ class Inner extends React.PureComponent {
 
             if (
               !props.data
-                    || !props.data.user
-                    || !props.data.user.children) {
+              || !props.data.user
+              || !props.data.user.children) {
               return <div>Something went wrong</div>;
             }
 
@@ -149,17 +150,39 @@ class Inner extends React.PureComponent {
             const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
 
             return (
-              <Presentation
-                onCalendarMonthClick={this.onCalendarMonthClick}
-                monthToView={this.state.monthToView}
-                monthlyTotal={monthlyTotal}
-                data={data}
-                onCellsChanged={this.onCellsChanged}
-              />
+              <LoadingWrapper>
+                <Spin size="large" />
+                <span>Loading...</span>
+              </LoadingWrapper>
             );
-          })}
+          }
+
+            if (
+            !props.data
+                  || !props.data.user
+                    || !props.data.user.children) {
+              return <div>Something went wrong</div>;
+        }
+
+        const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
+        const monthlyTotal = monthlyTotalAllChildren(props.data.user.children, parseInt(month), parseInt(year));
+
+        const children = mapQueryToKids(props.data.user.children);
+
+        const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
+
+        return (
+              <Presentation
+            onCalendarMonthClick={this.onCalendarMonthClick}
+            monthToView={this.state.monthToView}
+            monthlyTotal={monthlyTotal}
+            data={data}
+            onCellsChanged={this.onCellsChanged}
+          />
+          );
+        })}
         </Query>
-      </div>
+      </Layout>
     );
   }
 }

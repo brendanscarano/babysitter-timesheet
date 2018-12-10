@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 import MyProfile from './screens/MyProfile';
 import NewChild from './screens/NewChild';
 import LoginSignup from './screens/LoginSignup';
 import ChildInfo from './screens/ChildInfo';
+import PrivateRoute from './components/PrivateRoute';
 import Main from './screens/Main';
 import { Layout } from './components/Layout';
 import { RequireSubscription } from './hocs/RequireSubscription';
@@ -19,10 +19,9 @@ const App = () => (
   <ApolloProvider client={client}>
     <Router>
       <Switch>
+        {/** Add user state here  */}
         <Layout isUserSignedIn>
-          {/** Add user state here  */}
           <Route exact path="/register" component={LoginSignup} />
-          <Route exact path="/welcome" render={() => <div>Hello world</div>} />
           <Route
             path="/"
             component={RequireSubscription(() => (

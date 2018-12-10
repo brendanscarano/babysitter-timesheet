@@ -20,8 +20,6 @@ export default () => (
           const response = await mutate({
             variables: { source: token.id, ccLast4: token.card.last4 },
           });
-
-          console.log(response);
         }}
         stripeKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY}
       />
