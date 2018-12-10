@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import {
   Avatar, Dropdown, Layout, Menu,
 } from 'antd';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { ApolloConsumer } from 'react-apollo';
 import { FlexRow } from '../Flex';
 
 const { Header } = Layout;
@@ -40,15 +41,21 @@ const DropdownMenu = ({ history }) => (
       </Link>
     </Menu.Item>
     <Menu.Item>
-      <LogOutButton
-        onClick={async () => {
-          await localStorage.removeItem('token');
-          return history.push('/');
-        }}
-        type="button"
-      >
-        Log Out
-      </LogOutButton>
+      <ApolloConsumer>
+        {client => (
+          <LogOutButton
+            onClick={async () => {
+              await window.localStorage.removeItem('token');
+              client.writeData({ data: { isLoggedIn: false } });
+              client.resetStore();
+              return history.push('/');
+            }}
+            type="button"
+          >
+            Log Out
+          </LogOutButton>
+        )}
+      </ApolloConsumer>
     </Menu.Item>
   </Menu>
 );
@@ -62,7 +69,15 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-const NavBar = ({ isUserSignedIn, history }) => {
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: whitesmoke;
+`;
+
+const NavBar = withRouter(({ isLoggedIn, history }) => {
   const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
   return (
     <Wrapper>
@@ -70,19 +85,23 @@ const NavBar = ({ isUserSignedIn, history }) => {
         <span role="img" aria-label="baby">👶</span>
         <h1>Sitter Sheet</h1>
       </StyledLink>
-      {isUserSignedIn && (
-        <FlexRow>
-          <StyledDropdown overlay={DropdownMenuWithHistory()}>
-            <Avatar icon="user" />
-          </StyledDropdown>
-        </FlexRow>
-      )}
+      {
+        isLoggedIn
+          ? (
+            <FlexRow>
+              <StyledDropdown overlay={DropdownMenuWithHistory()}>
+                <Avatar icon="user" />
+              </StyledDropdown>
+            </FlexRow>
+          )
+          : <StyledLink to="/register">Signup</StyledLink>
+      }
     </Wrapper>
   );
-};
+});
 
 NavBar.propTypes = {
-  isUserSignedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 
 export { NavBar };
