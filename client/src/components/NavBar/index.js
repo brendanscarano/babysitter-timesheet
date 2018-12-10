@@ -93,7 +93,6 @@ const NavBar = withRouter(({ isLoggedIn, user, history }) => {
                 if (loading) {
                   return null;
                 }
-                console.log(data);
                 return (
                   <FlexRow>
                     <StyledDropdown overlay={DropdownMenuWithHistory()}>
