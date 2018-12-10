@@ -7,6 +7,16 @@ const Query = {
   },
   dates: (parent, args, context) => {
     return ['Yes', 'No', 'Maybe so']
+  },
+  sittes: (parent, args, context) => {
+    const id = getUserId(context)
+    return context.prisma.sittes({
+      where: {
+        owner: {
+          id
+        }
+      }
+    })
   }
 }
 
