@@ -1,9 +1,12 @@
+const { getUserId } = require('../../utils')
+
 module.exports = {
-    createChild: async (parent, { firstName, lastName, rateAmount, rateType, gender, ownerId }, context) => {
-        console.log('firstName, lastName, rateAmount, rateType, gender, ownerId', firstName, lastName, rateAmount, rateType, gender, ownerId)
+    createChild: async (_, { firstName, lastName, rateAmount, rateType, gender }, context) => {
+        const userId = getUserId(context)
+
         // TODO: Handle creating children for owners who aren't created yet --- is this possible?
         try {
-            const child = await context.prisma.createChild({
+            return await context.prisma.createChild({
                 firstName,
                 lastName,
                 rateAmount,
@@ -11,13 +14,10 @@ module.exports = {
                 gender,
                 owner: {
                     connect: {
-                        id: ownerId
+                        id: userId
                     }
                 },
             })
-            console.log('child', child)
-
-            return child
         } catch (err) {
             throw new Error(err.message);
         }

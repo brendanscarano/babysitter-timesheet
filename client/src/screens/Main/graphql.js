@@ -2,11 +2,8 @@ import gql from 'graphql-tag';
 
 export const FETCH_USER_QUERY = gql`
     query {
-	    user(where: {
-            id: "cjntestdudeug0a54rjlfk74x"
-        }) {
+        me {
             firstName
-            lastName
             children {
                 id
                 firstName
@@ -21,7 +18,7 @@ export const FETCH_USER_QUERY = gql`
                     hours
                     paid
                     dateObjectId
-                    fixedRateChecked
+                    isFixedRate
                 }
             }
         }

@@ -8,20 +8,14 @@ export const CREATE_NEW_CHILD = gql`
     $gender: Gender!,
     $rateAmount: Float!,
     $rateType: RateType!,
-    $ownerId: ID!,
 ) {
-  createChild(data: {
+  createChild(
     firstName: $firstName,
     lastName: $lastName,
     gender: $gender,
     rateAmount: $rateAmount,
     rateType: $rateType,
-    owner: {
-      connect: {
-        id: $ownerId
-      }
-    }
-  }) {
+  ) {
     firstName
     lastName
   }

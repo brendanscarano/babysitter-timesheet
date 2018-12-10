@@ -128,6 +128,7 @@ class Inner extends React.PureComponent {
         <Layout>
           <Query query={FETCH_USER_QUERY}>
             {((props) => {
+              console.log('props', props);
               if (props.loading) {
                 return (
                   <LoadingWrapper>
@@ -139,17 +140,21 @@ class Inner extends React.PureComponent {
 
               if (
                 !props.data
-                    || !props.data.user
-                    || !props.data.user.children) {
+                    || !props.data.me
+                    || !props.data.me.children) {
                 return <div>Something went wrong</div>;
               }
 
               const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
-              const monthlyTotal = monthlyTotalAllChildren(props.data.user.children, parseInt(month), parseInt(year));
+              const monthlyTotal = monthlyTotalAllChildren(props.data.me.children, parseInt(month), parseInt(year));
 
-              const children = mapQueryToKids(props.data.user.children);
+              const children = props.data.me.children.length > 0
+                ? mapQueryToKids(props.data.me.children)
+                : [];
 
-              const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
+              const data = props.data.me.children.length > 0
+                ? buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange)
+                : [];
 
               return (
                 <Presentation

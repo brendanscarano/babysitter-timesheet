@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { Mutation } from 'react-apollo';
 import { Layout } from 'antd';
 import { NavBar } from '../../components/NavBar';
-import { StyledPageLayout } from '../../components/StyledPageLayout';
+import { StyledPageLayoutWithFixedHeader } from '../../components/StyledPageLayout';
 import { NewChildForm } from '../../components/NewChildForm';
 import { CREATE_NEW_CHILD } from './graphql';
 
@@ -15,7 +15,7 @@ const NewChild = props => (
     {(createChild, mutationProps) => (
       <Layout>
         <NavBar isUserSignedIn />
-        <StyledPageLayout>
+        <StyledPageLayoutWithFixedHeader>
           <h1>New Child</h1>
           <Formik
             initialValues={{ firstName: '', lastName: '', gender: null }}
@@ -43,6 +43,7 @@ const NewChild = props => (
               return errors;
             }}
             onSubmit={async (values, actions) => {
+              console.log('values', values);
               const response = await createChild({
                 variables: {
                   firstName: values.firstName,
@@ -50,11 +51,10 @@ const NewChild = props => (
                   gender: values.gender,
                   rateAmount: values.rateAmount,
                   rateType: values.rateType,
-                  /** TODO: Dont hardcode this */
-                  ownerId: 'cjntestdudeug0a54rjlfk74x',
                 },
               });
 
+              console.log('response', response);
               if (response.data.createChild) {
                 // TODO: PASS PROP TO ROUTE TO DISPLAY MESSAGE THAT CHILD WAS CREATED
                 props.history.push('/');
@@ -75,7 +75,7 @@ const NewChild = props => (
               />
             )}
           </Formik>
-        </StyledPageLayout>
+        </StyledPageLayoutWithFixedHeader>
       </Layout>
     )}
   </Mutation>

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Layout } from 'antd';
+import { Button, Layout } from 'antd';
+import { Link } from 'react-router-dom';
 import { DataSheet } from '../../components/DataSheet';
 import { MonthPicker } from '../../components/MonthPicker';
 import { FlexRow } from '../../components/Flex';
@@ -46,6 +47,13 @@ const SheetsWrapper = styled(FlexRow)`
   padding: 0 1rem;
 `;
 
+const NoDataWrapper = styled(SheetsWrapper)`
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0 3rem 0;
+`;
+
 const Presentation = ({
   onCalendarMonthClick,
   monthToView,
@@ -53,6 +61,7 @@ const Presentation = ({
   data,
   onCellsChanged,
 }) => {
+  console.log('data', data);
   const leftPanel = data.map(array => array.slice(0, 4));
   const rightPanel = data.map(array => array.slice(4));
 
@@ -72,19 +81,33 @@ Monthly Total:
             </h3>
           </DateWrapper>
         </TopBar>
-        <SheetsWrapper>
-          <DataSheet
-            data={leftPanel}
-            onCellsChanged={onCellsChanged}
-            topBarHeight={TOP_BAR_HEIGHT}
-          />
+        {data.length === 0
+          ? (
+            <NoDataWrapper>
+              <h2>You haven't added any children yet.</h2>
+              <Button type="primary">
+                <Link to="/new-child" type="primary">
+                  Add a Child
+                </Link>
+              </Button>
+            </NoDataWrapper>
+          )
+          : (
+            <SheetsWrapper>
+              <DataSheet
+                data={leftPanel}
+                onCellsChanged={onCellsChanged}
+                topBarHeight={TOP_BAR_HEIGHT}
+              />
 
-          <DataSheet
-            data={rightPanel}
-            onCellsChanged={onCellsChanged}
-            topBarHeight={TOP_BAR_HEIGHT}
-          />
-        </SheetsWrapper>
+              <DataSheet
+                data={rightPanel}
+                onCellsChanged={onCellsChanged}
+                topBarHeight={TOP_BAR_HEIGHT}
+              />
+            </SheetsWrapper>
+          )
+        }
       </StyledContent>
     </Layout>
   );
