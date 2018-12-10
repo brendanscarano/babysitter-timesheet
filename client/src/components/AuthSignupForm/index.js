@@ -5,8 +5,7 @@ import moment from 'moment';
 import gql from 'graphql-tag';
 import { Presentation } from './Presentation';
 
-
-export const SIGN_UP_USER = gql`
+const SIGN_UP_USER = gql`
   mutation createSignup(
     $firstName: String!,
     $lastName: String!,
@@ -85,6 +84,7 @@ class AuthSignupForm extends React.PureComponent {
             });
             // TODO: ON SUCCESS -> SAVE TOKEN SOMEWHERE FOR PERSISTENCE
             if (response.data.signup.token) {
+              localStorage.setItem('token', response.data.signup.token);
               const dateToRedirect = moment().format('MM-YYYY');
               this.props.history.push(`/${dateToRedirect}`);
             }
