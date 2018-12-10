@@ -7,6 +7,7 @@ export const ME_QUERY = gql`
     firstName
     lastName
     type
+    email
   }
 }
 `;
