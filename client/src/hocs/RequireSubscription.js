@@ -4,21 +4,12 @@ const withRole = (WrappedComponent, allowedRoles) => (props) => {
   const { role } = {
     role: 'TRIAL',
   }; // get role from state or query
-
-  if (allowedRoles.includes(role)) {
+  const token = window.localStorage.getItem('token');
+  if (allowedRoles.includes(role) && token) {
     return <WrappedComponent {...props} />;
   }
-  return (
-    <div style={{
-      height: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-    >
-    VIP SECTION
-    </div>
-  );
+
+  return (null);
 };
 
 export const RequireSubscription = Component => withRole(Component, ['TRIAL', 'MONTHLY_PAID']); // add other subscriptions here to allow
