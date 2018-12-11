@@ -1,4 +1,4 @@
-const { hash, compare } = require('bcrypt')
+const { hash, compare } = require('bcryptjs')
 const { sign } = require('jsonwebtoken')
 const { APP_SECRET } = require('../utils')
 const stripe = require("./Stripe");
