@@ -21,7 +21,7 @@ const getHeaders = () => {
 };
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: process.env.REACT_APP_GRAPHQL_SERVER,
   headers: getHeaders(),
   clientState: {
     defaults: {
