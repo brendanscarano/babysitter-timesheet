@@ -19,9 +19,10 @@ const getHeaders = () => {
     Authorization: token ? `Bearer ${token}` : '',
   });
 };
+const { REACT_APP_GRAPHQL_SERVER } = process.env;
 
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPHQL_SERVER,
+  uri: REACT_APP_GRAPHQL_SERVER,
   headers: getHeaders(),
   clientState: {
     defaults: {
