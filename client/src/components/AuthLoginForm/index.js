@@ -81,8 +81,10 @@ class AuthLoginForm extends React.PureComponent {
 
             if (response.data.login.token) {
               // TODO: Linter complaining about localStorage not being defined even though its working
-              localStorage.setItem('token', response.data.login.token);
-              this.props.history.push(`/${formatDateForUrl}`);
+              await window.localStorage.setItem('token', response.data.login.token);
+              mutationProps.client.writeData({ data: { isLoggedIn: true } });
+
+              this.props.history.push(`/sheet/${formatDateForUrl}`);
             }
           }}
         >

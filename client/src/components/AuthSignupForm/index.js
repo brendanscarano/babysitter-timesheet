@@ -1,7 +1,7 @@
 import React from 'react';
+import gql from 'graphql-tag';
 import { Formik } from 'formik';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 import { Presentation } from './Presentation';
 
@@ -84,7 +84,9 @@ class AuthSignupForm extends React.PureComponent {
             });
             // TODO: ON SUCCESS -> SAVE TOKEN SOMEWHERE FOR PERSISTENCE
             if (response.data.signup.token) {
-              localStorage.setItem('token', response.data.signup.token);
+              await window.localStorage.setItem('token', response.data.login.token);
+              mutationProps.client.writeData({ data: { isLoggedIn: true } });
+
               this.props.history.push(`/${formatDateForUrl}`);
             }
           }}

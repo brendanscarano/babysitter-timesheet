@@ -1,27 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button, Layout } from 'antd';
+import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { DataSheet } from '../../components/DataSheet';
 import { MonthPicker } from '../../components/MonthPicker';
 import { FlexRow } from '../../components/Flex';
 import { theme } from '../../shared/theme';
 import { formatCurr } from '../../helpers/formatCurr';
-// import { dataSheetModel } from '../../shared/models';
+
 const TOP_BAR_HEIGHT = 64;
 
-const { Content } = Layout;
-
-const StyledContent = styled(Content)`
-  height: calc(100vh - ${theme.heights.navBar}px);
+const StyledContent = styled.div`
+  height: calc(80vh - ${theme.heights.navBar}px);
   overflow: scroll;
-  padding: 0 3rem;
-  margin-top: calc(${theme.heights.navBar}px + 2rem);
+  padding: 0 2rem;
   background-color: ${theme.colors.background};
 `;
 
 const TopBar = styled(FlexRow)`
+  margin-top: 2rem;
   justify-content: space-between;
   align-items: flex-start;
   height: ${TOP_BAR_HEIGHT}px;
@@ -65,50 +63,48 @@ const Presentation = ({
   const rightPanel = data.map(array => array.slice(4));
 
   return (
-    <Layout style={{ backgroundColor: theme.colors.background }}>
-      <StyledContent>
-        <TopBar>
-          <DateWrapper>
-            <MonthPicker
-              onCalendarMonthClick={onCalendarMonthClick}
-              monthToView={monthToView}
+    <StyledContent>
+      <TopBar>
+        <DateWrapper>
+          <MonthPicker
+            onCalendarMonthClick={onCalendarMonthClick}
+            monthToView={monthToView}
+          />
+          <h3>
+            Monthly Total:
+            {' '}
+            <b>{formatCurr(monthlyTotal)}</b>
+          </h3>
+        </DateWrapper>
+      </TopBar>
+      {data.length === 0
+        ? (
+          <NoDataWrapper>
+            <h2>You haven&comma;t added any children yet.</h2>
+            <Button type="primary">
+              <Link to="/new-child" type="primary">
+                Add a Child
+              </Link>
+            </Button>
+          </NoDataWrapper>
+        )
+        : (
+          <SheetsWrapper>
+            <DataSheet
+              data={leftPanel}
+              onCellsChanged={onCellsChanged}
+              topBarHeight={TOP_BAR_HEIGHT}
             />
-            <h3>
-Monthly Total:
-              {' '}
-              <b>{formatCurr(monthlyTotal)}</b>
-            </h3>
-          </DateWrapper>
-        </TopBar>
-        {data.length === 0
-          ? (
-            <NoDataWrapper>
-              <h2>You haven&comma;t added any children yet.</h2>
-              <Button type="primary">
-                <Link to="/new-child" type="primary">
-                  Add a Child
-                </Link>
-              </Button>
-            </NoDataWrapper>
-          )
-          : (
-            <SheetsWrapper>
-              <DataSheet
-                data={leftPanel}
-                onCellsChanged={onCellsChanged}
-                topBarHeight={TOP_BAR_HEIGHT}
-              />
 
-              <DataSheet
-                data={rightPanel}
-                onCellsChanged={onCellsChanged}
-                topBarHeight={TOP_BAR_HEIGHT}
-              />
-            </SheetsWrapper>
-          )
-        }
-      </StyledContent>
-    </Layout>
+            <DataSheet
+              data={rightPanel}
+              onCellsChanged={onCellsChanged}
+              topBarHeight={TOP_BAR_HEIGHT}
+            />
+          </SheetsWrapper>
+        )
+      }
+    </StyledContent>
   );
 };
 

@@ -1,15 +1,77 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import moment from 'moment';
+import { Link, withRouter } from 'react-router-dom';
+import { ApolloConsumer, Query } from 'react-apollo';
 import {
-  Avatar, Dropdown, Layout, Menu,
+  Avatar, Dropdown, Menu, Button, Layout,
 } from 'antd';
-import { Link } from 'react-router-dom';
 import { FlexRow } from '../Flex';
+import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
+// TODO: Inject theme instead of importing it
 import { theme } from '../../shared/theme';
-import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 
 const { Header } = Layout;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: flex-start;
+  > span, h1 {
+    font-family: Lobster;
+    font-size: 24px;
+    padding: 0;
+    margin: 0;
+  }
+  > span {
+    margin-right: .25rem;
+  }
+`;
+
+const LogOutButton = styled(Button)`
+  background-color: transparent;
+  border: none;
+`;
+
+const DropdownMenu = ({ history }) => (
+  <Menu>
+    <Menu.Item>
+      <Link to={`/sheet/${moment().format('MM-YYYY')}`}>Sheets</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to="/new-sitte">New Sitte</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to="/my-profile">Profile</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <ApolloConsumer>
+        {client => (
+          <LogOutButton
+            onClick={async () => {
+              await window.localStorage.removeItem('token');
+              client.writeData({ data: { isLoggedIn: false } });
+              client.resetStore();
+              return history.push('/');
+            }}
+            type="danger"
+          >
+            Log Out
+          </LogOutButton>
+        )}
+      </ApolloConsumer>
+    </Menu.Item>
+  </Menu>
+);
+
+const StyledDropdown = styled(Dropdown)`
+  cursor: pointer;
+
+  svg {
+    height: 18px;
+    width: 18px;
+  }
+`;
 
 const Wrapper = styled(Header)`
     position: fixed;
@@ -25,80 +87,41 @@ const Wrapper = styled(Header)`
     font-size: 1.125rem;
 `;
 
-const StyledLink = styled(Link)`
-  display: flex;
-  align-items: flex-start;
-  height: 100%;
-  >span, h1 {
-    font-family: Lobster;
-    font-size: 24px;
-  }
-  > span {
-    margin-right: .25rem;
-  }
-`;
 
-const LogOutButton = styled.button`
-  background-color: transparent;
-  border: none;
-`;
-
-const DropdownMenu = ({ history }) => (
-  <Menu>
-    <Menu.Item>
-      <Link to="/my-profile">
-        My Profile
-      </Link>
-    </Menu.Item>
-    <Menu.Item>
-      <Link to="/new-child">
-        New Child
-      </Link>
-    </Menu.Item>
-    <Menu.Item>
-      <LogOutButton
-        onClick={async () => {
-          await localStorage.removeItem('token');
-          return history.push('/');
-        }}
-        type="button"
-      >
-        Log Out
-      </LogOutButton>
-    </Menu.Item>
-  </Menu>
-);
-
-const StyledDropdown = styled(Dropdown)`
-  cursor: pointer;
-
-  svg {
-    height: 18px;
-    width: 18px;
-  }
-`;
-
-const NavBar = ({ isUserSignedIn, history }) => {
+const NavBar = withRouter(({ isLoggedIn, user, history }) => {
   const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
   return (
     <Wrapper>
-      <StyledLink to={isUserSignedIn ? `/${formatDateForUrl}` : '/'}>
+      <StyledLink to="/">
         <span role="img" aria-label="baby">👶</span>
         <h1>Sitter Sheet</h1>
       </StyledLink>
-      {isUserSignedIn && (
-        <FlexRow>
-          <StyledDropdown overlay={DropdownMenuWithHistory()}>
-            <Avatar icon="user" />
-          </StyledDropdown>
-        </FlexRow>
-      )}
+      {
+        isLoggedIn
+          ? (
+            <Query query={ME_QUERY}>
+              {({ data, loading }) => {
+                if (loading) {
+                  return null;
+                }
+                return (
+                  <FlexRow>
+                    <StyledDropdown overlay={DropdownMenuWithHistory()}>
+                      <Avatar src="https://api.adorable.io/avatars/148/abott@adorable.png" />
+                    </StyledDropdown>
+                  </FlexRow>
+                );
+              }}
+            </Query>
+          )
+          : <StyledLink to="/register">Sign Up</StyledLink>
+      }
     </Wrapper>
   );
-};
+});
 
 NavBar.propTypes = {
-  isUserSignedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 
 export { NavBar };

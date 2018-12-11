@@ -1,13 +1,22 @@
 const { getUserId } = require('../utils')
 
 const Query = {
-  me: (parent, args, context) => {
-    const userId = getUserId(context)
-    console.log('userId', userId);
-    return context.prisma.user({ id: userId })
+  me: (parent, args, ctx) => {
+    const userId = getUserId(ctx)
+    return ctx.prisma.user({ id: userId })
   },
-  dates: (parent, args, context) => {
+  dates: (parent, args, ctx) => {
     return ['Yes', 'No', 'Maybe so']
+  },
+  sittes: (parent, args, ctx) => {
+    const id = getUserId(ctx)
+    return ctx.prisma.sittes({
+      where: {
+        owner: {
+          id
+        }
+      }
+    })
   }
 }
 

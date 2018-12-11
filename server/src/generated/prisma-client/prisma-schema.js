@@ -4,11 +4,11 @@ module.exports = {
   MONTHLY_PAID
 }
 
-type AggregateChild {
+type AggregateDate {
   count: Int!
 }
 
-type AggregateDate {
+type AggregateSitte {
   count: Int!
 }
 
@@ -20,399 +20,10 @@ type BatchPayload {
   count: Long!
 }
 
-type Child {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  birthday: DateTime
-  owner: User!
-  rateAmount: Float!
-  rateType: RateType!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  dates(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Date!]
-  gender: Gender!
-}
-
-type ChildConnection {
-  pageInfo: PageInfo!
-  edges: [ChildEdge]!
-  aggregate: AggregateChild!
-}
-
-input ChildCreateInput {
-  firstName: String!
-  lastName: String!
-  birthday: DateTime
-  owner: UserCreateOneWithoutChildrenInput!
-  rateAmount: Float!
-  rateType: RateType!
-  dates: DateCreateManyWithoutOwnerInput
-  gender: Gender!
-}
-
-input ChildCreateManyWithoutOwnerInput {
-  create: [ChildCreateWithoutOwnerInput!]
-  connect: [ChildWhereUniqueInput!]
-}
-
-input ChildCreateOneWithoutDatesInput {
-  create: ChildCreateWithoutDatesInput
-  connect: ChildWhereUniqueInput
-}
-
-input ChildCreateWithoutDatesInput {
-  firstName: String!
-  lastName: String!
-  birthday: DateTime
-  owner: UserCreateOneWithoutChildrenInput!
-  rateAmount: Float!
-  rateType: RateType!
-  gender: Gender!
-}
-
-input ChildCreateWithoutOwnerInput {
-  firstName: String!
-  lastName: String!
-  birthday: DateTime
-  rateAmount: Float!
-  rateType: RateType!
-  dates: DateCreateManyWithoutOwnerInput
-  gender: Gender!
-}
-
-type ChildEdge {
-  node: Child!
-  cursor: String!
-}
-
-enum ChildOrderByInput {
-  id_ASC
-  id_DESC
-  firstName_ASC
-  firstName_DESC
-  lastName_ASC
-  lastName_DESC
-  birthday_ASC
-  birthday_DESC
-  rateAmount_ASC
-  rateAmount_DESC
-  rateType_ASC
-  rateType_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  gender_ASC
-  gender_DESC
-}
-
-type ChildPreviousValues {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  birthday: DateTime
-  rateAmount: Float!
-  rateType: RateType!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  gender: Gender!
-}
-
-input ChildScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  firstName: String
-  firstName_not: String
-  firstName_in: [String!]
-  firstName_not_in: [String!]
-  firstName_lt: String
-  firstName_lte: String
-  firstName_gt: String
-  firstName_gte: String
-  firstName_contains: String
-  firstName_not_contains: String
-  firstName_starts_with: String
-  firstName_not_starts_with: String
-  firstName_ends_with: String
-  firstName_not_ends_with: String
-  lastName: String
-  lastName_not: String
-  lastName_in: [String!]
-  lastName_not_in: [String!]
-  lastName_lt: String
-  lastName_lte: String
-  lastName_gt: String
-  lastName_gte: String
-  lastName_contains: String
-  lastName_not_contains: String
-  lastName_starts_with: String
-  lastName_not_starts_with: String
-  lastName_ends_with: String
-  lastName_not_ends_with: String
-  birthday: DateTime
-  birthday_not: DateTime
-  birthday_in: [DateTime!]
-  birthday_not_in: [DateTime!]
-  birthday_lt: DateTime
-  birthday_lte: DateTime
-  birthday_gt: DateTime
-  birthday_gte: DateTime
-  rateAmount: Float
-  rateAmount_not: Float
-  rateAmount_in: [Float!]
-  rateAmount_not_in: [Float!]
-  rateAmount_lt: Float
-  rateAmount_lte: Float
-  rateAmount_gt: Float
-  rateAmount_gte: Float
-  rateType: RateType
-  rateType_not: RateType
-  rateType_in: [RateType!]
-  rateType_not_in: [RateType!]
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  gender: Gender
-  gender_not: Gender
-  gender_in: [Gender!]
-  gender_not_in: [Gender!]
-  AND: [ChildScalarWhereInput!]
-  OR: [ChildScalarWhereInput!]
-  NOT: [ChildScalarWhereInput!]
-}
-
-type ChildSubscriptionPayload {
-  mutation: MutationType!
-  node: Child
-  updatedFields: [String!]
-  previousValues: ChildPreviousValues
-}
-
-input ChildSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: ChildWhereInput
-  AND: [ChildSubscriptionWhereInput!]
-  OR: [ChildSubscriptionWhereInput!]
-  NOT: [ChildSubscriptionWhereInput!]
-}
-
-input ChildUpdateInput {
-  firstName: String
-  lastName: String
-  birthday: DateTime
-  owner: UserUpdateOneRequiredWithoutChildrenInput
-  rateAmount: Float
-  rateType: RateType
-  dates: DateUpdateManyWithoutOwnerInput
-  gender: Gender
-}
-
-input ChildUpdateManyDataInput {
-  firstName: String
-  lastName: String
-  birthday: DateTime
-  rateAmount: Float
-  rateType: RateType
-  gender: Gender
-}
-
-input ChildUpdateManyMutationInput {
-  firstName: String
-  lastName: String
-  birthday: DateTime
-  rateAmount: Float
-  rateType: RateType
-  gender: Gender
-}
-
-input ChildUpdateManyWithoutOwnerInput {
-  create: [ChildCreateWithoutOwnerInput!]
-  delete: [ChildWhereUniqueInput!]
-  connect: [ChildWhereUniqueInput!]
-  disconnect: [ChildWhereUniqueInput!]
-  update: [ChildUpdateWithWhereUniqueWithoutOwnerInput!]
-  upsert: [ChildUpsertWithWhereUniqueWithoutOwnerInput!]
-  deleteMany: [ChildScalarWhereInput!]
-  updateMany: [ChildUpdateManyWithWhereNestedInput!]
-}
-
-input ChildUpdateManyWithWhereNestedInput {
-  where: ChildScalarWhereInput!
-  data: ChildUpdateManyDataInput!
-}
-
-input ChildUpdateOneRequiredWithoutDatesInput {
-  create: ChildCreateWithoutDatesInput
-  update: ChildUpdateWithoutDatesDataInput
-  upsert: ChildUpsertWithoutDatesInput
-  connect: ChildWhereUniqueInput
-}
-
-input ChildUpdateWithoutDatesDataInput {
-  firstName: String
-  lastName: String
-  birthday: DateTime
-  owner: UserUpdateOneRequiredWithoutChildrenInput
-  rateAmount: Float
-  rateType: RateType
-  gender: Gender
-}
-
-input ChildUpdateWithoutOwnerDataInput {
-  firstName: String
-  lastName: String
-  birthday: DateTime
-  rateAmount: Float
-  rateType: RateType
-  dates: DateUpdateManyWithoutOwnerInput
-  gender: Gender
-}
-
-input ChildUpdateWithWhereUniqueWithoutOwnerInput {
-  where: ChildWhereUniqueInput!
-  data: ChildUpdateWithoutOwnerDataInput!
-}
-
-input ChildUpsertWithoutDatesInput {
-  update: ChildUpdateWithoutDatesDataInput!
-  create: ChildCreateWithoutDatesInput!
-}
-
-input ChildUpsertWithWhereUniqueWithoutOwnerInput {
-  where: ChildWhereUniqueInput!
-  update: ChildUpdateWithoutOwnerDataInput!
-  create: ChildCreateWithoutOwnerInput!
-}
-
-input ChildWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  firstName: String
-  firstName_not: String
-  firstName_in: [String!]
-  firstName_not_in: [String!]
-  firstName_lt: String
-  firstName_lte: String
-  firstName_gt: String
-  firstName_gte: String
-  firstName_contains: String
-  firstName_not_contains: String
-  firstName_starts_with: String
-  firstName_not_starts_with: String
-  firstName_ends_with: String
-  firstName_not_ends_with: String
-  lastName: String
-  lastName_not: String
-  lastName_in: [String!]
-  lastName_not_in: [String!]
-  lastName_lt: String
-  lastName_lte: String
-  lastName_gt: String
-  lastName_gte: String
-  lastName_contains: String
-  lastName_not_contains: String
-  lastName_starts_with: String
-  lastName_not_starts_with: String
-  lastName_ends_with: String
-  lastName_not_ends_with: String
-  birthday: DateTime
-  birthday_not: DateTime
-  birthday_in: [DateTime!]
-  birthday_not_in: [DateTime!]
-  birthday_lt: DateTime
-  birthday_lte: DateTime
-  birthday_gt: DateTime
-  birthday_gte: DateTime
-  owner: UserWhereInput
-  rateAmount: Float
-  rateAmount_not: Float
-  rateAmount_in: [Float!]
-  rateAmount_not_in: [Float!]
-  rateAmount_lt: Float
-  rateAmount_lte: Float
-  rateAmount_gt: Float
-  rateAmount_gte: Float
-  rateType: RateType
-  rateType_not: RateType
-  rateType_in: [RateType!]
-  rateType_not_in: [RateType!]
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  dates_every: DateWhereInput
-  dates_some: DateWhereInput
-  dates_none: DateWhereInput
-  gender: Gender
-  gender_not: Gender
-  gender_in: [Gender!]
-  gender_not_in: [Gender!]
-  AND: [ChildWhereInput!]
-  OR: [ChildWhereInput!]
-  NOT: [ChildWhereInput!]
-}
-
-input ChildWhereUniqueInput {
-  id: ID
-}
-
 type Date {
   id: ID!
   dateObjectId: String!
-  owner: Child!
+  owner: Sitte!
   month: Float!
   day: Float!
   year: Float!
@@ -431,7 +42,7 @@ type DateConnection {
 
 input DateCreateInput {
   dateObjectId: String!
-  owner: ChildCreateOneWithoutDatesInput!
+  owner: SitteCreateOneWithoutDatesInput!
   month: Float!
   day: Float!
   year: Float!
@@ -504,110 +115,6 @@ type DatePreviousValues {
   isFixedRate: Boolean
 }
 
-input DateScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  dateObjectId: String
-  dateObjectId_not: String
-  dateObjectId_in: [String!]
-  dateObjectId_not_in: [String!]
-  dateObjectId_lt: String
-  dateObjectId_lte: String
-  dateObjectId_gt: String
-  dateObjectId_gte: String
-  dateObjectId_contains: String
-  dateObjectId_not_contains: String
-  dateObjectId_starts_with: String
-  dateObjectId_not_starts_with: String
-  dateObjectId_ends_with: String
-  dateObjectId_not_ends_with: String
-  month: Float
-  month_not: Float
-  month_in: [Float!]
-  month_not_in: [Float!]
-  month_lt: Float
-  month_lte: Float
-  month_gt: Float
-  month_gte: Float
-  day: Float
-  day_not: Float
-  day_in: [Float!]
-  day_not_in: [Float!]
-  day_lt: Float
-  day_lte: Float
-  day_gt: Float
-  day_gte: Float
-  year: Float
-  year_not: Float
-  year_in: [Float!]
-  year_not_in: [Float!]
-  year_lt: Float
-  year_lte: Float
-  year_gt: Float
-  year_gte: Float
-  hours: Float
-  hours_not: Float
-  hours_in: [Float!]
-  hours_not_in: [Float!]
-  hours_lt: Float
-  hours_lte: Float
-  hours_gt: Float
-  hours_gte: Float
-  dayOfWeek: String
-  dayOfWeek_not: String
-  dayOfWeek_in: [String!]
-  dayOfWeek_not_in: [String!]
-  dayOfWeek_lt: String
-  dayOfWeek_lte: String
-  dayOfWeek_gt: String
-  dayOfWeek_gte: String
-  dayOfWeek_contains: String
-  dayOfWeek_not_contains: String
-  dayOfWeek_starts_with: String
-  dayOfWeek_not_starts_with: String
-  dayOfWeek_ends_with: String
-  dayOfWeek_not_ends_with: String
-  notes: String
-  notes_not: String
-  notes_in: [String!]
-  notes_not_in: [String!]
-  notes_lt: String
-  notes_lte: String
-  notes_gt: String
-  notes_gte: String
-  notes_contains: String
-  notes_not_contains: String
-  notes_starts_with: String
-  notes_not_starts_with: String
-  notes_ends_with: String
-  notes_not_ends_with: String
-  paid: Float
-  paid_not: Float
-  paid_in: [Float!]
-  paid_not_in: [Float!]
-  paid_lt: Float
-  paid_lte: Float
-  paid_gt: Float
-  paid_gte: Float
-  isFixedRate: Boolean
-  isFixedRate_not: Boolean
-  AND: [DateScalarWhereInput!]
-  OR: [DateScalarWhereInput!]
-  NOT: [DateScalarWhereInput!]
-}
-
 type DateSubscriptionPayload {
   mutation: MutationType!
   node: Date
@@ -630,19 +137,7 @@ scalar DateTime
 
 input DateUpdateInput {
   dateObjectId: String
-  owner: ChildUpdateOneRequiredWithoutDatesInput
-  month: Float
-  day: Float
-  year: Float
-  hours: Float
-  dayOfWeek: String
-  notes: String
-  paid: Float
-  isFixedRate: Boolean
-}
-
-input DateUpdateManyDataInput {
-  dateObjectId: String
+  owner: SitteUpdateOneRequiredWithoutDatesInput
   month: Float
   day: Float
   year: Float
@@ -672,13 +167,6 @@ input DateUpdateManyWithoutOwnerInput {
   disconnect: [DateWhereUniqueInput!]
   update: [DateUpdateWithWhereUniqueWithoutOwnerInput!]
   upsert: [DateUpsertWithWhereUniqueWithoutOwnerInput!]
-  deleteMany: [DateScalarWhereInput!]
-  updateMany: [DateUpdateManyWithWhereNestedInput!]
-}
-
-input DateUpdateManyWithWhereNestedInput {
-  where: DateScalarWhereInput!
-  data: DateUpdateManyDataInput!
 }
 
 input DateUpdateWithoutOwnerDataInput {
@@ -733,7 +221,7 @@ input DateWhereInput {
   dateObjectId_not_starts_with: String
   dateObjectId_ends_with: String
   dateObjectId_not_ends_with: String
-  owner: ChildWhereInput
+  owner: SitteWhereInput
   month: Float
   month_not: Float
   month_in: [Float!]
@@ -822,18 +310,18 @@ enum Gender {
 scalar Long
 
 type Mutation {
-  createChild(data: ChildCreateInput!): Child!
-  updateChild(data: ChildUpdateInput!, where: ChildWhereUniqueInput!): Child
-  updateManyChildren(data: ChildUpdateManyMutationInput!, where: ChildWhereInput): BatchPayload!
-  upsertChild(where: ChildWhereUniqueInput!, create: ChildCreateInput!, update: ChildUpdateInput!): Child!
-  deleteChild(where: ChildWhereUniqueInput!): Child
-  deleteManyChildren(where: ChildWhereInput): BatchPayload!
   createDate(data: DateCreateInput!): Date!
   updateDate(data: DateUpdateInput!, where: DateWhereUniqueInput!): Date
   updateManyDates(data: DateUpdateManyMutationInput!, where: DateWhereInput): BatchPayload!
   upsertDate(where: DateWhereUniqueInput!, create: DateCreateInput!, update: DateUpdateInput!): Date!
   deleteDate(where: DateWhereUniqueInput!): Date
   deleteManyDates(where: DateWhereInput): BatchPayload!
+  createSitte(data: SitteCreateInput!): Sitte!
+  updateSitte(data: SitteUpdateInput!, where: SitteWhereUniqueInput!): Sitte
+  updateManySittes(data: SitteUpdateManyMutationInput!, where: SitteWhereInput): BatchPayload!
+  upsertSitte(where: SitteWhereUniqueInput!, create: SitteCreateInput!, update: SitteUpdateInput!): Sitte!
+  deleteSitte(where: SitteWhereUniqueInput!): Sitte
+  deleteManySittes(where: SitteWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -860,12 +348,12 @@ type PageInfo {
 }
 
 type Query {
-  child(where: ChildWhereUniqueInput!): Child
-  children(where: ChildWhereInput, orderBy: ChildOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Child]!
-  childrenConnection(where: ChildWhereInput, orderBy: ChildOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChildConnection!
   date(where: DateWhereUniqueInput!): Date
   dates(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Date]!
   datesConnection(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DateConnection!
+  sitte(where: SitteWhereUniqueInput!): Sitte
+  sittes(where: SitteWhereInput, orderBy: SitteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sitte]!
+  sittesConnection(where: SitteWhereInput, orderBy: SitteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SitteConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -877,9 +365,294 @@ enum RateType {
   FLAT
 }
 
+type Sitte {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  birthday: DateTime
+  owner: User!
+  rateAmount: Float!
+  rateType: RateType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  dates(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Date!]
+  gender: Gender!
+}
+
+type SitteConnection {
+  pageInfo: PageInfo!
+  edges: [SitteEdge]!
+  aggregate: AggregateSitte!
+}
+
+input SitteCreateInput {
+  firstName: String!
+  lastName: String!
+  birthday: DateTime
+  owner: UserCreateOneWithoutSittesInput!
+  rateAmount: Float!
+  rateType: RateType!
+  dates: DateCreateManyWithoutOwnerInput
+  gender: Gender!
+}
+
+input SitteCreateManyWithoutOwnerInput {
+  create: [SitteCreateWithoutOwnerInput!]
+  connect: [SitteWhereUniqueInput!]
+}
+
+input SitteCreateOneWithoutDatesInput {
+  create: SitteCreateWithoutDatesInput
+  connect: SitteWhereUniqueInput
+}
+
+input SitteCreateWithoutDatesInput {
+  firstName: String!
+  lastName: String!
+  birthday: DateTime
+  owner: UserCreateOneWithoutSittesInput!
+  rateAmount: Float!
+  rateType: RateType!
+  gender: Gender!
+}
+
+input SitteCreateWithoutOwnerInput {
+  firstName: String!
+  lastName: String!
+  birthday: DateTime
+  rateAmount: Float!
+  rateType: RateType!
+  dates: DateCreateManyWithoutOwnerInput
+  gender: Gender!
+}
+
+type SitteEdge {
+  node: Sitte!
+  cursor: String!
+}
+
+enum SitteOrderByInput {
+  id_ASC
+  id_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  birthday_ASC
+  birthday_DESC
+  rateAmount_ASC
+  rateAmount_DESC
+  rateType_ASC
+  rateType_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  gender_ASC
+  gender_DESC
+}
+
+type SittePreviousValues {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  birthday: DateTime
+  rateAmount: Float!
+  rateType: RateType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  gender: Gender!
+}
+
+type SitteSubscriptionPayload {
+  mutation: MutationType!
+  node: Sitte
+  updatedFields: [String!]
+  previousValues: SittePreviousValues
+}
+
+input SitteSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SitteWhereInput
+  AND: [SitteSubscriptionWhereInput!]
+  OR: [SitteSubscriptionWhereInput!]
+  NOT: [SitteSubscriptionWhereInput!]
+}
+
+input SitteUpdateInput {
+  firstName: String
+  lastName: String
+  birthday: DateTime
+  owner: UserUpdateOneRequiredWithoutSittesInput
+  rateAmount: Float
+  rateType: RateType
+  dates: DateUpdateManyWithoutOwnerInput
+  gender: Gender
+}
+
+input SitteUpdateManyMutationInput {
+  firstName: String
+  lastName: String
+  birthday: DateTime
+  rateAmount: Float
+  rateType: RateType
+  gender: Gender
+}
+
+input SitteUpdateManyWithoutOwnerInput {
+  create: [SitteCreateWithoutOwnerInput!]
+  delete: [SitteWhereUniqueInput!]
+  connect: [SitteWhereUniqueInput!]
+  disconnect: [SitteWhereUniqueInput!]
+  update: [SitteUpdateWithWhereUniqueWithoutOwnerInput!]
+  upsert: [SitteUpsertWithWhereUniqueWithoutOwnerInput!]
+}
+
+input SitteUpdateOneRequiredWithoutDatesInput {
+  create: SitteCreateWithoutDatesInput
+  update: SitteUpdateWithoutDatesDataInput
+  upsert: SitteUpsertWithoutDatesInput
+  connect: SitteWhereUniqueInput
+}
+
+input SitteUpdateWithoutDatesDataInput {
+  firstName: String
+  lastName: String
+  birthday: DateTime
+  owner: UserUpdateOneRequiredWithoutSittesInput
+  rateAmount: Float
+  rateType: RateType
+  gender: Gender
+}
+
+input SitteUpdateWithoutOwnerDataInput {
+  firstName: String
+  lastName: String
+  birthday: DateTime
+  rateAmount: Float
+  rateType: RateType
+  dates: DateUpdateManyWithoutOwnerInput
+  gender: Gender
+}
+
+input SitteUpdateWithWhereUniqueWithoutOwnerInput {
+  where: SitteWhereUniqueInput!
+  data: SitteUpdateWithoutOwnerDataInput!
+}
+
+input SitteUpsertWithoutDatesInput {
+  update: SitteUpdateWithoutDatesDataInput!
+  create: SitteCreateWithoutDatesInput!
+}
+
+input SitteUpsertWithWhereUniqueWithoutOwnerInput {
+  where: SitteWhereUniqueInput!
+  update: SitteUpdateWithoutOwnerDataInput!
+  create: SitteCreateWithoutOwnerInput!
+}
+
+input SitteWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  birthday: DateTime
+  birthday_not: DateTime
+  birthday_in: [DateTime!]
+  birthday_not_in: [DateTime!]
+  birthday_lt: DateTime
+  birthday_lte: DateTime
+  birthday_gt: DateTime
+  birthday_gte: DateTime
+  owner: UserWhereInput
+  rateAmount: Float
+  rateAmount_not: Float
+  rateAmount_in: [Float!]
+  rateAmount_not_in: [Float!]
+  rateAmount_lt: Float
+  rateAmount_lte: Float
+  rateAmount_gt: Float
+  rateAmount_gte: Float
+  rateType: RateType
+  rateType_not: RateType
+  rateType_in: [RateType!]
+  rateType_not_in: [RateType!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  dates_every: DateWhereInput
+  dates_some: DateWhereInput
+  dates_none: DateWhereInput
+  gender: Gender
+  gender_not: Gender
+  gender_in: [Gender!]
+  gender_not_in: [Gender!]
+  AND: [SitteWhereInput!]
+  OR: [SitteWhereInput!]
+  NOT: [SitteWhereInput!]
+}
+
+input SitteWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
-  child(where: ChildSubscriptionWhereInput): ChildSubscriptionPayload
   date(where: DateSubscriptionWhereInput): DateSubscriptionPayload
+  sitte(where: SitteSubscriptionWhereInput): SitteSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -894,7 +667,7 @@ type User {
   stripeId: String
   firstName: String
   lastName: String
-  children(where: ChildWhereInput, orderBy: ChildOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Child!]
+  sittes(where: SitteWhereInput, orderBy: SitteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sitte!]
 }
 
 type UserConnection {
@@ -911,15 +684,15 @@ input UserCreateInput {
   stripeId: String
   firstName: String
   lastName: String
-  children: ChildCreateManyWithoutOwnerInput
+  sittes: SitteCreateManyWithoutOwnerInput
 }
 
-input UserCreateOneWithoutChildrenInput {
-  create: UserCreateWithoutChildrenInput
+input UserCreateOneWithoutSittesInput {
+  create: UserCreateWithoutSittesInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateWithoutChildrenInput {
+input UserCreateWithoutSittesInput {
   email: String!
   password: String!
   type: AccountType
@@ -996,7 +769,7 @@ input UserUpdateInput {
   stripeId: String
   firstName: String
   lastName: String
-  children: ChildUpdateManyWithoutOwnerInput
+  sittes: SitteUpdateManyWithoutOwnerInput
 }
 
 input UserUpdateManyMutationInput {
@@ -1009,14 +782,14 @@ input UserUpdateManyMutationInput {
   lastName: String
 }
 
-input UserUpdateOneRequiredWithoutChildrenInput {
-  create: UserCreateWithoutChildrenInput
-  update: UserUpdateWithoutChildrenDataInput
-  upsert: UserUpsertWithoutChildrenInput
+input UserUpdateOneRequiredWithoutSittesInput {
+  create: UserCreateWithoutSittesInput
+  update: UserUpdateWithoutSittesDataInput
+  upsert: UserUpsertWithoutSittesInput
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateWithoutChildrenDataInput {
+input UserUpdateWithoutSittesDataInput {
   email: String
   password: String
   type: AccountType
@@ -1026,9 +799,9 @@ input UserUpdateWithoutChildrenDataInput {
   lastName: String
 }
 
-input UserUpsertWithoutChildrenInput {
-  update: UserUpdateWithoutChildrenDataInput!
-  create: UserCreateWithoutChildrenInput!
+input UserUpsertWithoutSittesInput {
+  update: UserUpdateWithoutSittesDataInput!
+  create: UserCreateWithoutSittesInput!
 }
 
 input UserWhereInput {
@@ -1150,9 +923,9 @@ input UserWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
-  children_every: ChildWhereInput
-  children_some: ChildWhereInput
-  children_none: ChildWhereInput
+  sittes_every: SitteWhereInput
+  sittes_some: SitteWhereInput
+  sittes_none: SitteWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

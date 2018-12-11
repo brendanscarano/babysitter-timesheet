@@ -25,10 +25,11 @@ type User {
   stripeId: String
   firstName: String
   lastName: String
-  children: [Child!]!
+  sittes: [Sitte!]!
 }
 
-type Child {
+
+type Sitte {
   id: ID! @unique
   firstName: String!
   lastName: String!
@@ -45,7 +46,7 @@ type Child {
 type Date {
   id: ID! @unique
   dateObjectId: String!
-  owner: Child!
+  owner: Sitte!
   month: Float!
   day: Float!
   year: Float!
