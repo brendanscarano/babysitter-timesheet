@@ -2,16 +2,20 @@
   "name": "graphql-auth",
   "version": "1.0.0",
   "dependencies": {
-    "bcrypt": "3.0.2",
+    "bcryptjs": "^2.4.3",
+    "connect-redis": "^3.4.0",
     "dotenv-cli": "^1.4.0",
+    "express-session": "^1.15.6",
     "graphql-import": "^0.7.1",
     "graphql-shield": "4.1.0",
     "graphql-yoga": "1.16.7",
+    "ioredis": "^4.3.0",
     "jsonwebtoken": "8.4.0",
     "prisma-client-lib": "1.21.1",
     "stripe": "^6.17.0"
   },
   "scripts": {
-    "start": "dotenv -- nodemon -e -x src/index.js"
+    "start": "dotenv -- nodemon -e -x src/index.js",
+    "prod": "node src/index.js"
   }
 }
