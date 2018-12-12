@@ -8,7 +8,7 @@ const { redisSessionPrefix } = require("./constants");
 const client = require("./redis").redis;
 const Stripe = require("stripe");
 
-const { STRIPE_SECRET, SESSION_SECRET } = process.env;
+const { STRIPE_SECRET, SESSION_SECRET, FRONTEND_HOST } = process.env;
 const stripe = new Stripe(STRIPE_SECRET);
 
 const RedisStore = connectRedis(session);
