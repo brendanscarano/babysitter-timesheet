@@ -17,11 +17,11 @@ const client = new ApolloClient({
   credentials: 'include',
   clientState: {
     defaults: {
-      isLoggedIn: !!window.localStorage.getItem('token'),
+      isLoggedIn: !!window.localStorage.getItem('sid'),
     },
     resolvers: {
       Query: {
-        isLoggedIn: () => !!window.localStorage.getItem('token'),
+        isLoggedIn: () => !!window.localStorage.getItem('sid'),
       },
     },
     typeDefs,

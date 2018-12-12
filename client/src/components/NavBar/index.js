@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 import styled from 'styled-components';
 import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
@@ -46,10 +47,20 @@ const DropdownMenu = ({ history }) => (
         {client => (
           <LogOutButton
             onClick={async () => {
-              await window.localStorage.removeItem('token');
-              client.writeData({ data: { isLoggedIn: false } });
-              client.resetStore();
-              return history.push('/');
+              const { data } = await client.mutate({
+                mutation: gql`
+                  mutation {
+                    logout
+                  }
+                `,
+              });
+
+              if (data.logout) {
+                window.localStorage.removeItem('sid');
+                client.writeData({ data: { isLoggedIn: false } });
+                client.resetStore();
+                return history.push('/');
+              }
             }}
             type="danger"
           >
