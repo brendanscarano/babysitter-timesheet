@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
 import styled from 'styled-components';
 import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
-import { ApolloConsumer, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 import {
   Avatar, Dropdown, Menu, Button,
 } from 'antd';
@@ -43,31 +42,7 @@ const DropdownMenu = ({ history }) => (
       <Link to="/my-profile">Profile</Link>
     </Menu.Item>
     <Menu.Item>
-      <ApolloConsumer>
-        {client => (
-          <LogOutButton
-            onClick={async () => {
-              const { data } = await client.mutate({
-                mutation: gql`
-                  mutation {
-                    logout
-                  }
-                `,
-              });
-
-              if (data.logout) {
-                window.localStorage.removeItem('sid');
-                client.writeData({ data: { isLoggedIn: false } });
-                client.resetStore();
-                return history.push('/');
-              }
-            }}
-            type="danger"
-          >
-            Log Out
-          </LogOutButton>
-        )}
-      </ApolloConsumer>
+      <LogOutButton onClick={() => history.push('/logout')} type="danger">Log Out</LogOutButton>
     </Menu.Item>
   </Menu>
 );
@@ -89,7 +64,7 @@ const Wrapper = styled.div`
   background: whitesmoke;
 `;
 
-const NavBar = withRouter(({ isLoggedIn, user, history }) => {
+const NavBar = withRouter(({ isLoggedIn, history }) => {
   const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
   return (
     <Wrapper>
