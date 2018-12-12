@@ -1,6 +1,6 @@
 const { verify } = require('jsonwebtoken')
-
-const APP_SECRET = 'appsecret321'
+const { Redis } = require("ioredis");
+const { userSessionIdPrefix, redisSessionPrefix } = require("./constants");
 
 class AuthError extends Error {
   constructor() {
@@ -9,15 +9,29 @@ class AuthError extends Error {
 }
 
 function getUserId(context) {
-  const Authorization = context.request.get('Authorization')
-  if (Authorization) {
-    const token = Authorization.replace('Bearer ', '')
-    const verifiedToken = verify(token, APP_SECRET)
-    return verifiedToken && verifiedToken.userId
+  const { userId } = context.session;
+  if(userId) {
+    return userId;
   }
 }
 
+const removeAllUsersSessions = async (userId, redis) => {
+  const sessionIds = await redis.lrange(
+    `${userSessionIdPrefix}${userId}`,
+    0,
+    -1
+  );
+
+  const promises = [];
+  
+  for (let i = 0; i < sessionIds.length; i += 1) {
+    promises.push(redis.del(`${redisSessionPrefix}${sessionIds[i]}`));
+  }
+  await Promise.all(promises);
+};
+
+
 module.exports = {
   getUserId,
-  APP_SECRET,
+  removeAllUsersSessions
 }
