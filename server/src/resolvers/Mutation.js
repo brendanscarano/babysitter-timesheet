@@ -1,5 +1,5 @@
 const { hash, compare } = require('bcrypt')
-const { APP_SECRET, removeAllUsersSessions } = require('../utils')
+const { removeAllUsersSessions } = require('../utils')
 const { userSessionIdPrefix } = require('../constants');
 const stripe = require("./Stripe");
 
@@ -11,7 +11,7 @@ const Mutation = {
       const user = await ctx.prisma.createUser({
         firstName,
         lastName,
-        email,
+        email: email.toLowerCase(),
         password: hashedPassword,
       })
 
@@ -28,7 +28,7 @@ const Mutation = {
     }
   },
   login: async (parent, { email, password }, ctx) => {
-    const user = await ctx.prisma.user({ email })
+    const user = await ctx.prisma.user({ email: email.toLowerCase() })
     if (!user) {
       throw new Error(`No user found for email: ${email}`)
     }
