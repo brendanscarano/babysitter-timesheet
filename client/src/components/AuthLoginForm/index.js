@@ -5,6 +5,7 @@ import {
 } from 'formik';
 import {
   Form, Input, Button,
+  Notification,
 } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -80,10 +81,13 @@ class AuthLoginForm extends React.PureComponent {
             });
 
             if (response.data.login.token) {
-              // TODO: Linter complaining about localStorage not being defined even though its working
+              Notification.success({
+                message: 'Login successful',
+                description: 'Welcome to sitter sheet',
+              });
+
               await window.localStorage.setItem('sid', response.data.login.token);
               mutationProps.client.writeData({ data: { isLoggedIn: true } });
-
               const dateToRedirect = moment().format('MM-YYYY');
               this.props.history.push(`/sheet/${dateToRedirect}`);
             }
