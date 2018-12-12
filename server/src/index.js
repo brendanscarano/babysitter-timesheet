@@ -17,13 +17,15 @@ const server = new GraphQLServer({
   typeDefs: "src/schema.graphql",
   resolvers,
   middlewares: [permissions],
-  context: (req, res) => {
+  context: ({ request, response }) => {
     return {
-      ...req,
-      res,
+      req: request,
+      res: response,
+      url: request ? request.protocol + "://" + request.get("host") : "",
+      session: request ? request.session : undefined,
       prisma,
       stripe,
-      redis
+      redis: client,
     };
   }
 });
