@@ -1,4 +1,4 @@
-const { hash, compare } = require('bcrypt')
+const { hash, compare } = require('bcryptjs')
 const { removeAllUsersSessions } = require('../utils')
 const { userSessionIdPrefix } = require('../constants');
 const stripe = require("./Stripe");
@@ -38,7 +38,7 @@ const Mutation = {
     }
 
     const { sessionID } = ctx.req;
-
+    
     ctx.session.userId = user.id;
     if (sessionID) {
       await ctx.redis.lpush(`${userSessionIdPrefix}${user.id}`, sessionID);
