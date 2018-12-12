@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.setItem('sid');
 
   return (
     <Route
