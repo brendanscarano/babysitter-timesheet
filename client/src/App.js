@@ -13,7 +13,7 @@ import { RequireSubscription } from './hocs/RequireSubscription';
 import { typeDefs } from './graphql/resolvers';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: process.env.REACT_APP_GRAPHQL_SERVER,
   credentials: 'include',
   clientState: {
     defaults: {
