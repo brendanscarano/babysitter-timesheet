@@ -1,6 +1,6 @@
 const { hash, compare } = require('bcrypt')
-const { sign } = require('jsonwebtoken')
-const { APP_SECRET } = require('../utils')
+const { APP_SECRET, removeAllUsersSessions } = require('../utils')
+const { userSessionIdPrefix } = require('../constants');
 const stripe = require("./Stripe");
 
 const Mutation = {
@@ -15,10 +15,14 @@ const Mutation = {
         password: hashedPassword,
       })
 
-      return {
-        token: sign({ userId: user.id }, APP_SECRET),
-        user,
+      const { sessionID } = ctx.req;
+
+      ctx.session.userId = user.id;
+      if (sessionID) {
+        await ctx.redis.lpush(`${userSessionIdPrefix}${user.id}`, sessionID);
       }
+
+      return { token: sessionID, user };
     } catch (err) {
       throw new Error(err.message);
     }
@@ -32,10 +36,30 @@ const Mutation = {
     if (!passwordValid) {
       throw new Error('Invalid password')
     }
-    return {
-      token: sign({ userId: user.id }, APP_SECRET),
-      user,
+
+    const { sessionID } = ctx.req;
+
+    ctx.session.userId = user.id;
+    if (sessionID) {
+      await ctx.redis.lpush(`${userSessionIdPrefix}${user.id}`, sessionID);
     }
+
+    return { token: sessionID, user };
+  },
+  logout: async (_, __, { session, redis, res }) => {
+    const { userId } = session;
+    if (userId) {
+      removeAllUsersSessions(userId, redis);
+      session.destroy(err => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      res.clearCookie("qid");
+      return true;
+    }
+
+    return false;
   },
   ...stripe
 }
