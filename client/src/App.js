@@ -12,17 +12,9 @@ import { Layout } from './components/Layout';
 import { RequireSubscription } from './hocs/RequireSubscription';
 import { typeDefs } from './graphql/resolvers';
 
-const getHeaders = () => {
-  const token = window.localStorage.getItem('token');
-
-  return ({
-    Authorization: token ? `Bearer ${token}` : '',
-  });
-};
-
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
-  headers: getHeaders(),
+  credentials: 'include',
   clientState: {
     defaults: {
       isLoggedIn: !!window.localStorage.getItem('token'),

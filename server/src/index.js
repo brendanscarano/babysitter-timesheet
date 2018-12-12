@@ -48,4 +48,9 @@ server.express.use(
   })
 );
 
-server.start(() => console.log("Server is running on http://localhost:4000"));
+server.start({
+  cors: {
+    origin: [FRONTEND_HOST, /http:\/\/localhost:+?/],
+    credentials: true
+  }
+},() => console.log("Server is running on http://localhost:4000"));
