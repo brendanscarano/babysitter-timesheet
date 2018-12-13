@@ -9,7 +9,7 @@ import {
 } from 'antd';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import moment from 'moment';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 
 const LOGIN_USER = gql`
   mutation createLogin(
@@ -88,8 +88,7 @@ class AuthLoginForm extends React.PureComponent {
 
               await window.localStorage.setItem('sid', response.data.login.token);
               mutationProps.client.writeData({ data: { isLoggedIn: true } });
-              const dateToRedirect = moment().format('MM-YYYY');
-              this.props.history.push(`/sheet/${dateToRedirect}`);
+              this.props.history.push(`/sheet/${formatDateForUrl}`);
             }
           }}
         >

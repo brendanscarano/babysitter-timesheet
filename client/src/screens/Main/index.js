@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { Mutation, Query } from 'react-apollo';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
 import { monthlyTotalAllChildren } from '../../helpers/buildDatasheet/sums';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 import { Presentation } from './Presentation';
@@ -33,8 +34,7 @@ const Main = props => (
   >
     {(upsertDate) => {
       if (!props.match.params.date) {
-        const dateToRedirect = moment().format('MM-YYYY');
-        return <Redirect to={`/${dateToRedirect}`} />;
+        return <Redirect to={`/${formatDateForUrl}`} />;
       }
 
       const [month, year] = props.match.params.date.split('-');
@@ -53,7 +53,7 @@ class Inner extends React.PureComponent {
     monthToView: this.props.monthToView,
   };
 
-  componentDidUpdate(prevProps, _) {
+  componentDidUpdate(prevProps) {
     const { monthToView } = this.props;
     if (monthToView !== prevProps.monthToView) {
       this.setState({ monthToView });
@@ -141,9 +141,14 @@ class Inner extends React.PureComponent {
             const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
             const monthlyTotal = monthlyTotalAllChildren(props.data.sittes, parseInt(month), parseInt(year));
 
-            const children = mapQueryToKids(props.data.sittes);
+            const children = props.data.me.children.length > 0
+              ? mapQueryToKids(props.data.me.children)
+              : [];
 
-            const data = buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange);
+            const data = props.data.me.children.length > 0
+              ? buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange)
+              : [];
+
             return (
               <Presentation
                 onCalendarMonthClick={this.onCalendarMonthClick}

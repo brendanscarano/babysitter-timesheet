@@ -51,7 +51,16 @@ const App = () => (
           return (
             <Layout isLoggedIn={data.isLoggedIn}>
               <Switch>
-                <Route exact path="/" component={() => <h1>Welcome to sitter sheet</h1>} />
+                <Route
+                  exact
+                  path="/"
+                  component={() => (
+                    <div>
+                      <h1>Welcome to sitter sheet</h1>
+                      <h2>Landing page will go here...</h2>
+                    </div>
+                  )}
+                />
                 <Route exact path="/register" component={LoginSignup} />
                 {loggedInRoutes(data.isLoggedIn)}
                 <Route component={NotFound} />

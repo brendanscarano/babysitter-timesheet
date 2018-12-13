@@ -5,11 +5,14 @@ import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import {
-  Avatar, Dropdown, Menu, Button,
+  Avatar, Dropdown, Menu, Button, Layout,
 } from 'antd';
-
 import { FlexRow } from '../Flex';
 import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
+// TODO: Inject theme instead of importing it
+import { theme } from '../../shared/theme';
+
+const { Header } = Layout;
 
 const StyledLink = styled(Link)`
   display: flex;
@@ -50,18 +53,24 @@ const DropdownMenu = ({ history }) => (
 const StyledDropdown = styled(Dropdown)`
   cursor: pointer;
 
-  > svg {
+  svg {
     height: 18px;
     width: 18px;
   }
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 4.5rem;
-  background: whitesmoke;
+const Wrapper = styled(Header)`
+    position: fixed;
+    z-index: ${theme.zIndex.navBar};
+    height: ${theme.heights.navBar};
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid #e4e9ee;
+    background-color: #fff;
+    box-shadow: 0 0 25px 0 hsla(0, 0%, 79%, .35);
+    font-size: 1.125rem;
 `;
 
 const NavBar = withRouter(({ isLoggedIn, history }) => {
@@ -83,14 +92,14 @@ const NavBar = withRouter(({ isLoggedIn, history }) => {
                 return (
                   <FlexRow>
                     <StyledDropdown overlay={DropdownMenuWithHistory()}>
-                      <Avatar src={`https://api.adorable.io/avatars/70/${data.me.email}.png`} />
+                      <Avatar src="https://api.adorable.io/avatars/148/abott@adorable.png" />
                     </StyledDropdown>
                   </FlexRow>
                 );
               }}
             </Query>
           )
-          : <StyledLink to="/register">Signup</StyledLink>
+          : <StyledLink to="/register">Sign Up</StyledLink>
       }
     </Wrapper>
   );
