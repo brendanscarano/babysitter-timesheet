@@ -33,6 +33,7 @@ class LoginSignupScreen extends React.PureComponent {
   setSignUpActive = () => this.setState({ activeForm: SIGN_UP })
 
   render() {
+    // TODO: Switch out for client Query
     const token = localStorage.getItem('token');
     if (token) {
       return <Redirect to={`/${formatDateForUrl}`} />;
