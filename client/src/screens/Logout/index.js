@@ -1,7 +1,7 @@
 import React from 'react';
+import gql from 'graphql-tag';
 import { lifecycle, renderNothing } from 'recompose';
 import { Notification, Icon } from 'antd';
-import gql from 'graphql-tag';
 import { client } from '../../graphql/initApollo';
 import { resetClientState } from '../../utils/resetClientState';
 import { theme } from '../../shared/theme';
