@@ -1,23 +1,25 @@
 import gql from 'graphql-tag';
 
 export const FETCH_USER_QUERY = gql`
-  {
-    sittes {
-      id
+  query {
+    me {
       firstName
-      lastName
-      rateAmount
-      rateType
-      gender
-      dates {
+      sittees {
         id
-        month
-        day
-        year
-        hours
-        paid
-        dateObjectId
-        isFixedRate
+        firstName
+        rateAmount
+        rateType
+        gender
+        dates {
+            id
+            month
+            day
+            year
+            hours
+            paid
+            dateObjectId
+            isFixedRate
+        }
       }
     }
   }

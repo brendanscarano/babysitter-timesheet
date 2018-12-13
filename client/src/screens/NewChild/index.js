@@ -4,13 +4,14 @@ import { Mutation } from 'react-apollo';
 import { StyledPageLayout } from '../../components/StyledPageLayout';
 import { NewChildForm } from '../../components/NewChildForm';
 import { CREATE_NEW_CHILD } from './graphql';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 
 /**
  * @param {obj} props - history, location, match
  */
 const NewChild = props => (
   <Mutation mutation={CREATE_NEW_CHILD}>
-    {(createChild, mutationProps) => (
+    {(createSittee, mutationProps) => (
       <StyledPageLayout>
         <h1>New Sitte</h1>
         <Formik
@@ -39,21 +40,19 @@ const NewChild = props => (
             return errors;
           }}
           onSubmit={async (values, actions) => {
-            const response = await createChild({
+            const response = await createSittee({
               variables: {
                 firstName: values.firstName,
                 lastName: values.lastName,
                 gender: values.gender,
                 rateAmount: values.rateAmount,
                 rateType: values.rateType,
-                /** TODO: Dont hardcode this */
-                ownerId: 'cjntestdudeug0a54rjlfk74x',
               },
             });
 
-            if (response.data.createChild) {
-              // TODO: PASS PROP TO ROUTE TO DISPLAY MESSAGE THAT CHILD WAS CREATED
-              props.history.push('/');
+            if (response.data.createSittee) {
+            // TODO: PASS PROP TO ROUTE TO DISPLAY MESSAGE THAT CHILD WAS CREATED
+              props.history.push(`/${formatDateForUrl}`);
             }
           }}
         >

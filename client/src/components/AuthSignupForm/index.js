@@ -2,7 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Formik } from 'formik';
 import { Mutation } from 'react-apollo';
-import moment from 'moment';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 import { Presentation } from './Presentation';
 
 const SIGN_UP_USER = gql`
@@ -84,9 +84,10 @@ class AuthSignupForm extends React.PureComponent {
             });
             // TODO: ON SUCCESS -> SAVE TOKEN SOMEWHERE FOR PERSISTENCE
             if (response.data.signup.token) {
-              localStorage.setItem('token', response.data.signup.token);
-              const dateToRedirect = moment().format('MM-YYYY');
-              this.props.history.push(`/sheet/${dateToRedirect}`);
+              await window.localStorage.setItem('token', response.data.login.token);
+              mutationProps.client.writeData({ data: { isLoggedIn: true } });
+
+              this.props.history.push(`/${formatDateForUrl}`);
             }
           }}
         >

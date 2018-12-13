@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
 import { AuthLoginForm } from '../../components/AuthLoginForm';
 import { AuthSignupForm } from '../../components/AuthSignupForm';
 import { StyledPageLayoutWithFixedHeader } from '../../components/StyledPageLayout';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 
 const LOG_IN = 'LOG_IN';
 const SIGN_UP = 'SIGN_UP';
@@ -31,20 +33,20 @@ class LoginSignupScreen extends React.PureComponent {
   setSignUpActive = () => this.setState({ activeForm: SIGN_UP })
 
   render() {
+    // TODO: Switch out for client Query
+    const token = localStorage.getItem('token');
+    if (token) {
+      return <Redirect to={`/${formatDateForUrl}`} />;
+    }
+
     return (
       <StyledPageLayoutWithFixedHeader>
-
         <Title>
           {this.state.activeForm === LOG_IN
             ? 'Welcome Back'
             : 'Create an Account'
           }
         </Title>
-
-        {this.state.activeForm === LOG_IN
-          ? 'Welcome Back'
-          : 'Create an Account'
-        }
 
         {this.state.activeForm === LOG_IN
           ? <AuthLoginForm history={this.props.history} />
