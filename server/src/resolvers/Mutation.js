@@ -1,10 +1,10 @@
 const auth = require('./mutations/auth');
-const createChild = require('./mutations/createChild');
+const createSittee = require('./mutations/createSittee');
 const stripe = require("./mutations/Stripe");
 
 const Mutation = {
   ...auth,
-  ...createChild,
+  ...createSittee,
   ...stripe
 }
 
