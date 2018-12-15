@@ -18,6 +18,7 @@ const server = new GraphQLServer({
   resolvers,
   middlewares: [permissions],
   context: ({ request, response }) => {
+    console.log('request', request.session)
     return {
       req: request,
       res: response,
