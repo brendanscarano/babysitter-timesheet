@@ -4,7 +4,7 @@ export const FETCH_USER_QUERY = gql`
   query {
     me {
       firstName
-      sittees {
+      sittes {
         id
         firstName
         rateAmount
