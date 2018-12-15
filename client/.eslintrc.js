@@ -1,6 +1,10 @@
 module.exports = {
     "extends": "airbnb",
     "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "node": true
+    },
     "rules": {
         "indent": ["error", "tab"],
         "indent": ["error", 2],

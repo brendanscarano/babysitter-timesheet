@@ -11,6 +11,7 @@ export const theme = {
     background: '#fff',
     dataSheetBackground: 'whitesmoke',
     white: '#fff',
+    main: '#319193',
   },
 };
 

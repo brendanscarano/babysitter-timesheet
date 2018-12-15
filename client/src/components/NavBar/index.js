@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
-import { ApolloConsumer, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 import {
   Avatar, Dropdown, Menu, Button, Layout,
 } from 'antd';
@@ -45,21 +45,7 @@ const DropdownMenu = ({ history }) => (
       <Link to="/my-profile">Profile</Link>
     </Menu.Item>
     <Menu.Item>
-      <ApolloConsumer>
-        {client => (
-          <LogOutButton
-            onClick={async () => {
-              await window.localStorage.removeItem('token');
-              client.writeData({ data: { isLoggedIn: false } });
-              client.resetStore();
-              return history.push('/');
-            }}
-            type="danger"
-          >
-            Log Out
-          </LogOutButton>
-        )}
-      </ApolloConsumer>
+      <LogOutButton onClick={() => history.push('/logout')} type="danger">Log Out</LogOutButton>
     </Menu.Item>
   </Menu>
 );
@@ -87,8 +73,7 @@ const Wrapper = styled(Header)`
     font-size: 1.125rem;
 `;
 
-
-const NavBar = withRouter(({ isLoggedIn, user, history }) => {
+const NavBar = withRouter(({ isLoggedIn, history }) => {
   const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
   return (
     <Wrapper>

@@ -10,6 +10,7 @@ type Query {
 type Mutation {
   signup(email: String!, password: String!, firstName: String, lastName: String): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
+  logout: Boolean!
   createSubscription(source: String!, ccLast4: String!): User
   cancelSubscription: User
   changeCreditCard(source: String!, ccLast4: String!): User

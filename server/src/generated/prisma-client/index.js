@@ -32,7 +32,7 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `http://108.61.73.167:4466/sitter-sheet/qa`,
+  endpoint: `http://localhost:4466/sitter-sheet/dev`,
   secret: `${process.env["PRISMA_MANAGEMENT_API_SECRET"]}`
 });
 exports.prisma = new exports.Prisma();

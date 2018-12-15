@@ -4,7 +4,7 @@ const withRole = (WrappedComponent, allowedRoles) => (props) => {
   const { role } = {
     role: 'TRIAL',
   }; // get role from state or query
-  const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem('sid');
   if (allowedRoles.includes(role) && token) {
     return <WrappedComponent {...props} />;
   }

@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ApolloProvider, Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import ApolloClient from 'apollo-boost';
 import MyProfile from './screens/MyProfile';
 import NewChild from './screens/NewChild';
 import LoginSignup from './screens/LoginSignup';
@@ -10,32 +9,8 @@ import ChildInfo from './screens/ChildInfo';
 import Main from './screens/Main';
 import { Layout } from './components/Layout';
 import { RequireSubscription } from './hocs/RequireSubscription';
-import { typeDefs } from './graphql/resolvers';
-
-const getHeaders = () => {
-  const token = window.localStorage.getItem('token');
-
-  return ({
-    Authorization: token ? `Bearer ${token}` : '',
-  });
-};
-const { REACT_APP_GRAPHQL_SERVER } = process.env;
-
-const client = new ApolloClient({
-  uri: REACT_APP_GRAPHQL_SERVER,
-  headers: getHeaders(),
-  clientState: {
-    defaults: {
-      isLoggedIn: !!window.localStorage.getItem('token'),
-    },
-    resolvers: {
-      Query: {
-        isLoggedIn: () => !!window.localStorage.getItem('token'),
-      },
-    },
-    typeDefs,
-  },
-});
+import { client } from './graphql/initApollo';
+import { Logout } from './screens/Logout/index';
 
 const NotFound = () => <h1>404</h1>;
 
@@ -54,6 +29,7 @@ const loggedInRoutes = isLoggedIn => isLoggedIn && (
         <Route exact path="/new-sitte" component={NewChild} />
         <Route exact path="/my-profile" render={MyProfile} />
         <Route exact path="/sheet/:date" component={Main} />
+        <Route exact path="/logout" component={Logout} />
       </Switch>
     ))}
   />

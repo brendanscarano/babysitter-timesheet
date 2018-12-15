@@ -84,9 +84,8 @@ class AuthSignupForm extends React.PureComponent {
             });
             // TODO: ON SUCCESS -> SAVE TOKEN SOMEWHERE FOR PERSISTENCE
             if (response.data.signup.token) {
-              await window.localStorage.setItem('token', response.data.login.token);
+              localStorage.setItem('sid', response.data.signup.token);
               mutationProps.client.writeData({ data: { isLoggedIn: true } });
-
               this.props.history.push(`/${formatDateForUrl}`);
             }
           }}
