@@ -35,7 +35,7 @@ export const CREATE_OR_UPDATE_DATE_MUTATION = gql`
     $hours: Float!
     $dayOfWeek: String!
     $dateObjectId: String!
-    $fixedRateChecked: Boolean
+    $isFixedRate: Boolean
   ) {
     upsertDate(
       where: { id: $dateId }
@@ -47,9 +47,9 @@ export const CREATE_OR_UPDATE_DATE_MUTATION = gql`
         hours: $hours
         dayOfWeek: $dayOfWeek
         dateObjectId: $dateObjectId
-        fixedRateChecked: $fixedRateChecked
+        isFixedRate: $isFixedRate
       }
-      update: { fixedRateChecked: $fixedRateChecked, hours: $hours }
+      update: { isFixedRate: $isFixedRate, hours: $hours }
     ) {
       id
       dateObjectId

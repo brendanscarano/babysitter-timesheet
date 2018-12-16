@@ -50,7 +50,7 @@ const Main = props => (
     mutation={CREATE_OR_UPDATE_DATE_MUTATION}
     refetchQueries={() => [
       {
-        query: FETCH_USER_QUERY,
+        query: GET_SITTES,
       },
     ]}
   >
@@ -128,7 +128,7 @@ class Inner extends React.PureComponent {
         dayOfWeek,
         dateObjectId: formattedDate,
         // TODO: Toggle true or false
-        fixedRateChecked: !isChecked,
+        isFixedRate: !isChecked,
       },
     });
   };
