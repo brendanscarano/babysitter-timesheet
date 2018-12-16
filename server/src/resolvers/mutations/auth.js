@@ -1,8 +1,9 @@
-const { hash, compare } = require('bcryptjs')
+const { hash, compare } = require('bcrypt')
+const { removeAllUsersSessions } = require('../../utils');
 const { userSessionIdPrefix } = require('../../constants');
 
 module.exports = {
-  signup: async (parent, { firstName, lastName, email, password }, ctx) => {
+  signup: async (_, { firstName, lastName, email, password }, ctx) => {
     const hashedPassword = await hash(password, 10);
 
     try {
@@ -25,7 +26,7 @@ module.exports = {
       throw new Error(err.message);
     }
   },
-  login: async (parent, { email, password }, ctx) => {
+  login: async (_, { email, password }, ctx) => {
     const user = await ctx.prisma.user({ email: email.toLowerCase() })
     if (!user) {
       throw new Error(`No user found for email: ${email}`)

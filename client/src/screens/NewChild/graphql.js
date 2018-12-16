@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const CREATE_NEW_CHILD = gql`
-  mutation CreateSittee(
+  mutation CreateSitte(
     $firstName: String!,
     $lastName: String!,
     # $birthday: DateTime,
@@ -9,7 +9,7 @@ export const CREATE_NEW_CHILD = gql`
     $rateAmount: Float!,
     $rateType: RateType!,
 ) {
-  createSittee(
+  createSitte(
     firstName: $firstName,
     lastName: $lastName,
     gender: $gender,

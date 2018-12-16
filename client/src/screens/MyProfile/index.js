@@ -9,7 +9,6 @@ import { FlexRow } from '../../components/Flex';
 import { buildYearlyTotals } from './buildYearlyTotals';
 import { theme } from '../../shared/theme';
 import { formatCurr } from '../../helpers/formatCurr';
-import { SubscribeUser } from '../../components/SubscribeUser';
 import { StyledPageLayoutWithFixedHeader } from '../../components/StyledPageLayout';
 import { Payment } from '../../components/Payment';
 import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
@@ -83,12 +82,12 @@ const MyProfile = () => (
           <StyledPageLayoutWithFixedHeader>
             <Fragment>
               <TitleBar>
-                <h2>{`Hello, ${me.firstName} ${me.lastName}`}</h2>
+                <Avatar icon="user" />
+                <UserName>{`Hello, ${me.firstName} ${me.lastName}`}</UserName>
               </TitleBar>
               <p>{`You are currently on a ${me.type} account`}</p>
               <Payment user={me} />
             </Fragment>
-            <SubscribeUser />
             <Query query={FETCH_USER_QUERY}>
               {((props) => {
                 const childrenData = (props.data && props.data.user && props.data.user.children.length > 0) ? props.data.user.children : null;
@@ -99,11 +98,6 @@ const MyProfile = () => (
 
                 return (
                   <Wrapper>
-                    <TitleBar>
-                      <Avatar icon="user" />
-                      <UserName>Brendan Scarano</UserName>
-                    </TitleBar>
-
                     <Card title={`2018 Total: ${formatCurr(annualAnnualSum)}`}>
                       <Graph
                         loading={props.loading

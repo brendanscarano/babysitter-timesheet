@@ -14,7 +14,7 @@ const Row = styled(FlexRow)`
 export const Payment = ({ user }) => (
   <div>
     {
-      (user.type === 'MONTHLY_PAID')
+      (user.type && user.type === 'MONTHLY_PAID')
         ? (
           <Row>
             <SubscribeUser email={user.email} changeCreditCard />

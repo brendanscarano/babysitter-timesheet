@@ -11,7 +11,7 @@ import { formatDateForUrl } from '../../helpers/formatDateForUrl';
  */
 const NewChild = props => (
   <Mutation mutation={CREATE_NEW_CHILD}>
-    {(createSittee, mutationProps) => (
+    {(createSitte, mutationProps) => (
       <StyledPageLayout>
         <h1>New Sitte</h1>
         <Formik
@@ -40,7 +40,7 @@ const NewChild = props => (
             return errors;
           }}
           onSubmit={async (values, actions) => {
-            const response = await createSittee({
+            const response = await createSitte({
               variables: {
                 firstName: values.firstName,
                 lastName: values.lastName,
@@ -50,7 +50,7 @@ const NewChild = props => (
               },
             });
 
-            if (response.data.createSittee) {
+            if (response.data.createSitte) {
             // TODO: PASS PROP TO ROUTE TO DISPLAY MESSAGE THAT CHILD WAS CREATED
               props.history.push(`/${formatDateForUrl}`);
             }

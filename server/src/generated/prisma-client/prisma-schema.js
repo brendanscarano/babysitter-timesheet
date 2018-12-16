@@ -115,110 +115,6 @@ type DatePreviousValues {
   isFixedRate: Boolean
 }
 
-input DateScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  dateObjectId: String
-  dateObjectId_not: String
-  dateObjectId_in: [String!]
-  dateObjectId_not_in: [String!]
-  dateObjectId_lt: String
-  dateObjectId_lte: String
-  dateObjectId_gt: String
-  dateObjectId_gte: String
-  dateObjectId_contains: String
-  dateObjectId_not_contains: String
-  dateObjectId_starts_with: String
-  dateObjectId_not_starts_with: String
-  dateObjectId_ends_with: String
-  dateObjectId_not_ends_with: String
-  month: Float
-  month_not: Float
-  month_in: [Float!]
-  month_not_in: [Float!]
-  month_lt: Float
-  month_lte: Float
-  month_gt: Float
-  month_gte: Float
-  day: Float
-  day_not: Float
-  day_in: [Float!]
-  day_not_in: [Float!]
-  day_lt: Float
-  day_lte: Float
-  day_gt: Float
-  day_gte: Float
-  year: Float
-  year_not: Float
-  year_in: [Float!]
-  year_not_in: [Float!]
-  year_lt: Float
-  year_lte: Float
-  year_gt: Float
-  year_gte: Float
-  hours: Float
-  hours_not: Float
-  hours_in: [Float!]
-  hours_not_in: [Float!]
-  hours_lt: Float
-  hours_lte: Float
-  hours_gt: Float
-  hours_gte: Float
-  dayOfWeek: String
-  dayOfWeek_not: String
-  dayOfWeek_in: [String!]
-  dayOfWeek_not_in: [String!]
-  dayOfWeek_lt: String
-  dayOfWeek_lte: String
-  dayOfWeek_gt: String
-  dayOfWeek_gte: String
-  dayOfWeek_contains: String
-  dayOfWeek_not_contains: String
-  dayOfWeek_starts_with: String
-  dayOfWeek_not_starts_with: String
-  dayOfWeek_ends_with: String
-  dayOfWeek_not_ends_with: String
-  notes: String
-  notes_not: String
-  notes_in: [String!]
-  notes_not_in: [String!]
-  notes_lt: String
-  notes_lte: String
-  notes_gt: String
-  notes_gte: String
-  notes_contains: String
-  notes_not_contains: String
-  notes_starts_with: String
-  notes_not_starts_with: String
-  notes_ends_with: String
-  notes_not_ends_with: String
-  paid: Float
-  paid_not: Float
-  paid_in: [Float!]
-  paid_not_in: [Float!]
-  paid_lt: Float
-  paid_lte: Float
-  paid_gt: Float
-  paid_gte: Float
-  isFixedRate: Boolean
-  isFixedRate_not: Boolean
-  AND: [DateScalarWhereInput!]
-  OR: [DateScalarWhereInput!]
-  NOT: [DateScalarWhereInput!]
-}
-
 type DateSubscriptionPayload {
   mutation: MutationType!
   node: Date
@@ -252,18 +148,6 @@ input DateUpdateInput {
   isFixedRate: Boolean
 }
 
-input DateUpdateManyDataInput {
-  dateObjectId: String
-  month: Float
-  day: Float
-  year: Float
-  hours: Float
-  dayOfWeek: String
-  notes: String
-  paid: Float
-  isFixedRate: Boolean
-}
-
 input DateUpdateManyMutationInput {
   dateObjectId: String
   month: Float
@@ -283,13 +167,6 @@ input DateUpdateManyWithoutOwnerInput {
   disconnect: [DateWhereUniqueInput!]
   update: [DateUpdateWithWhereUniqueWithoutOwnerInput!]
   upsert: [DateUpsertWithWhereUniqueWithoutOwnerInput!]
-  deleteMany: [DateScalarWhereInput!]
-  updateMany: [DateUpdateManyWithWhereNestedInput!]
-}
-
-input DateUpdateManyWithWhereNestedInput {
-  where: DateScalarWhereInput!
-  data: DateUpdateManyDataInput!
 }
 
 input DateUpdateWithoutOwnerDataInput {
@@ -587,94 +464,6 @@ type SittePreviousValues {
   gender: Gender!
 }
 
-input SitteScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  firstName: String
-  firstName_not: String
-  firstName_in: [String!]
-  firstName_not_in: [String!]
-  firstName_lt: String
-  firstName_lte: String
-  firstName_gt: String
-  firstName_gte: String
-  firstName_contains: String
-  firstName_not_contains: String
-  firstName_starts_with: String
-  firstName_not_starts_with: String
-  firstName_ends_with: String
-  firstName_not_ends_with: String
-  lastName: String
-  lastName_not: String
-  lastName_in: [String!]
-  lastName_not_in: [String!]
-  lastName_lt: String
-  lastName_lte: String
-  lastName_gt: String
-  lastName_gte: String
-  lastName_contains: String
-  lastName_not_contains: String
-  lastName_starts_with: String
-  lastName_not_starts_with: String
-  lastName_ends_with: String
-  lastName_not_ends_with: String
-  birthday: DateTime
-  birthday_not: DateTime
-  birthday_in: [DateTime!]
-  birthday_not_in: [DateTime!]
-  birthday_lt: DateTime
-  birthday_lte: DateTime
-  birthday_gt: DateTime
-  birthday_gte: DateTime
-  rateAmount: Float
-  rateAmount_not: Float
-  rateAmount_in: [Float!]
-  rateAmount_not_in: [Float!]
-  rateAmount_lt: Float
-  rateAmount_lte: Float
-  rateAmount_gt: Float
-  rateAmount_gte: Float
-  rateType: RateType
-  rateType_not: RateType
-  rateType_in: [RateType!]
-  rateType_not_in: [RateType!]
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  gender: Gender
-  gender_not: Gender
-  gender_in: [Gender!]
-  gender_not_in: [Gender!]
-  AND: [SitteScalarWhereInput!]
-  OR: [SitteScalarWhereInput!]
-  NOT: [SitteScalarWhereInput!]
-}
-
 type SitteSubscriptionPayload {
   mutation: MutationType!
   node: Sitte
@@ -704,15 +493,6 @@ input SitteUpdateInput {
   gender: Gender
 }
 
-input SitteUpdateManyDataInput {
-  firstName: String
-  lastName: String
-  birthday: DateTime
-  rateAmount: Float
-  rateType: RateType
-  gender: Gender
-}
-
 input SitteUpdateManyMutationInput {
   firstName: String
   lastName: String
@@ -729,13 +509,6 @@ input SitteUpdateManyWithoutOwnerInput {
   disconnect: [SitteWhereUniqueInput!]
   update: [SitteUpdateWithWhereUniqueWithoutOwnerInput!]
   upsert: [SitteUpsertWithWhereUniqueWithoutOwnerInput!]
-  deleteMany: [SitteScalarWhereInput!]
-  updateMany: [SitteUpdateManyWithWhereNestedInput!]
-}
-
-input SitteUpdateManyWithWhereNestedInput {
-  where: SitteScalarWhereInput!
-  data: SitteUpdateManyDataInput!
 }
 
 input SitteUpdateOneRequiredWithoutDatesInput {

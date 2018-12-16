@@ -14,7 +14,7 @@ type Mutation {
   createSubscription(source: String!, ccLast4: String!): User
   cancelSubscription: User
   changeCreditCard(source: String!, ccLast4: String!): User
-  createSittee(firstName: String!, lastName: String!, birthday: DateTime, rateAmount: Float!, rateType: RateType!, gender: Gender!): Sittee
+  createSitte(firstName: String!, lastName: String!, birthday: DateTime, rateAmount: Float!, rateType: RateType!, gender: Gender!): Sittee
 }
 
 type AuthPayload {

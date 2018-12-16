@@ -7,7 +7,7 @@ services:
     - "4466:4466"
     environment:
       PRISMA_CONFIG: |
-        managementApiSecret: peaches-n-cream-47
+        managementApiSecret: {env:PRISMA_MANAGEMENT_API_SECRET}
         port: 4466
         databases:
           default:
