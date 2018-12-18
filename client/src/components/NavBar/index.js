@@ -93,7 +93,6 @@ const NavBar = withRouter(({ isLoggedIn, history }) => {
                   <FlexRow>
                     <StyledDropdown overlay={DropdownMenuWithHistory()}>
                       <Avatar icon="user" />
-                      {/* <Avatar src="https://api.adorable.io/avatars/148/abott@adorable.png" /> */}
                     </StyledDropdown>
                   </FlexRow>
                 );
