@@ -138,6 +138,7 @@ class Inner extends React.PureComponent {
               return <div>Something went wrong</div>;
             }
 
+            console.log('props.data', props.data);
             const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
             const monthlyTotal = monthlyTotalAllChildren(props.data.sittes, parseInt(month), parseInt(year));
 
