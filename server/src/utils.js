@@ -9,6 +9,7 @@ class AuthError extends Error {
 }
 
 function getUserId(context) {
+  console.log('context', context)
   const { userId } = context.session;
   if(userId) {
     return userId;
@@ -23,7 +24,7 @@ const removeAllUsersSessions = async (userId, redis) => {
   );
 
   const promises = [];
-  
+
   for (let i = 0; i < sessionIds.length; i += 1) {
     promises.push(redis.del(`${redisSessionPrefix}${sessionIds[i]}`));
   }
