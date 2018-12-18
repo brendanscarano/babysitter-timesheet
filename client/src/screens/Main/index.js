@@ -34,12 +34,14 @@ const Main = props => (
   >
     {(upsertDate) => {
       if (!props.match.params.date) {
-        return <Redirect to={`/${formatDateForUrl}`} />;
+        return <Redirect to={`/sheet/${formatDateForUrl}`} />;
       }
 
       const [month, year] = props.match.params.date.split('-');
       const monthToView = moment(`${year}-${month}-01`).format('YYYY-MM');
 
+      console.log('upsertDate', upsertDate);
+      console.log('props', props);
       return (
         <Inner upsertDate={upsertDate} monthToView={monthToView} {...props} />
       );
@@ -122,6 +124,7 @@ class Inner extends React.PureComponent {
       <>
         <Query query={FETCH_USER_QUERY}>
           {((props) => {
+            console.log('props', props);
             if (props.loading) {
               return (
                 <LoadingWrapper>
@@ -138,7 +141,6 @@ class Inner extends React.PureComponent {
               return <div>Something went wrong</div>;
             }
 
-            console.log('props.data', props.data);
             const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
             const monthlyTotal = monthlyTotalAllChildren(props.data.sittes, parseInt(month), parseInt(year));
 

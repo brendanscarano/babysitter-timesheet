@@ -52,7 +52,7 @@ const NewChild = props => (
 
             if (response.data.createSitte) {
             // TODO: PASS PROP TO ROUTE TO DISPLAY MESSAGE THAT CHILD WAS CREATED
-              props.history.push(`/${formatDateForUrl}`);
+              props.history.push(`/sheet/${formatDateForUrl}`);
             }
           }}
         >
