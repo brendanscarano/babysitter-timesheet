@@ -9,7 +9,6 @@ class AuthError extends Error {
 }
 
 function getUserId(context) {
-  console.log('context', context)
   const { userId } = context.session;
   if(userId) {
     return userId;

@@ -13,7 +13,7 @@ export const dailySumAllChildren = (children, dateString) => children.reduce((su
       return sum + (currentChild.info.rate * childTargetDate.hours);
     }
 
-    if (currentChild.dates[dateString].fixedRateChecked) {
+    if (currentChild.dates[dateString].isFixedRate) {
       return sum + currentChild.info.rate;
     }
   }
@@ -44,7 +44,7 @@ export const weeklyProfitSumOneChild = (child, daysInWeek) => daysInWeek.reduce(
       return sum + (child.info.rate * child.dates[formattedDay].hours);
     }
 
-    if (child.dates[formattedDay].fixedRateChecked) {
+    if (child.dates[formattedDay].isFixedRate) {
       return sum + child.info.rate;
     }
   }
@@ -73,7 +73,7 @@ export const monthlyTotalAllChildren = (children, month, year) => {
           if (child.rateType === 'HOURLY') {
             return date.hours * child.rateAmount;
           }
-          if (date.fixedRateChecked) {
+          if (date.isFixedRate) {
             return child.rateAmount;
           }
           return 0;

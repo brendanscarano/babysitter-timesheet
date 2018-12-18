@@ -29,10 +29,11 @@ const Main = props => (
     refetchQueries={() => [
       {
         query: FETCH_USER_QUERY,
+        fetchPolicy: 'no-cache',
       },
     ]}
   >
-    {(upsertDate) => {
+    {(createOrUpdateDate) => {
       if (!props.match.params.date) {
         return <Redirect to={`/sheet/${formatDateForUrl}`} />;
       }
@@ -40,10 +41,8 @@ const Main = props => (
       const [month, year] = props.match.params.date.split('-');
       const monthToView = moment(`${year}-${month}-01`).format('YYYY-MM');
 
-      console.log('upsertDate', upsertDate);
-      console.log('props', props);
       return (
-        <Inner upsertDate={upsertDate} monthToView={monthToView} {...props} />
+        <Inner createOrUpdateDate={createOrUpdateDate} monthToView={monthToView} {...props} />
       );
     }}
   </Mutation>
@@ -63,24 +62,23 @@ class Inner extends React.PureComponent {
   }
 
   onCellsChanged = (changes) => {
-    const { upsertDate } = this.props;
-
     changes.forEach((change) => {
       const {
         number, year, dayOfWeek, formattedDate,
       } = change.cell.row;
       const { savedDateInDb } = change.cell;
+      console.log('savedDateInDb', savedDateInDb);
 
-      upsertDate({
+      this.props.createOrUpdateDate({
         variables: {
           dateId: savedDateInDb ? savedDateInDb.dateId : '',
+          dateObjectId: formattedDate,
           childId: change.cell.childId,
           month: parseFloat(formattedDate.slice(0, 2)),
           day: parseFloat(number),
           year: parseFloat(year),
           hours: parseFloat(change.value) || 0,
           dayOfWeek,
-          dateObjectId: formattedDate,
         },
       });
     });
@@ -96,19 +94,19 @@ class Inner extends React.PureComponent {
       savedDateInDb,
       isChecked,
     } = rowData;
-    const { upsertDate } = this.props;
-    upsertDate({
+
+    this.props.createOrUpdateDate({
       variables: {
         dateId: savedDateInDb ? savedDateInDb.dateId : '',
+        dateObjectId: formattedDate,
         childId,
         month: parseFloat(formattedDate.slice(0, 2)),
         day: parseFloat(number),
         year: parseFloat(year),
         hours: 0,
         dayOfWeek,
-        dateObjectId: formattedDate,
         // TODO: Toggle true or false
-        fixedRateChecked: !isChecked,
+        isFixedRate: !isChecked,
       },
     });
   };
@@ -122,9 +120,8 @@ class Inner extends React.PureComponent {
   render() {
     return (
       <>
-        <Query query={FETCH_USER_QUERY}>
+        <Query query={FETCH_USER_QUERY} fetchPolicy="no-cache">
           {((props) => {
-            console.log('props', props);
             if (props.loading) {
               return (
                 <LoadingWrapper>
@@ -137,19 +134,20 @@ class Inner extends React.PureComponent {
             if (
               !props.data
               || !props.data
-              || !props.data.sittes) {
+              || !props.data.me
+              || !props.data.me.sittes) {
               return <div>Something went wrong</div>;
             }
 
             const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
-            const monthlyTotal = monthlyTotalAllChildren(props.data.sittes, parseInt(month), parseInt(year));
+            const monthlyTotal = monthlyTotalAllChildren(props.data.me.sittes, parseInt(month), parseInt(year));
 
-            const children = props.data.me.children.length > 0
-              ? mapQueryToKids(props.data.me.children)
+            const sittes = props.data.me.sittes.length > 0
+              ? mapQueryToKids(props.data.me.sittes)
               : [];
 
-            const data = props.data.me.children.length > 0
-              ? buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange)
+            const data = props.data.me.sittes.length > 0
+              ? buildDatasheet(sittes, this.state.monthToView, this.onFixedCheckboxChange)
               : [];
 
             return (

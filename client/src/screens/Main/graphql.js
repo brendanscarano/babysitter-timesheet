@@ -26,33 +26,31 @@ export const FETCH_USER_QUERY = gql`
 `;
 
 export const CREATE_OR_UPDATE_DATE_MUTATION = gql`
-  mutation UpsertDate(
+  mutation CreateOrUpdateDate(
     $dateId: ID
-    $childId: ID!
+    $dateObjectId: String!
+    $childId: String!
     $month: Float!
     $day: Float!
     $year: Float!
     $hours: Float!
     $dayOfWeek: String!
-    $dateObjectId: String!
-    $fixedRateChecked: Boolean
+    $notes: String
+    $paid: String
+    $isFixedRate: Boolean
   ) {
-    upsertDate(
-      where: { id: $dateId }
-      create: {
-        owner: { connect: { id: $childId } }
-        month: $month
-        day: $day
-        year: $year
-        hours: $hours
-        dayOfWeek: $dayOfWeek
-        dateObjectId: $dateObjectId
-        fixedRateChecked: $fixedRateChecked
-      }
-      update: { fixedRateChecked: $fixedRateChecked, hours: $hours }
-    ) {
-      id
-      dateObjectId
-    }
+    createOrUpdateDate(
+      dateId: $dateId,
+      dateObjectId: $dateObjectId,
+      childId: $childId,
+      month: $month,
+      day: $day,
+      year: $year,
+      hours: $hours,
+      dayOfWeek: $dayOfWeek,
+      notes: $notes,
+      paid: $paid,
+      isFixedRate: $isFixedRate
+    )
   }
 `;

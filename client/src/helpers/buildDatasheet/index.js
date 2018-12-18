@@ -123,12 +123,12 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
             savedDateInDb: dates[row.formattedDate],
             valueViewer: () => (
               <Checkbox
-                isChecked={dates[row.formattedDate] ? dates[row.formattedDate].fixedRateChecked : false}
+                isChecked={dates[row.formattedDate] ? dates[row.formattedDate].isFixedRate : false}
                 onChange={onFixedCheckboxChange({
                   childId: info.id,
                   ...row,
                   savedDateInDb: dates[row.formattedDate],
-                  isChecked: dates[row.formattedDate] ? dates[row.formattedDate].fixedRateChecked : false,
+                  isChecked: dates[row.formattedDate] ? dates[row.formattedDate].isFixedRate : false,
                 })}
               />
             ),
@@ -141,7 +141,7 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
                   return info.rate * dates[row.formattedDate].hours;
                 }
 
-                if (dates[row.formattedDate].fixedRateChecked) {
+                if (dates[row.formattedDate].isFixedRate) {
                   return info.rate;
                 }
               }

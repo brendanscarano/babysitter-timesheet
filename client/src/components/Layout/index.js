@@ -4,7 +4,6 @@ import { NavBar } from '../NavBar';
 import { theme } from '../../shared/theme';
 
 const Wrapper = styled.div`
-  background-color: #eee;
   height: 100vh;
   overflow: scroll;
   > .ant-layout-header {
@@ -23,7 +22,8 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  padding: calc(${theme.heights.navBar}px + 1rem);
+  padding: calc(${theme.heights.navBar}px + 1rem) 3rem;
+  background-color: #fff;
 `;
 
 const Layout = ({ children, isLoggedIn }) => (

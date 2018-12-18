@@ -48,7 +48,6 @@ const App = () => (
             return 'Something went wrong';
           }
 
-          console.log('data', data);
           return (
             <Layout isLoggedIn={data.isLoggedIn}>
               <Switch>

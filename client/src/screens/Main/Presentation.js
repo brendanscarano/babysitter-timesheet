@@ -19,7 +19,6 @@ const StyledContent = styled.div`
 `;
 
 const TopBar = styled(FlexRow)`
-  margin-top: 2rem;
   justify-content: space-between;
   align-items: flex-start;
   height: ${TOP_BAR_HEIGHT}px;
