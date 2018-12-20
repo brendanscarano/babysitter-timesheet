@@ -52,8 +52,9 @@ const SheetsWrapper = styled(FlexRow)`
 const NoDataWrapper = styled(SheetsWrapper)`
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 1rem 0 3rem 0;
+  justify-content: flex-start;
+  padding-top: 5rem;
+  height: 100%;
 `;
 
 const Presentation = ({
@@ -86,9 +87,13 @@ const Presentation = ({
       {data.length === 0
         ? (
           <NoDataWrapper>
-            <h2>You haven&comma;t added any children yet.</h2>
+            <h2>
+You haven
+              {'\''}
+t added any children yet.
+            </h2>
             <Button type="primary">
-              <Link to="/new-child" type="primary">
+              <Link to="/new-sitte" type="primary">
                 Add a Child
               </Link>
             </Button>
