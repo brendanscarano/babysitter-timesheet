@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const FETCH_USER_QUERY = gql`
   query {
     me {
+      id
       firstName
       sittes {
         id

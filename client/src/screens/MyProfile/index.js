@@ -121,7 +121,7 @@ MyProfile.propTypes = {
   me: PropTypes.shape({
     firstName: PropTypes.string,
     lastName: PropTypes.string,
-    type: PropTypes.oneOf('TRIAL', 'MONTHLY_PAID'),
+    // type: PropTypes.oneOf('TRIAL', 'MONTHLY_PAID'),
   }).isRequired,
 };
 

@@ -29,7 +29,9 @@ const Main = props => (
     refetchQueries={() => [
       {
         query: FETCH_USER_QUERY,
-        fetchPolicy: 'no-cache',
+        variables: {
+          fetchPolicy: 'no-cache',
+        },
       },
     ]}
   >
@@ -122,6 +124,7 @@ class Inner extends React.PureComponent {
       <>
         <Query query={FETCH_USER_QUERY} fetchPolicy="no-cache">
           {((props) => {
+            console.log('props', props);
             if (props.loading) {
               return (
                 <LoadingWrapper>

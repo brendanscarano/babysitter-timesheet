@@ -12,20 +12,25 @@ import { formatCurr } from '../../helpers/formatCurr';
 const TOP_BAR_HEIGHT = 64;
 
 const StyledContent = styled.div`
-  height: calc(80vh - ${theme.heights.navBar}px);
+  height: 100%;
   overflow: scroll;
-  padding: 0 2rem;
   background-color: ${theme.colors.background};
 `;
 
-const TopBar = styled(FlexRow)`
-  justify-content: space-between;
-  align-items: flex-start;
+// Need the extra TopBarBackground so when the datasheet scrolls up,
+// the border-radius of the TopBar doesn't get conflicted
+const TopBarBackground = styled.div`
   height: ${TOP_BAR_HEIGHT}px;
-  background-color: ${theme.colors.dataSheetBackground};
+  background-color: ${theme.colors.background};
   position: sticky;
   top: 0;
   z-index: 1;
+`;
+const TopBar = styled(FlexRow)`
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+  background-color: ${theme.colors.dataSheetBackground};
   padding: 1rem;
   border: 1px solid ${theme.colors.dataSheetBackground};
   border-top-left-radius: 20px;
@@ -63,19 +68,21 @@ const Presentation = ({
 
   return (
     <StyledContent>
-      <TopBar>
-        <DateWrapper>
-          <MonthPicker
-            onCalendarMonthClick={onCalendarMonthClick}
-            monthToView={monthToView}
-          />
-          <h3>
+      <TopBarBackground>
+        <TopBar>
+          <DateWrapper>
+            <MonthPicker
+              onCalendarMonthClick={onCalendarMonthClick}
+              monthToView={monthToView}
+            />
+            <h3>
             Monthly Total:
-            {' '}
-            <b>{formatCurr(monthlyTotal)}</b>
-          </h3>
-        </DateWrapper>
-      </TopBar>
+              {' '}
+              <b>{formatCurr(monthlyTotal)}</b>
+            </h3>
+          </DateWrapper>
+        </TopBar>
+      </TopBarBackground>
       {data.length === 0
         ? (
           <NoDataWrapper>

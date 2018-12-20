@@ -22,7 +22,8 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  padding: calc(${theme.heights.navBar}px + 1rem) 3rem;
+  height: 100vh;
+  padding: calc(${theme.heights.navBar}px + 1rem) 3rem 2rem 3rem;
   background-color: #fff;
 `;
 
