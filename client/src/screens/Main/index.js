@@ -1,16 +1,38 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Spin } from 'antd';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import { Mutation, Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
 import { monthlyTotalAllChildren } from '../../helpers/buildDatasheet/sums';
 import { formatDateForUrl } from '../../helpers/formatDateForUrl';
-import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
+import { CREATE_OR_UPDATE_DATE_MUTATION } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 import { Presentation } from './Presentation';
 import { theme } from '../../shared/theme';
+
+const GET_SITTES = gql`{
+  sittes {
+    id
+    firstName
+    rateAmount
+    rateType
+    gender
+    dates {
+        id
+        month
+        day
+        year
+        hours
+        paid
+        dateObjectId
+        isFixedRate
+    }
+  }
+}`;
 
 const LoadingWrapper = styled.div`
   background-color: ${theme.colors.background};
@@ -28,7 +50,7 @@ const Main = props => (
     mutation={CREATE_OR_UPDATE_DATE_MUTATION}
     refetchQueries={() => [
       {
-        query: FETCH_USER_QUERY,
+        query: GET_SITTES,
         variables: {
           fetchPolicy: 'no-cache',
         },
@@ -69,7 +91,6 @@ class Inner extends React.PureComponent {
         number, year, dayOfWeek, formattedDate,
       } = change.cell.row;
       const { savedDateInDb } = change.cell;
-      console.log('savedDateInDb', savedDateInDb);
 
       this.props.createOrUpdateDate({
         variables: {
@@ -122,9 +143,8 @@ class Inner extends React.PureComponent {
   render() {
     return (
       <>
-        <Query query={FETCH_USER_QUERY} fetchPolicy="no-cache">
+        <Query query={GET_SITTES} fetchPolicy="no-cache">
           {((props) => {
-            console.log('props', props);
             if (props.loading) {
               return (
                 <LoadingWrapper>
@@ -134,23 +154,21 @@ class Inner extends React.PureComponent {
               );
             }
 
-            if (
-              !props.data
-              || !props.data
-              || !props.data.me
-              || !props.data.me.sittes) {
+            if (!props.data || !props.data.sittes) {
               return <div>Something went wrong</div>;
             }
 
-            const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
-            const monthlyTotal = monthlyTotalAllChildren(props.data.me.sittes, parseInt(month), parseInt(year));
+            const { sittes } = props.data;
 
-            const sittes = props.data.me.sittes.length > 0
-              ? mapQueryToKids(props.data.me.sittes)
+            const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
+            const monthlyTotal = monthlyTotalAllChildren(sittes, parseInt(month), parseInt(year));
+
+            const mappedSittes = sittes.length > 0
+              ? mapQueryToKids(sittes)
               : [];
 
-            const data = props.data.me.sittes.length > 0
-              ? buildDatasheet(sittes, this.state.monthToView, this.onFixedCheckboxChange)
+            const data = mappedSittes.length > 0
+              ? buildDatasheet(mappedSittes, this.state.monthToView, this.onFixedCheckboxChange)
               : [];
 
             return (
@@ -168,5 +186,25 @@ class Inner extends React.PureComponent {
     );
   }
 }
+
+Main.propTypes = {
+  sittes: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    firstName: PropTypes.string,
+    rateAmount: PropTypes.number,
+    rateType: PropTypes.oneOf(['HOURLY', 'FLAT']),
+    gender: PropTypes.oneOf(['MALE', 'FEMALE']),
+    dates: PropTypes.shape({
+      id: PropTypes.string,
+      month: PropTypes.oneOf([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
+      day: PropTypes.number,
+      year: PropTypes.number,
+      hours: PropTypes.number,
+      paid: PropTypes.bool,
+      dateObjectId: PropTypes.string,
+      isFixedRate: PropTypes.bool,
+    }),
+  })).isRequired,
+};
 
 export default Main;
