@@ -15,6 +15,7 @@ type Mutation {
   cancelSubscription: User
   changeCreditCard(source: String!, ccLast4: String!): User
   createSitte(firstName: String!, lastName: String!, birthday: DateTime, rateAmount: Float!, rateType: RateType!, gender: Gender!): Sittee
+  createOrUpdateDate(dateId: ID, dateObjectId: String!, childId: String!, month: Float!, day: Float!, year: Float!, hours: Float!, dayOfWeek: String!, notes: String, paid: String, isFixedRate: Boolean): DateTime
 }
 
 type AuthPayload {

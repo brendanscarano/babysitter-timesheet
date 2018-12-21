@@ -23,7 +23,7 @@ const removeAllUsersSessions = async (userId, redis) => {
   );
 
   const promises = [];
-  
+
   for (let i = 0; i < sessionIds.length; i += 1) {
     promises.push(redis.del(`${redisSessionPrefix}${sessionIds[i]}`));
   }

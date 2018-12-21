@@ -1,10 +1,12 @@
 const auth = require('./mutations/auth');
-const createSitte = require('./mutations/createSitte');
+const createSittee = require('./mutations/createSitte');
+const createOrUpdateDate = require('./mutations/createOrUpdateDate');
 const stripe = require("./mutations/Stripe");
 
 const Mutation = {
   ...auth,
-  ...createSitte,
+  ...createSittee,
+  ...createOrUpdateDate,
   ...stripe
 }
 

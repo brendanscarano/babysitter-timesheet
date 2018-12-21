@@ -5,34 +5,13 @@ import { Spin } from 'antd';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import { Mutation, Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
 import { monthlyTotalAllChildren } from '../../helpers/buildDatasheet/sums';
 import { formatDateForUrl } from '../../helpers/formatDateForUrl';
-import { CREATE_OR_UPDATE_DATE_MUTATION, FETCH_USER_QUERY } from './graphql';
+import { GET_SITTES, CREATE_OR_UPDATE_DATE_MUTATION } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 import { Presentation } from './Presentation';
 import { theme } from '../../shared/theme';
-
-const GET_SITTES = gql`{
-  sittes {
-    id
-    firstName
-    rateAmount
-    rateType
-    gender
-    dates {
-        id
-        month
-        day
-        year
-        hours
-        paid
-        dateObjectId
-        isFixedRate
-    }
-  }
-}`;
 
 const LoadingWrapper = styled.div`
   background-color: ${theme.colors.background};
@@ -51,19 +30,22 @@ const Main = props => (
     refetchQueries={() => [
       {
         query: GET_SITTES,
+        variables: {
+          fetchPolicy: 'no-cache',
+        },
       },
     ]}
   >
-    {(upsertDate) => {
+    {(createOrUpdateDate) => {
       if (!props.match.params.date) {
-        return <Redirect to={`/${formatDateForUrl}`} />;
+        return <Redirect to={`/sheet/${formatDateForUrl}`} />;
       }
 
       const [month, year] = props.match.params.date.split('-');
       const monthToView = moment(`${year}-${month}-01`).format('YYYY-MM');
 
       return (
-        <Inner upsertDate={upsertDate} monthToView={monthToView} {...props} />
+        <Inner createOrUpdateDate={createOrUpdateDate} monthToView={monthToView} {...props} />
       );
     }}
   </Mutation>
@@ -83,24 +65,22 @@ class Inner extends React.PureComponent {
   }
 
   onCellsChanged = (changes) => {
-    const { upsertDate } = this.props;
-
     changes.forEach((change) => {
       const {
         number, year, dayOfWeek, formattedDate,
       } = change.cell.row;
       const { savedDateInDb } = change.cell;
 
-      upsertDate({
+      this.props.createOrUpdateDate({
         variables: {
           dateId: savedDateInDb ? savedDateInDb.dateId : '',
+          dateObjectId: formattedDate,
           childId: change.cell.childId,
           month: parseFloat(formattedDate.slice(0, 2)),
           day: parseFloat(number),
           year: parseFloat(year),
           hours: parseFloat(change.value) || 0,
           dayOfWeek,
-          dateObjectId: formattedDate,
         },
       });
     });
@@ -116,17 +96,17 @@ class Inner extends React.PureComponent {
       savedDateInDb,
       isChecked,
     } = rowData;
-    const { upsertDate } = this.props;
-    upsertDate({
+
+    this.props.createOrUpdateDate({
       variables: {
         dateId: savedDateInDb ? savedDateInDb.dateId : '',
+        dateObjectId: formattedDate,
         childId,
         month: parseFloat(formattedDate.slice(0, 2)),
         day: parseFloat(number),
         year: parseFloat(year),
         hours: 0,
         dayOfWeek,
-        dateObjectId: formattedDate,
         // TODO: Toggle true or false
         isFixedRate: !isChecked,
       },
@@ -142,7 +122,7 @@ class Inner extends React.PureComponent {
   render() {
     return (
       <>
-        <Query query={GET_SITTES}>
+        <Query query={GET_SITTES} fetchPolicy="no-cache">
           {((props) => {
             if (props.loading) {
               return (
@@ -162,12 +142,12 @@ class Inner extends React.PureComponent {
             const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
             const monthlyTotal = monthlyTotalAllChildren(sittes, parseInt(month), parseInt(year));
 
-            const children = sittes.length > 0
+            const mappedSittes = sittes.length > 0
               ? mapQueryToKids(sittes)
               : [];
 
-            const data = sittes.length > 0
-              ? buildDatasheet(children, this.state.monthToView, this.onFixedCheckboxChange)
+            const data = mappedSittes.length > 0
+              ? buildDatasheet(mappedSittes, this.state.monthToView, this.onFixedCheckboxChange)
               : [];
 
             return (

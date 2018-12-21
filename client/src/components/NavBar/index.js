@@ -9,6 +9,7 @@ import {
 } from 'antd';
 import { FlexRow } from '../Flex';
 import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
+import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 // TODO: Inject theme instead of importing it
 import { theme } from '../../shared/theme';
 
@@ -77,7 +78,7 @@ const NavBar = withRouter(({ isLoggedIn, history }) => {
   const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
   return (
     <Wrapper>
-      <StyledLink to="/">
+      <StyledLink to={isLoggedIn ? `/sheet/${formatDateForUrl}` : '/register'}>
         <span role="img" aria-label="baby">👶</span>
         <h1>Sitter Sheet</h1>
       </StyledLink>
@@ -92,7 +93,7 @@ const NavBar = withRouter(({ isLoggedIn, history }) => {
                 return (
                   <FlexRow>
                     <StyledDropdown overlay={DropdownMenuWithHistory()}>
-                      <Avatar src="https://api.adorable.io/avatars/148/abott@adorable.png" />
+                      <Avatar icon="user" />
                     </StyledDropdown>
                   </FlexRow>
                 );

@@ -1,58 +1,51 @@
 import gql from 'graphql-tag';
 
-export const FETCH_USER_QUERY = gql`
-  query {
-    me {
-      firstName
-      sittes {
+export const GET_SITTES = gql`{
+  sittes {
+    id
+    firstName
+    rateAmount
+    rateType
+    gender
+    dates {
         id
-        firstName
-        rateAmount
-        rateType
-        gender
-        dates {
-            id
-            month
-            day
-            year
-            hours
-            paid
-            dateObjectId
-            isFixedRate
-        }
-      }
+        month
+        day
+        year
+        hours
+        paid
+        dateObjectId
+        isFixedRate
     }
   }
-`;
+}`;
 
 export const CREATE_OR_UPDATE_DATE_MUTATION = gql`
-  mutation UpsertDate(
+  mutation CreateOrUpdateDate(
     $dateId: ID
-    $childId: ID!
+    $dateObjectId: String!
+    $childId: String!
     $month: Float!
     $day: Float!
     $year: Float!
     $hours: Float!
     $dayOfWeek: String!
-    $dateObjectId: String!
+    $notes: String
+    $paid: String
     $isFixedRate: Boolean
   ) {
-    upsertDate(
-      where: { id: $dateId }
-      create: {
-        owner: { connect: { id: $childId } }
-        month: $month
-        day: $day
-        year: $year
-        hours: $hours
-        dayOfWeek: $dayOfWeek
-        dateObjectId: $dateObjectId
-        isFixedRate: $isFixedRate
-      }
-      update: { isFixedRate: $isFixedRate, hours: $hours }
-    ) {
-      id
-      dateObjectId
-    }
+    createOrUpdateDate(
+      dateId: $dateId,
+      dateObjectId: $dateObjectId,
+      childId: $childId,
+      month: $month,
+      day: $day,
+      year: $year,
+      hours: $hours,
+      dayOfWeek: $dayOfWeek,
+      notes: $notes,
+      paid: $paid,
+      isFixedRate: $isFixedRate
+    )
   }
 `;

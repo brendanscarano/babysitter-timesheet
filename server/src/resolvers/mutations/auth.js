@@ -1,4 +1,4 @@
-const { hash, compare } = require('bcrypt')
+const { hash, compare } = require('bcryptjs')
 const { removeAllUsersSessions } = require('../../utils');
 const { userSessionIdPrefix } = require('../../constants');
 

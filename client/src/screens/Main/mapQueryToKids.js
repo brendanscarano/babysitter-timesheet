@@ -41,7 +41,7 @@ export const mapQueryToKids = children => children.map(child => ({
       dateObjectId: curr.dateObjectId,
       hours: curr.hours,
       paid: curr.paid,
-      fixedRateChecked: curr.fixedRateChecked,
+      isFixedRate: curr.isFixedRate,
       notes: '',
     },
   }), {}) : [],

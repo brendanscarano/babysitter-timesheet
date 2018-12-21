@@ -13,7 +13,7 @@ export const dailySumAllChildren = (children, dateString) => children.reduce((su
       return sum + (currentChild.info.rate * childTargetDate.hours);
     }
 
-    if (currentChild.dates[dateString].fixedRateChecked) {
+    if (currentChild.dates[dateString].isFixedRate) {
       return sum + currentChild.info.rate;
     }
   }
@@ -30,10 +30,18 @@ export const weeklySumAllChildren = (children, datesToShow) => datesToShow
   .map(dateString => dailySumAllChildren(children, dateString))
   .reduce((acc, curr) => acc + curr, 0);
 
-
+/**
+ * If child is HOURLY, Sums the total hours worked per week per child
+ * If child is FLAT, Sums the total days worked per week per child
+ */
 export const weeklyHourSumOneChild = (child, daysInWeek) => daysInWeek.reduce((sum, currDay) => {
   const formattedDay = moment(currDay).format('MMDDYY');
-  return sum + (child.dates[formattedDay] ? child.dates[formattedDay].hours : 0);
+
+  if (child.info.rateType === 'HOURLY') {
+    return sum + (child.dates[formattedDay] ? child.dates[formattedDay].hours : 0);
+  }
+
+  return sum + (child.dates[formattedDay] && child.dates[formattedDay].isFixedRate ? 1 : 0);
 }, 0);
 
 
@@ -44,7 +52,7 @@ export const weeklyProfitSumOneChild = (child, daysInWeek) => daysInWeek.reduce(
       return sum + (child.info.rate * child.dates[formattedDay].hours);
     }
 
-    if (child.dates[formattedDay].fixedRateChecked) {
+    if (child.dates[formattedDay].isFixedRate) {
       return sum + child.info.rate;
     }
   }
@@ -73,7 +81,7 @@ export const monthlyTotalAllChildren = (children, month, year) => {
           if (child.rateType === 'HOURLY') {
             return date.hours * child.rateAmount;
           }
-          if (date.fixedRateChecked) {
+          if (date.isFixedRate) {
             return child.rateAmount;
           }
           return 0;

@@ -14,6 +14,11 @@ const Wrapper = styled.div`
     border: none;
     background: transparent;
   }
+  .data-grid-container .data-grid .cell .value-viewer, .data-grid-container .data-grid .cell .data-editor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .data-grid-container .data-grid .cell.read-only {
     border: none;
     width: 2rem;
