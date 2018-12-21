@@ -5,34 +5,13 @@ import { Spin } from 'antd';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import { Mutation, Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import { buildDatasheet } from '../../helpers/buildDatasheet';
 import { monthlyTotalAllChildren } from '../../helpers/buildDatasheet/sums';
 import { formatDateForUrl } from '../../helpers/formatDateForUrl';
-import { CREATE_OR_UPDATE_DATE_MUTATION } from './graphql';
+import { GET_SITTES, CREATE_OR_UPDATE_DATE_MUTATION } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 import { Presentation } from './Presentation';
 import { theme } from '../../shared/theme';
-
-const GET_SITTES = gql`{
-  sittes {
-    id
-    firstName
-    rateAmount
-    rateType
-    gender
-    dates {
-        id
-        month
-        day
-        year
-        hours
-        paid
-        dateObjectId
-        isFixedRate
-    }
-  }
-}`;
 
 const LoadingWrapper = styled.div`
   background-color: ${theme.colors.background};
