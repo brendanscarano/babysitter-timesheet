@@ -1,7 +1,7 @@
 #!/bin/bash
 
 npm version patch
-datetime=$(date "+%Y%d%m%H:%M:%S")
+datetime=$(date "+%Y%d%m %H:%M:%S")
 export REACT_APP_BUILD_DATE=$datetime
 yarn build
 unset REACT_APP_BUILD_DATE
