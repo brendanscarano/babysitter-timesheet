@@ -8,7 +8,6 @@ import { theme } from '../../shared/theme';
 
 export const Logout = lifecycle({
   async componentDidMount() {
-    console.log('mounting logout page...');
     try {
       await client.mutate({
         mutation: gql`
