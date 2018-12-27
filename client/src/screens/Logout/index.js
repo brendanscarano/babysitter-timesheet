@@ -7,28 +7,32 @@ import { resetClientState } from '../../utils/resetClientState';
 import { theme } from '../../shared/theme';
 
 export const Logout = lifecycle({
-  componentDidMount() {
-    client
-      .mutate({
+  async componentDidMount() {
+    console.log('mounting logout page...');
+    try {
+      await client.mutate({
         mutation: gql`
-          mutation {
-            logout
-          }
-        `,
-      })
-      .then(({ data: { logout } }) => {
-        if (logout) {
-          Notification.success({
-            message: 'Logout successful',
-            description: 'See you again soon!',
-            icon: <Icon type="smile" style={{ color: theme.colors.main }} />,
-          });
-
-          setTimeout(() => {
-            resetClientState(client);
-            this.props.history.push('/');
-          }, 2000);
-        }
+            mutation {
+              logout
+            }
+          `,
       });
+
+      Notification.success({
+        message: 'Logout successful',
+        description: 'See you again soon!',
+        icon: <Icon type="smile" style={{ color: theme.colors.main }} />,
+      });
+
+      setTimeout(() => {
+        resetClientState(client);
+        this.props.history.push('/');
+      }, 2000);
+    } catch (err) {
+      Notification.error({
+        message: err,
+        icon: <Icon type="smile" style={{ color: theme.colors.error }} />,
+      });
+    }
   },
 })(renderNothing);

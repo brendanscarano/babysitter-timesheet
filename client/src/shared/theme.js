@@ -12,6 +12,7 @@ export const theme = {
     dataSheetBackground: 'whitesmoke',
     white: '#fff',
     main: '#319193',
+    error: 'red',
   },
 };
 

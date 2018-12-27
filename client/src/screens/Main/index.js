@@ -183,7 +183,11 @@ Main.propTypes = {
       dateObjectId: PropTypes.string,
       isFixedRate: PropTypes.bool,
     }),
-  })).isRequired,
+  })),
+};
+
+Main.defaultProps = {
+  sittes: [],
 };
 
 export default Main;

@@ -41,6 +41,7 @@ const App = () => (
       {/** Add user state here  */}
       <Query query={IS_LOGGED_IN}>
         {({ data, loading, error }) => {
+          console.log('data', data);
           if (loading) {
             return 'Loading...';
           }
