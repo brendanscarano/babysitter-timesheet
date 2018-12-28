@@ -7,9 +7,9 @@ import { resetClientState } from '../../utils/resetClientState';
 import { theme } from '../../shared/theme';
 
 export const Logout = lifecycle({
-  async componentDidMount() {
+  componentDidMount() {
     try {
-      await client.mutate({
+      client.mutate({
         mutation: gql`
             mutation {
               logout
