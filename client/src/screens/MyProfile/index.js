@@ -59,6 +59,7 @@ const TitleBar = styled(FlexRow)`
 const MyProfile = () => (
   <Query query={ME_QUERY}>
     {({ data, loading, error }) => {
+      console.log('data', data);
       if (loading) {
         return 'Loading...';
       }

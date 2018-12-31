@@ -9,10 +9,12 @@ export const theme = {
   },
   colors: {
     background: '#fff',
-    dataSheetBackground: 'whitesmoke',
+    dataSheetBackground: '#fafafa',
+    evenRow: 'whitesmoke',
     white: '#fff',
     main: '#319193',
     error: 'red',
+    sheetHighlights: '#1890ff',
   },
 };
 

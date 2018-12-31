@@ -70,7 +70,7 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
       // PLACEHOLDER SPACE
       { ...PLACEHOLDER_SPACE, className: STICKY_TOP_SECOND_ROW },
       ...flattenDeep(Children.map(({ info }) => [{
-        value: `$${info.rate}/hr`,
+        value: `$${info.rate}/${info.rateType === 'FLAT' ? 'day' : 'hr'}`,
         colSpan: 3,
         readOnly: true,
         className: STICKY_TOP_SECOND_ROW,
@@ -115,6 +115,7 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
             childId: info.id,
             row,
             savedDateInDb: dates[row.formattedDate],
+            className: `${dates[row.formattedDate] && dates[row.formattedDate].hours ? 'hours-included' : 'no-hours'}`,
           } : {
             value: dates[row.formattedDate] ? dates[row.formattedDate].hours : 0,
             type: 'hours',

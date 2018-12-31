@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavBar } from '../NavBar';
-import { theme } from '../../shared/theme';
+import { theme, media } from '../../shared/theme';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -23,8 +23,12 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   height: 100vh;
-  padding: calc(${theme.heights.navBar}px + 1rem) 3rem 2rem 3rem;
+  padding: calc(${theme.heights.navBar}px + 1rem) 1rem 2rem 1rem;
   background-color: #fff;
+
+  ${media.desktop`
+    padding: calc(${theme.heights.navBar}px + 1rem) 3rem 2rem 3rem;
+  `};
 `;
 
 const Layout = ({ children, isLoggedIn }) => (

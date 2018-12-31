@@ -11,7 +11,7 @@ import { FlexRow } from '../Flex';
 import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
 import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 // TODO: Inject theme instead of importing it
-import { theme } from '../../shared/theme';
+import { theme, media } from '../../shared/theme';
 
 const { Header } = Layout;
 
@@ -72,6 +72,11 @@ const Wrapper = styled(Header)`
     background-color: #fff;
     box-shadow: 0 0 25px 0 hsla(0, 0%, 79%, .35);
     font-size: 1.125rem;
+    padding: 0 1rem;
+
+    ${media.desktop`
+      padding: 0 3rem;
+    `};
 `;
 
 const NavBar = withRouter(({ isLoggedIn, history }) => {

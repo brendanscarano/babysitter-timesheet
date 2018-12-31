@@ -1,4 +1,5 @@
 import flattenDeep from 'lodash.flattendeep';
+import moment from 'moment';
 import { emojisForMonths } from '../../shared/emojisForMonths';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -18,10 +19,10 @@ const annualDateObject = data => ({
 });
 
 export const buildYearlyTotals = (data) => {
-  const annualData2018 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const annualMonthlyData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   if (!data || data.length === 0) {
-    return annualDateObject(annualData2018);
+    return annualDateObject(annualMonthlyData);
   }
 
   const allChildDatesForYear = flattenDeep(data.map(child => child.dates.map(date => ({
@@ -29,11 +30,15 @@ export const buildYearlyTotals = (data) => {
     paid: date.paid ? date.paid : (date.hours * child.rateAmount),
   }))));
 
-  allChildDatesForYear.forEach((date) => {
-    annualData2018[date.month - 1] = annualData2018[date.month - 1] + date.paid;
-  });
+  const currentYear = moment().format('YY');
 
-  return annualDateObject(annualData2018);
+  allChildDatesForYear
+    .filter(date => date.year === parseInt(currentYear, 10))
+    .forEach((date) => {
+      annualMonthlyData[date.month - 1] = annualMonthlyData[date.month - 1] + date.paid;
+    });
+
+  return annualDateObject(annualMonthlyData);
 };
 
 // const sampleData = {

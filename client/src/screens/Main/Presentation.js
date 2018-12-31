@@ -6,14 +6,15 @@ import { Link } from 'react-router-dom';
 import { DataSheet } from '../../components/DataSheet';
 import { MonthPicker } from '../../components/MonthPicker';
 import { FlexRow } from '../../components/Flex';
-import { theme } from '../../shared/theme';
+import { theme, media } from '../../shared/theme';
 import { formatCurr } from '../../helpers/formatCurr';
 
 const TOP_BAR_HEIGHT = 64;
 
 const StyledContent = styled.div`
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   background-color: ${theme.colors.background};
 `;
 
@@ -44,9 +45,25 @@ const DateWrapper = styled(FlexRow)`
     margin-bottom: 2rem;
 `;
 
+const MonthlyHeader = styled.h3`
+  font-size: .875rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  ${media.desktop`
+    font-size: 1rem;
+  `};
+`;
+
 const SheetsWrapper = styled(FlexRow)`
   background-color: ${theme.colors.dataSheetBackground};
   padding: 0 1rem;
+  font-size: .75rem;
+
+  ${media.desktop`
+    font-size: .875rem;
+  `};
 `;
 
 const NoDataWrapper = styled(SheetsWrapper)`
@@ -76,11 +93,11 @@ const Presentation = ({
               onCalendarMonthClick={onCalendarMonthClick}
               monthToView={monthToView}
             />
-            <h3>
+            <MonthlyHeader>
             Monthly Total:
               {' '}
               <b>{formatCurr(monthlyTotal)}</b>
-            </h3>
+            </MonthlyHeader>
           </DateWrapper>
         </TopBar>
       </TopBarBackground>
