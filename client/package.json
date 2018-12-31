@@ -1,6 +1,6 @@
 {
   "name": "sitter-sheet",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "private": true,
   "dependencies": {
     "antd": "^3.9.3",
@@ -36,7 +36,8 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "bundle:size": "node build.js",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy": "source deploy.sh"
   },
   "devDependencies": {
     "@babel/helper-remap-async-to-generator": "^7.1.0",
