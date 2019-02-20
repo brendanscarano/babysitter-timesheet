@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   }
   .data-grid-container .data-grid .cell.read-only {
     border: none;
-    width: 2rem;
+    width: 100vw;
     height: 26px;
   }
   .sticky-top-first-row {

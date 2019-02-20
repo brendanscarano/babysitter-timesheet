@@ -7,6 +7,7 @@ import NewChild from './screens/NewChild';
 import LoginSignup from './screens/LoginSignup';
 import ChildInfo from './screens/ChildInfo';
 import Main from './screens/Main';
+import Sittes from './screens/Sittes';
 import { Layout } from './components/Layout';
 import { RequireSubscription } from './hocs/RequireSubscription';
 import { client } from './graphql/initApollo';
@@ -27,6 +28,7 @@ const loggedInRoutes = isLoggedIn => isLoggedIn && (
       <Switch>
         <Route exact path="/child/:id" component={ChildInfo} />
         <Route exact path="/new-sitte" component={NewChild} />
+        <Route exact path="/sittes" component={Sittes} />
         <Route exact path="/my-profile" render={MyProfile} />
         <Route exact path="/sheet/:date" component={Main} />
         <Route exact path="/logout" component={Logout} />

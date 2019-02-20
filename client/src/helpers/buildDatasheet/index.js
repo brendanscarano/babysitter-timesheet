@@ -5,6 +5,7 @@ import { Icon } from 'antd';
 import { dailySumAllChildren } from './sums';
 import { buildRows } from './buildRows';
 import { Checkbox } from '../../components/Checkbox';
+import { getGenderEmoji } from '../../utils/sittes';
 
 const PLACEHOLDER_SPACE = { value: ' ', readOnly: true, id: 'space' };
 const STICKY_TOP_FIRST_ROW = 'sticky-top-first-row';
@@ -48,7 +49,7 @@ export const buildDatasheet = (Children, date, onFixedCheckboxChange) => {
           readOnly: true,
           valueViewer: () => (
             <Link to={`/child/${info.id}`}>
-              <span role="img" aria-label="child-emoji">{info.gender === 'MALE' ? '👦 ' : '👧 '}</span>
+              <span role="img" aria-label="child-emoji">{getGenderEmoji(info.gender)}</span>
               {info.name}
             </Link>
           ),
