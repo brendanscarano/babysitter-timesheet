@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import {
@@ -9,6 +9,7 @@ import {
   Icon,
   Avatar,
 } from 'antd';
+import moment from 'moment';
 import { FlexRow, FlexColumn } from '../../components/Flex';
 import { GET_SITTES } from '../../graphql/queries/GET_SITTES';
 import { getGenderEmoji } from '../../utils/sittes';
@@ -47,133 +48,126 @@ const Wrapper = styled.div`
   }
 `;
 
-const afterChange = (a) => {
-  // console.log(a);
-};
 
-const Children = () => (
-  <Query query={GET_SITTES}>
-    {({ data, loading, error }) => {
-      if (loading) {
-        return (
-          <Spin />
-        );
-      }
-      if (error) {
-        return (
-          <p>Something went wrong</p>
-        );
-      }
+const Children = () => {
+  const [date, setDate] = useState(moment().format('YYYY-MM'));
+  const carousel = React.createRef();
 
-      const carousel = React.createRef();
-      return (
-        <Layout style={{ backgroundColor: 'transparent' }}>
-          <FlexRow style={{ marginBottom: '1rem' }}>
-            {data.sittes.map((d, i) => (
-              <Avatar
-                onClick={() => carousel.current.slick.slickGoTo(i)}
-                style={{
-                  marginRight: '0.5rem',
-                  color: 'salmon',
-                  backgroundColor: '#fde3cf',
-                  cursor: 'pointer',
-                }}
-              >
-                {d.firstName.charAt(0).toUpperCase()}
-                {d.lastName.charAt(0).toUpperCase()}
-              </Avatar>
-            ))}
-          </FlexRow>
-          <Content>
-            <Wrapper>
-              <Carousel
-                afterChange={afterChange}
-                ref={carousel}
-              >
-                {data.sittes.map(sitte => (
-                  <FlexColumn>
-                    <FlexRow>
-                      <h2>
-                        {sitte.firstName}
+  return (
+    <Query query={GET_SITTES}>
+      {({ data, loading, error }) => {
+        if (loading) {
+          return (
+            <Spin />
+          );
+        }
+        if (error) {
+          return (
+            <p>Something went wrong</p>
+          );
+        }
+
+        return (
+          <Layout style={{ backgroundColor: 'transparent' }}>
+            <FlexRow style={{ marginBottom: '1rem' }}>
+              {data.sittes.map((d, i) => (
+                <Avatar
+                  onClick={() => carousel.current.slick.slickGoTo(i)}
+                  style={{
+                    marginRight: '0.5rem',
+                    color: 'salmon',
+                    backgroundColor: '#fde3cf',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {d.firstName.charAt(0).toUpperCase()}
+                  {d.lastName.charAt(0).toUpperCase()}
+                </Avatar>
+              ))}
+            </FlexRow>
+            <Content>
+              <Wrapper>
+                <Carousel ref={carousel}>
+                  {data.sittes.map(sitte => (
+                    <FlexColumn>
+                      <FlexRow>
+                        <h2>
+                          {sitte.firstName}
+                          {' '}
+                          {sitte.lastName}
+                        </h2>
+                        <div style={{ marginLeft: '0.5rem' }}>{getGenderEmoji(sitte.gender)}</div>
+                      </FlexRow>
+                      <div style={{ fontWeight: '600' }}>
+                        {sitte.rateType.toLowerCase()}
                         {' '}
-                        {sitte.lastName}
-                      </h2>
-                      <div style={{ marginLeft: '0.5rem' }}>{getGenderEmoji(sitte.gender)}</div>
-                    </FlexRow>
-                    <div style={{ fontWeight: '600' }}>
-                      {sitte.rateType.toLowerCase()}
-                      {' '}
-                      rate
-                      {' '}
-                      <span style={{ color: 'green' }}>
-                        $
-                        {sitte.rateAmount}
-                      </span>
-                    </div>
-                    <FlexRow style={{
-                      marginTop: '2rem',
-                    }}
-                    >
-                      <div
-                        style={{
-                          border: '1px solid #d9d9d9',
-                          borderRadius: 4,
-                          backgroundColor: 'white',
-                          marginRight: '2rem',
-                          maxWidth: '400px',
-                          minWidth: '300px',
-                          height: '330px',
-                        }}
+                        rate
+                        {' '}
+                        <span style={{ color: 'green' }}>
+                          $
+                          {sitte.rateAmount}
+                        </span>
+                      </div>
+                      <FlexRow style={{
+                        marginTop: '2rem',
+                      }}
                       >
-                        <Calendar
-                          fullscreen={false}
-                          dateCellRender={
-                            (value) => {
-                              console.log(value.month());
-                              return (
+                        <div
+                          style={{
+                            border: '1px solid #d9d9d9',
+                            borderRadius: 4,
+                            backgroundColor: 'white',
+                            marginRight: '2rem',
+                            maxWidth: '400px',
+                            minWidth: '300px',
+                            height: '330px',
+                          }}
+                        >
+                          <Calendar
+                            fullscreen={false}
+                            onChange={(d) => {
+                              setDate(d.format('YYYY-MM'));
+                            }}
+                            dateCellRender={
+                              value => (
                                 <>
                                   {
-                                    sitte.dates.map(date => (
-                                      value.date() === date.day
-                                      && value.month() === date.month
-                                      && value.year().toString().substr(2, 2) === date.year.toString()
+                                    sitte.dates.map(sitteDate => (
+                                      value.format('YY-M-D') === `${sitteDate.year}-${sitteDate.month}-${sitteDate.day}`
                                       && (
                                         <Icon type="dollar" theme="twoTone" twoToneColor="#52c41a" />
                                       )
                                     ))
                                   }
                                 </>
-                              );
+                              )
                             }
-                          }
-                        />
-                      </div>
-                      <div>
-                        <Table data={sitte.dates} />
-                      </div>
-                    </FlexRow>
-                  </FlexColumn>
-                ))}
-              </Carousel>
-              <div>
-                <Icon
-                  type="left-circle"
-                  onClick={() => carousel.current.slick.slickPrev()}
-                />
-                <Icon
-                  type="right-circle"
-                  onClick={() => carousel.current.slick.slickNext()}
-                />
-              </div>
-            </Wrapper>
-          </Content>
-        </Layout>
-      );
-    }}
-  </Query>
-);
-Children.propTypes = {
-
+                          />
+                        </div>
+                        <div>
+                          <Table date={date} data={sitte.dates} />
+                        </div>
+                      </FlexRow>
+                    </FlexColumn>
+                  ))}
+                </Carousel>
+                <div>
+                  <Icon
+                    type="left-circle"
+                    onClick={() => carousel.current.slick.slickPrev()}
+                  />
+                  <Icon
+                    type="right-circle"
+                    onClick={() => carousel.current.slick.slickNext()}
+                  />
+                </div>
+              </Wrapper>
+            </Content>
+          </Layout>
+        );
+      }}
+    </Query>
+  );
 };
 
 export default Children;

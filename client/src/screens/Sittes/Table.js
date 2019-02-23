@@ -36,11 +36,12 @@ const columns = [{
 },
 ];
 
-const dates = flatMap(getDayArrayByDate('2019-02')).filter(date => date.monthNumber === '02');
-console.log(dates);
 
-const Table = ({ data }) => {
+const Table = ({ data, date }) => {
+  const dates = flatMap(getDayArrayByDate(date)).filter(d => d.monthNumber === date.split('-')[1]);
+
   const dateObjIds = data.map(p => p.dateObjectId);
+
   const dat = dates.map((d) => {
     if (dateObjIds.includes(d.formattedDate)) {
       return ({ ...d, isSitting: true });
@@ -54,7 +55,7 @@ const Table = ({ data }) => {
       <Tbl
         columns={columns}
         dataSource={dat}
-        pagination={{ pageSize: 30 }}
+        pagination={{ pageSize: 35 }}
         scroll={{ y: 300 }}
       />
     </div>
