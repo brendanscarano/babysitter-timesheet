@@ -7,6 +7,7 @@ import NewChild from './screens/NewChild';
 import LoginSignup from './screens/LoginSignup';
 import ChildInfo from './screens/ChildInfo';
 import Main from './screens/Main';
+import Welcome from './screens/Welcome';
 import Sittes from './screens/Sittes';
 import { Layout } from './components/Layout';
 import { RequireSubscription } from './hocs/RequireSubscription';
@@ -51,23 +52,20 @@ const App = () => (
           }
 
           return (
-            <Layout isLoggedIn={data.isLoggedIn}>
-              <Switch>
-                <Route
-                  exact
-                  path="/"
-                  component={() => (
-                    <div>
-                      <h1>Welcome to sitter sheet</h1>
-                      <h2>Landing page will go here...</h2>
-                    </div>
-                  )}
-                />
+            <Switch>
+              <Route
+                exact
+                path="/"
+                component={() => (
+                  <Welcome />
+                )}
+              />
+              <Layout isLoggedIn={data.isLoggedIn}>
                 <Route exact path="/register" component={LoginSignup} />
                 {loggedInRoutes(data.isLoggedIn)}
-                <Route component={NotFound} />
-              </Switch>
-            </Layout>
+              </Layout>
+              <Route comsponent={NotFound} />
+            </Switch>
           );
         }}
       </Query>

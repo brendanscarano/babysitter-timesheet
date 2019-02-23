@@ -1,6 +1,7 @@
 import React from 'react';
 import { flatMap } from 'lodash';
 import { Table as Tbl, Checkbox } from 'antd';
+import moment from 'moment';
 import { getDayArrayByDate } from '../../utils/dates';
 
 // {
@@ -16,17 +17,9 @@ import { getDayArrayByDate } from '../../utils/dates';
 
 
 const columns = [{
-  title: 'Day',
-  dataIndex: 'dayOfWeek',
-  key: 'dayOfWeek',
-}, {
-  title: 'Month',
-  dataIndex: 'month',
-  key: 'month',
-}, {
   title: 'Date',
-  dataIndex: 'formattedDate',
-  key: 'formattedDate',
+  dataIndex: 'prettyDate',
+  key: 'prettyDate',
 },
 {
   title: 'Sitting',
@@ -39,15 +32,22 @@ const columns = [{
 
 const Table = ({ data, date }) => {
   const dates = flatMap(getDayArrayByDate(date)).filter(d => d.monthNumber === date.split('-')[1]);
-
   const dateObjIds = data.map(p => p.dateObjectId);
-
   const dat = dates.map((d) => {
+    const prettyDate = moment(`20${d.year}-${d.monthNumber}-${d.number}`).format('DD-YY');
+
     if (dateObjIds.includes(d.formattedDate)) {
-      return ({ ...d, isSitting: true });
+      return ({
+        ...d,
+        prettyDate,
+        isSitting: true,
+      });
     }
 
-    return d;
+    return ({
+      ...d,
+      prettyDate,
+    });
   });
 
   return (

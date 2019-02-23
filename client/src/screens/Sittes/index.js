@@ -8,6 +8,7 @@ import {
   Layout,
   Icon,
   Avatar,
+  Input,
 } from 'antd';
 import moment from 'moment';
 import { FlexRow, FlexColumn } from '../../components/Flex';
@@ -114,6 +115,13 @@ const Children = () => {
                       >
                         <div
                           style={{
+                            marginRight: '2rem',
+                          }}
+                        >
+                          <Table date={date} data={sitte.dates} />
+                        </div>
+                        <div
+                          style={{
                             border: '1px solid #d9d9d9',
                             borderRadius: 4,
                             backgroundColor: 'white',
@@ -144,8 +152,11 @@ const Children = () => {
                             }
                           />
                         </div>
-                        <div>
-                          <Table date={date} data={sitte.dates} />
+                      </FlexRow>
+                      <FlexRow>
+                        <div style={{ flex: 1 }}>
+                          <h3>Notes</h3>
+                          <Input.TextArea style={{ resize: 'none' }} rows={4} />
                         </div>
                       </FlexRow>
                     </FlexColumn>
