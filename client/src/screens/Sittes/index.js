@@ -5,35 +5,37 @@ import {
   Calendar,
   Carousel,
   Spin,
+  Layout,
   Icon,
+  Avatar,
 } from 'antd';
 import { FlexRow, FlexColumn } from '../../components/Flex';
 import { GET_SITTES } from '../../graphql/queries/GET_SITTES';
 import { getGenderEmoji } from '../../utils/sittes';
+import Table from './Table';
+
+const { Content } = Layout;
 
 const Wrapper = styled.div`
   > * { 
     min-height: 0;
     min-width: 0; 
   }
+
+  background-color: #eee;
   display: flex;
   flex-grow: 1;
   align-items: center;
   justify-content: space-between;
-  
+  margin-top: 0.5rem;
+
   .ant-carousel .slick-slide {
     padding: 2rem;
-    height: 100vh;
-    background: #eee;
+    padding-top: 1rem;
+    padding-bottom: 4rem;
+    height: 100%;
     overflow: scroll;
   }
-  
-  /* .anticon-dollar { 
-    svg {
-      width: 1.5rem;
-      height: 1.5rem;
-    }
-  } */
 
   .anticon-left-circle, .anticon-right-circle {
     svg {
@@ -46,11 +48,7 @@ const Wrapper = styled.div`
 `;
 
 const afterChange = (a) => {
-  console.log(a);
-};
-
-const onPanelChange = (a) => {
-  console.log(a);
+  // console.log(a);
 };
 
 const Children = () => (
@@ -63,89 +61,113 @@ const Children = () => (
       }
       if (error) {
         return (
-          <Spin />
+          <p>Something went wrong</p>
         );
       }
 
       const carousel = React.createRef();
       return (
-        <Wrapper>
-          <Carousel
-            afterChange={afterChange}
-            ref={carousel}
-          >
-            {data.sittes.map((d) => {
-              function dateCellRender(value) {
-                console.log('value', value.date(), value.month(), value.year().toString().substr(2, 2), d);
-                // const listData = getListData(value);
-                return (
-                  <>
-                    {
-                      d.dates.map((date) => {
-                        console.log(date);
-                        return (
-                          value.date() === date.day
-                          && value.month() === date.month
-                          && value.year().toString().substr(2, 2) === date.year.toString()
-                          && (
-                            <Icon type="dollar" theme="twoTone" twoToneColor="#52c41a" />
-                          )
-                        );
-                      })
-                    }
-                  </>
-                );
-              }
-
-              return (
-                <FlexColumn>
-                  <FlexRow>
-                    <h2>
-                      {d.firstName}
+        <Layout style={{ backgroundColor: 'transparent' }}>
+          <FlexRow style={{ marginBottom: '1rem' }}>
+            {data.sittes.map((d, i) => (
+              <Avatar
+                onClick={() => carousel.current.slick.slickGoTo(i)}
+                style={{
+                  marginRight: '0.5rem',
+                  color: 'salmon',
+                  backgroundColor: '#fde3cf',
+                  cursor: 'pointer',
+                }}
+              >
+                {d.firstName.charAt(0).toUpperCase()}
+                {d.lastName.charAt(0).toUpperCase()}
+              </Avatar>
+            ))}
+          </FlexRow>
+          <Content>
+            <Wrapper>
+              <Carousel
+                afterChange={afterChange}
+                ref={carousel}
+              >
+                {data.sittes.map(sitte => (
+                  <FlexColumn>
+                    <FlexRow>
+                      <h2>
+                        {sitte.firstName}
+                        {' '}
+                        {sitte.lastName}
+                      </h2>
+                      <div style={{ marginLeft: '0.5rem' }}>{getGenderEmoji(sitte.gender)}</div>
+                    </FlexRow>
+                    <div style={{ fontWeight: '600' }}>
+                      {sitte.rateType.toLowerCase()}
                       {' '}
-                      {d.lastName}
-                    </h2>
-                    <div style={{ marginLeft: '0.5rem' }}>{getGenderEmoji(d.gender)}</div>
-                  </FlexRow>
-                  <div style={{ fontWeight: '600' }}>
-                    {d.rateType.toLowerCase()}
-                    {' '}
-                    rate
-                    {' '}
-                    <span style={{ color: 'green' }}>
-                      $
-                      {d.rateAmount}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      border: '1px solid #d9d9d9',
-                      borderRadius: 4,
-                      backgroundColor: 'white',
-                      marginTop: '1rem',
-                      maxWidth: '400px',
+                      rate
+                      {' '}
+                      <span style={{ color: 'green' }}>
+                        $
+                        {sitte.rateAmount}
+                      </span>
+                    </div>
+                    <FlexRow style={{
+                      marginTop: '2rem',
                     }}
-                  >
-                    <Calendar fullscreen={false} dateCellRender={dateCellRender} onPanelChange={onPanelChange} />
-                  </div>
-                  {/* <pre>
-                    {JSON.stringify(d, null, 3)}
-                  </pre> */}
-                </FlexColumn>
-              );
-            })}
-          </Carousel>
-          <div>
-            <Icon
-              type="left-circle"
-              onClick={() => carousel.current.slick.slickPrev()}
-            />
-            <Icon
-              type="right-circle"
-              onClick={() => carousel.current.slick.slickNext()}
-            />
-          </div>
-        </Wrapper>
+                    >
+                      <div
+                        style={{
+                          border: '1px solid #d9d9d9',
+                          borderRadius: 4,
+                          backgroundColor: 'white',
+                          marginRight: '2rem',
+                          maxWidth: '400px',
+                          minWidth: '300px',
+                          height: '330px',
+                        }}
+                      >
+                        <Calendar
+                          fullscreen={false}
+                          dateCellRender={
+                            (value) => {
+                              console.log(value.month());
+                              return (
+                                <>
+                                  {
+                                    sitte.dates.map(date => (
+                                      value.date() === date.day
+                                      && value.month() === date.month
+                                      && value.year().toString().substr(2, 2) === date.year.toString()
+                                      && (
+                                        <Icon type="dollar" theme="twoTone" twoToneColor="#52c41a" />
+                                      )
+                                    ))
+                                  }
+                                </>
+                              );
+                            }
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Table data={sitte.dates} />
+                      </div>
+                    </FlexRow>
+                  </FlexColumn>
+                ))}
+              </Carousel>
+              <div>
+                <Icon
+                  type="left-circle"
+                  onClick={() => carousel.current.slick.slickPrev()}
+                />
+                <Icon
+                  type="right-circle"
+                  onClick={() => carousel.current.slick.slickNext()}
+                />
+              </div>
+            </Wrapper>
+          </Content>
+        </Layout>
       );
     }}
   </Query>
