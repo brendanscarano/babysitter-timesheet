@@ -1,7 +1,7 @@
 import React from 'react';
 import QueueAnim from 'rc-queue-anim';
 import TweenOne from 'rc-tween-one';
-import { Row, Col } from 'antd';
+import { Button, Row, Col } from 'antd';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 
 function Content1(props) {
@@ -13,17 +13,17 @@ function Content1(props) {
     queue: isMobile ? 'bottom' : 'right',
     one: isMobile
       ? {
-          scaleY: '+=0.3',
-          opacity: 0,
-          type: 'from',
-          ease: 'easeOutQuad',
-        }
+        scaleY: '+=0.3',
+        opacity: 0,
+        type: 'from',
+        ease: 'easeOutQuad',
+      }
       : {
-          x: '-=30',
-          opacity: 0,
-          type: 'from',
-          ease: 'easeOutQuad',
-        },
+        x: '-=30',
+        opacity: 0,
+        type: 'from',
+        ease: 'easeOutQuad',
+      },
   };
   return (
     <div {...tagProps} {...dataSource.wrapper}>
@@ -61,6 +61,9 @@ function Content1(props) {
           <div key="p" {...dataSource.content}>
             {dataSource.content.children}
           </div>
+          <Button key="button" {...dataSource.button}>
+            {dataSource.button.children}
+          </Button>
         </QueueAnim>
       </OverPack>
     </div>

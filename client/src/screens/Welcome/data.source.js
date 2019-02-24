@@ -16,7 +16,7 @@ export const Banner00DataSource = {
     className: 'banner0-content jshwcfwht57-editor_css',
     children: (
       <span>
-        <p>Sitter record keeping and invoicing made simple</p>
+        <p>Record keeping and invoicing made simple</p>
       </span>
     ),
   },
@@ -38,7 +38,7 @@ export const Content00DataSource = {
         name: 'title',
         children: (
           <span>
-            <p>Welcome to Sitter Sheet</p>
+            <p>About to Sitter Sheet</p>
           </span>
         ),
       },
@@ -164,7 +164,14 @@ export const Content10DataSource = {
           Spreadsheet tracking was fun but now theres a new way to do it!
           Welcome to Sitter Sheet
         </p>
+
       </span>
+    ),
+  },
+  button: {
+    className: 'content1-button',
+    children: (
+      <a href="/register">Get Started</a>
     ),
   },
 };

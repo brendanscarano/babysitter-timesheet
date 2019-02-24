@@ -30,7 +30,7 @@ const loggedInRoutes = isLoggedIn => isLoggedIn && (
         <Route exact path="/child/:id" component={ChildInfo} />
         <Route exact path="/new-sitte" component={NewChild} />
         <Route exact path="/sittes" component={Sittes} />
-        <Route exact path="/my-profile" render={MyProfile} />
+        <Route exact path="/account" render={MyProfile} />
         <Route exact path="/sheet/:date" component={Main} />
         <Route exact path="/logout" component={Logout} />
       </Switch>

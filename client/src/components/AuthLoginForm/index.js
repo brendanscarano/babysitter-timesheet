@@ -111,7 +111,7 @@ class AuthLoginForm extends React.PureComponent {
                 <ShowPasswordButton onClick={this.toggleShowPassword} type="button">
                   {this.state.showPassword ? 'Hide' : 'Show'}
                   {' '}
-                    Password
+                  Password
                 </ShowPasswordButton>
               </FormItem>
 
@@ -123,7 +123,7 @@ class AuthLoginForm extends React.PureComponent {
                 htmlType="submit"
                 type="primary"
               >
-                  Log In
+                Log In
               </Button>
             </StyledForm>
           )}

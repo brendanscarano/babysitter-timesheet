@@ -70,7 +70,7 @@ const Children = () => {
 
         return (
           <Layout style={{ backgroundColor: 'transparent' }}>
-            <FlexRow style={{ marginBottom: '1rem' }}>
+            <FlexRow style={{ marginBottom: '1rem', flexWrap: 'wrap' }}>
               {data.sittes.map((d, i) => (
                 <Avatar
                   onClick={() => carousel.current.slick.slickGoTo(i)}
