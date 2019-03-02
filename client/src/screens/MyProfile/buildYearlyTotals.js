@@ -1,7 +1,20 @@
 import flattenDeep from 'lodash.flattendeep';
 import { emojisForMonths } from '../../shared/emojisForMonths';
 
-const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthNames = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
 const annualDateObject = data => ({
   labels: monthNames.map((monthName, idx) => `${emojisForMonths[idx]} ${monthName}`),
@@ -17,6 +30,13 @@ const annualDateObject = data => ({
   ],
 });
 
+export const allChildDatesForYear = data => flattenDeep(
+  data.map(child => child.dates.map(date => ({
+    ...date,
+    paid: date.paid ? date.paid : date.hours * child.rateAmount,
+  }))),
+);
+
 export const buildYearlyTotals = (data) => {
   const annualData2018 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -24,18 +44,38 @@ export const buildYearlyTotals = (data) => {
     return annualDateObject(annualData2018);
   }
 
-  const allChildDatesForYear = flattenDeep(data.map(child => child.dates.map(date => ({
-    ...date,
-    paid: date.paid ? date.paid : (date.hours * child.rateAmount),
-  }))));
+  const allChildDatesForYearResults = allChildDatesForYear(data);
 
-  allChildDatesForYear.forEach((date) => {
+  allChildDatesForYearResults.forEach((date) => {
     annualData2018[date.month - 1] = annualData2018[date.month - 1] + date.paid;
   });
 
   return annualDateObject(annualData2018);
 };
 
+export const totalPaidPerchild = (datesArr, rate) => {
+  let total = 0;
+  datesArr.forEach((date) => {
+    if (date.paid) {
+      total += date.paid;
+    }
+    if (date.hours) {
+      total += date.isFixedRate ? rate : rate * date.hours;
+    }
+  });
+  return total;
+};
+
+export const calculateAvgHoursPerMonth = (data) => {
+  const hoursObj = {};
+  data.forEach((date) => {
+    if (!(date.month in hoursObj)) {
+      hoursObj[date.month] = date.hours;
+    } else {
+      hoursObj[date.month] += date.hours;
+    }
+  });
+};
 // const sampleData = {
 //   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 //   datasets: [
