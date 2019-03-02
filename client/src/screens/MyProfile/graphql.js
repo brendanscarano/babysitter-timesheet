@@ -4,6 +4,7 @@ export const GET_SITTES = gql`{
   sittes {
     id
     firstName
+    lastName
     rateAmount
     rateType
     gender

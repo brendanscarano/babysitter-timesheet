@@ -44,9 +44,7 @@ const Main = props => (
       const [month, year] = props.match.params.date.split('-');
       const monthToView = moment(`${year}-${month}-01`).format('YYYY-MM');
 
-      return (
-        <Inner createOrUpdateDate={createOrUpdateDate} monthToView={monthToView} {...props} />
-      );
+      return <Inner createOrUpdateDate={createOrUpdateDate} monthToView={monthToView} {...props} />;
     }}
   </Mutation>
 );
@@ -88,15 +86,8 @@ class Inner extends React.PureComponent {
 
   onFixedCheckboxChange = rowData => (e) => {
     const {
-      childId,
-      year,
-      formattedDate,
-      number,
-      dayOfWeek,
-      savedDateInDb,
-      isChecked,
+      childId, year, formattedDate, number, dayOfWeek, savedDateInDb, isChecked,
     } = rowData;
-
     this.props.createOrUpdateDate({
       variables: {
         dateId: savedDateInDb ? savedDateInDb.dateId : '',
@@ -123,7 +114,7 @@ class Inner extends React.PureComponent {
     return (
       <>
         <Query query={GET_SITTES} fetchPolicy="no-cache">
-          {((props) => {
+          {(props) => {
             if (props.loading) {
               return (
                 <LoadingWrapper>
@@ -139,12 +130,12 @@ class Inner extends React.PureComponent {
 
             const { sittes } = props.data;
 
-            const [month, year] = moment(this.state.monthToView).format('MM YY').split(' ');
+            const [month, year] = moment(this.state.monthToView)
+              .format('MM YY')
+              .split(' ');
             const monthlyTotal = monthlyTotalAllChildren(sittes, parseInt(month), parseInt(year));
 
-            const mappedSittes = sittes.length > 0
-              ? mapQueryToKids(sittes)
-              : [];
+            const mappedSittes = sittes.length > 0 ? mapQueryToKids(sittes) : [];
 
             const data = mappedSittes.length > 0
               ? buildDatasheet(mappedSittes, this.state.monthToView, this.onFixedCheckboxChange)
@@ -159,7 +150,7 @@ class Inner extends React.PureComponent {
                 onCellsChanged={this.onCellsChanged}
               />
             );
-          })}
+          }}
         </Query>
       </>
     );
@@ -167,23 +158,25 @@ class Inner extends React.PureComponent {
 }
 
 Main.propTypes = {
-  sittes: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    firstName: PropTypes.string,
-    rateAmount: PropTypes.number,
-    rateType: PropTypes.oneOf(['HOURLY', 'FLAT']),
-    gender: PropTypes.oneOf(['MALE', 'FEMALE']),
-    dates: PropTypes.shape({
+  sittes: PropTypes.arrayOf(
+    PropTypes.shape({
       id: PropTypes.string,
-      month: PropTypes.oneOf([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
-      day: PropTypes.number,
-      year: PropTypes.number,
-      hours: PropTypes.number,
-      paid: PropTypes.bool,
-      dateObjectId: PropTypes.string,
-      isFixedRate: PropTypes.bool,
+      firstName: PropTypes.string,
+      rateAmount: PropTypes.number,
+      rateType: PropTypes.oneOf(['HOURLY', 'FLAT']),
+      gender: PropTypes.oneOf(['MALE', 'FEMALE']),
+      dates: PropTypes.shape({
+        id: PropTypes.string,
+        month: PropTypes.oneOf([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
+        day: PropTypes.number,
+        year: PropTypes.number,
+        hours: PropTypes.number,
+        paid: PropTypes.bool,
+        dateObjectId: PropTypes.string,
+        isFixedRate: PropTypes.bool,
+      }),
     }),
-  })),
+  ),
 };
 
 Main.defaultProps = {
