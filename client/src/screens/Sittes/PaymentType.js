@@ -16,20 +16,22 @@ const Hourly = ({ onChange, value }) => (
   </div>
 );
 
-const Flat = ({ onChange, value }) => (
+const Flat = ({ onChange, value, checked }) => (
   <div>
     Sat?
     {' '}
     <Checkbox
       onChange={e => onChange(e.target.checked)}
-      checked={value}
+      checked={checked || value}
     />
   </div>
 );
 
-const PaymentType = ({ rateType, onChange, value }) => (
+const PaymentType = ({
+  rateType, onChange, value, checked,
+}) => (
   <p>
-    {rateType === 'HOURLY' ? <Hourly onChange={onChange} value={value} /> : <Flat onChange={onChange} value={value} />}
+    {rateType === 'HOURLY' ? <Hourly onChange={onChange} value={value} /> : <Flat onChange={onChange} value={value} checked={checked} />}
   </p>
 );
 
