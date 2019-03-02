@@ -188,7 +188,7 @@ const Children = () => {
                     </Mutation>
                   </Modal>
                   <Wrapper>
-                    <Carousel ref={carousel} effect="fade">
+                    <Carousel ref={carousel}>
                       {data.sittes.map((sitte) => {
                         const sitteDatesLookup = nest(sitte.dates, ['dateObjectId']);
                         const dateObjectId = date.momentDate.format('MMDDYY');
@@ -237,16 +237,18 @@ const Children = () => {
                         );
                       })}
                     </Carousel>
-                    <div>
-                      <Icon
-                        type="left-circle"
-                        onClick={() => carousel.current.slick.slickPrev()}
-                      />
-                      <Icon
-                        type="right-circle"
-                        onClick={() => carousel.current.slick.slickNext()}
-                      />
-                    </div>
+                    {data.sittes.length > 1 && (
+                      <div>
+                        <Icon
+                          type="left-circle"
+                          onClick={() => carousel.current.slick.slickPrev()}
+                        />
+                        <Icon
+                          type="right-circle"
+                          onClick={() => carousel.current.slick.slickNext()}
+                        />
+                      </div>
+                    )}
                   </Wrapper>
                 </Content>
               </Layout>
