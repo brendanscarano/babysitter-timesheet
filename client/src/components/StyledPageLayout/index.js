@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Layout } from 'antd';
-import { theme, media } from '../../shared/theme';
+import { media } from '../../shared/theme';
 
 const StyledPageLayout = styled(Layout)`
   display: flex;
@@ -16,7 +16,8 @@ const StyledPageLayout = styled(Layout)`
 `;
 
 const StyledPageLayoutWithFixedHeader = styled(StyledPageLayout)`
-  padding-top: calc(${theme.heights.navBar}px + 2rem);
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 `;
 
 export { StyledPageLayout, StyledPageLayoutWithFixedHeader };

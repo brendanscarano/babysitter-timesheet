@@ -36,14 +36,18 @@ const LogOutButton = styled(Button)`
 
 const DropdownMenu = ({ history }) => (
   <Menu>
-    <Menu.Item>
-      <Link to={`/sheet/${moment().format('MM-YYYY')}`}>Sheets</Link>
-    </Menu.Item>
+
     <Menu.Item>
       <Link to="/new-sitte">New Sitte</Link>
     </Menu.Item>
     <Menu.Item>
-      <Link to="/my-profile">Profile</Link>
+      <Link to="/sittes">Sittes</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to={`/sheet/${moment().format('MM-YYYY')}`}>Sheets</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to="/account">Account</Link>
     </Menu.Item>
     <Menu.Item>
       <LogOutButton onClick={() => history.push('/logout')} type="danger">Log Out</LogOutButton>

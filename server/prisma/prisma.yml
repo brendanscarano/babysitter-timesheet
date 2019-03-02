@@ -1,6 +1,7 @@
 # Specifies the HTTP endpoint of your Prisma API.
-# endpoint: 'http://108.61.73.167:4466/sitter-sheet/qa'
-endpoint: 'http://localhost:4466/sitter-sheet/dev'
+# endpoint: 'http://108.61.73.167:4466/sitter-sheet/prod'
+endpoint: 'http://108.61.73.167:4466/sitter-sheet/qa'
+# endpoint: 'http://localhost:4466/sitter-sheet/dev'
 
 # Defines your models, each model is mapped to the database as a table.
 datamodel: datamodel.prisma

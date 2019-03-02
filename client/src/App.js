@@ -7,6 +7,8 @@ import NewChild from './screens/NewChild';
 import LoginSignup from './screens/LoginSignup';
 import ChildInfo from './screens/ChildInfo';
 import Main from './screens/Main';
+import Welcome from './screens/Welcome';
+import Sittes from './screens/Sittes';
 import { Layout } from './components/Layout';
 import { RequireSubscription } from './hocs/RequireSubscription';
 import { client } from './graphql/initApollo';
@@ -25,10 +27,11 @@ const loggedInRoutes = isLoggedIn => isLoggedIn && (
     path="/"
     component={RequireSubscription(() => (
       <Switch>
-        <Route exact path="/child/:id" component={ChildInfo} />
-        <Route exact path="/new-sitte" component={NewChild} />
-        <Route exact path="/my-profile" render={MyProfile} />
         <Route exact path="/sheet/:date" component={Main} />
+        <Route exact path="/new-sitte" component={NewChild} />
+        <Route exact path="/sittes" component={Sittes} />
+        <Route exact path="/child/:id" component={ChildInfo} />
+        <Route exact path="/account" render={MyProfile} />
         <Route exact path="/logout" component={Logout} />
       </Switch>
     ))}
@@ -49,23 +52,20 @@ const App = () => (
           }
 
           return (
-            <Layout isLoggedIn={data.isLoggedIn}>
-              <Switch>
-                <Route
-                  exact
-                  path="/"
-                  component={() => (
-                    <div>
-                      <h1>Welcome to sitter sheet</h1>
-                      <h2>Landing page will go here...</h2>
-                    </div>
-                  )}
-                />
-                <Route exact path="/register" component={LoginSignup} />
+            <Switch>
+              <Route
+                exact
+                path="/"
+                component={() => (
+                  <Welcome />
+                )}
+              />
+              <Layout isLoggedIn={data.isLoggedIn}>
+                {!data.isLoggedIn && <Route exact path="/register" component={LoginSignup} />}
                 {loggedInRoutes(data.isLoggedIn)}
-                <Route component={NotFound} />
-              </Switch>
-            </Layout>
+              </Layout>
+              <Route comsponent={NotFound} />
+            </Switch>
           );
         }}
       </Query>
