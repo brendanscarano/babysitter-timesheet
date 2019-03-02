@@ -51,7 +51,7 @@ export default class Home extends React.Component {
           show: true,
         });
         // 实现整屏滚动
-        const docHeight = this.dom.getBoundingClientRect().height;
+        const docHeight = this.dom && this.dom.getBoundingClientRect().height;
         scrollScreen.init({ docHeight });
       }, 500);
     }

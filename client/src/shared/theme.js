@@ -5,7 +5,7 @@ export const theme = {
     navBar: 64,
   },
   zIndex: {
-    navBar: 1,
+    navBar: 999,
   },
   colors: {
     background: '#fff',

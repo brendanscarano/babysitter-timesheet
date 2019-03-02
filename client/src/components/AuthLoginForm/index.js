@@ -29,7 +29,6 @@ const FormItem = Form.Item;
 
 const StyledForm = styled(Form)`
   width: 100%;
-
   > button {
     width: 100%;
   }

@@ -27,11 +27,11 @@ const loggedInRoutes = isLoggedIn => isLoggedIn && (
     path="/"
     component={RequireSubscription(() => (
       <Switch>
-        <Route exact path="/child/:id" component={ChildInfo} />
+        <Route exact path="/sheet/:date" component={Main} />
         <Route exact path="/new-sitte" component={NewChild} />
         <Route exact path="/sittes" component={Sittes} />
+        <Route exact path="/child/:id" component={ChildInfo} />
         <Route exact path="/account" render={MyProfile} />
-        <Route exact path="/sheet/:date" component={Main} />
         <Route exact path="/logout" component={Logout} />
       </Switch>
     ))}
@@ -61,7 +61,7 @@ const App = () => (
                 )}
               />
               <Layout isLoggedIn={data.isLoggedIn}>
-                <Route exact path="/register" component={LoginSignup} />
+                {!data.isLoggedIn && <Route exact path="/register" component={LoginSignup} />}
                 {loggedInRoutes(data.isLoggedIn)}
               </Layout>
               <Route comsponent={NotFound} />

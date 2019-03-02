@@ -11,6 +11,7 @@ const SIGN_UP = 'SIGN_UP';
 
 const Title = styled.h2`
   font-weight: bold;
+  margin-bottom: 1.5rem;
 `;
 
 const SwitchFormText = styled.p`

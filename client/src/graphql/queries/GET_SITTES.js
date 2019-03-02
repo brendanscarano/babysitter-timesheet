@@ -17,6 +17,7 @@ export const GET_SITTES = gql`{
         paid
         dateObjectId
         isFixedRate
+        notes
     }
   }
 }`;
