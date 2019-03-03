@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ApolloProvider, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import MyProfile from './screens/MyProfile';
-import NewChild from './screens/NewChild';
+// import NewChild from './screens/NewChild';
 import LoginSignup from './screens/LoginSignup';
 import ChildInfo from './screens/ChildInfo';
 import Main from './screens/Main';
