@@ -28,9 +28,9 @@ const loggedInRoutes = isLoggedIn => isLoggedIn && (
     component={RequireSubscription(() => (
       <Switch>
         <Route exact path="/sheet/:date" component={Main} />
-        <Route exact path="/new-sitte" component={NewChild} />
+        {/* <Route exact path="/new-sitte" component={NewChild} /> */}
         <Route exact path="/sittes" component={Sittes} />
-        <Route exact path="/child/:id" component={ChildInfo} />
+        <Route exact path="/sitte/:id" component={ChildInfo} />
         <Route exact path="/account" render={MyProfile} />
         <Route exact path="/logout" component={Logout} />
       </Switch>
