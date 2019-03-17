@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { get } from 'lodash';
 import { Query, Mutation } from 'react-apollo';
 import {
   Carousel,
@@ -78,6 +79,7 @@ const Children = () => {
   const [note, setNote] = useState(null);
   const [showItem, setShow] = useState(0);
   const [modalVisable, setModalVisable] = useState(false);
+  const paymentTypeIsBoolean = typeof payment === 'boolean';
 
   return (
     <Query query={GET_SITTES}>
@@ -106,122 +108,109 @@ const Children = () => {
                     </Button>
                   </NoDataWrapper>
                 ) : (
-                  <>
-                    <Desktop>
-                      <Layout style={{ backgroundColor: 'transparent', maxWidth: '1200px', margin: 'auto' }}>
-                        <Content>
-                          <FlexRow style={{ marginBottom: '1rem', flexWrap: 'wrap' }}>
-                            <Avatar
-                              onClick={() => setModalVisable(true)}
-                              style={{
-                                marginRight: '0.5rem',
-                                color: '#00FF7F',
-                                backgroundColor: '',
-                                cursor: 'pointer',
-                              }}
-                            >
-                              <Icon className="new-sitte-icon" type="plus" />
-                            </Avatar>
-                            {data.sittes.map((d, i) => (
-                              <Avatar
-                                onClick={() => carousel.current.slick.slickGoTo(i)}
-                                style={{
-                                  marginRight: '0.5rem',
-                                  color: 'salmon',
-                                  backgroundColor: '#fde3cf',
-                                  cursor: 'pointer',
-                                }}
-                              >
-                                {d.firstName.charAt(0).toUpperCase()}
-                                {d.lastName.charAt(0).toUpperCase()}
-                              </Avatar>
-                            ))}
-                          </FlexRow>
-                          <Wrapper>
-                            <Carousel ref={carousel}>
-                              {data.sittes.map((sitte) => {
-                                const sitteDatesLookup = nest(sitte.dates, ['dateObjectId']);
-                                const dateObjectId = date.momentDate.format('MMDDYY');
-                                const updateId = sitteDatesLookup[dateObjectId] ? sitteDatesLookup[dateObjectId][0].id : '';
+                  <Layout style={{ backgroundColor: 'transparent', maxWidth: '1200px', margin: 'auto' }}>
+                    <FlexRow style={{ flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+                      <Avatar
+                        onClick={() => setModalVisable(true)}
+                        style={{
+                          marginRight: '0.5rem',
+                          marginBottom: '0.5rem',
+                          color: '#00FF7F',
+                          backgroundColor: '',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <Icon className="new-sitte-icon" type="plus" />
+                      </Avatar>
+                      {data.sittes.map((d, i) => (
+                        <Avatar
+                          onClick={() => {
+                            if (get(carousel, 'current.slick', null) !== null) {
+                              carousel.current.slick.slickGoTo(i);
+                            }
 
-                                return (
-                                  <Mutation
-                                    mutation={CREATE_OR_UPDATE_DATE_MUTATION}
-                                    refetchQueries={() => [
-                                      {
-                                        query: GET_SITTES,
-                                      },
-                                    ]}
-                                  >
-                                    {createOrUpdateDate => (
-                                      <SitteCarouselCard
-                                        sitte={sitte}
-                                        onSetDate={setDate}
-                                        date={date}
-                                        updateId={updateId}
-                                        onSetPayment={setPayment}
-                                        onSetNote={setNote}
-                                        onSetDateId={setDateId}
-                                        dateId={dateId}
-                                        payment={payment}
-                                        note={note}
-                                        onSubmit={() => {
-                                          createOrUpdateDate({
-                                            variables: {
-                                              dateId: updateId || '',
-                                              dateObjectId,
-                                              childId: sitte.id,
-                                              hours: typeof payment === 'boolean' ? 0 : payment,
-                                              isFixedRate: false || payment,
-                                              dayOfWeek: date.momentDate.format('ddd'),
-                                              year: parseInt(date.momentDate.format('YY'), 10),
-                                              month: parseInt(date.momentDate.format('MM'), 10),
-                                              day: parseInt(date.momentDate.format('DD'), 10),
-                                              notes: note,
-                                            },
-                                          });
-                                        }}
-                                      />
-                                    )}
-                                  </Mutation>
-                                );
-                              })}
-                            </Carousel>
-                            {data.sittes.length > 1 && (
-                              <div>
-                                <Icon
-                                  type="left-circle"
-                                  onClick={() => carousel.current.slick.slickPrev()}
-                                />
-                                <Icon
-                                  type="right-circle"
-                                  onClick={() => carousel.current.slick.slickNext()}
-                                />
-                              </div>
-                            )}
-                          </Wrapper>
-                        </Content>
-                      </Layout>
+                            setShow(i);
+                          }}
+                          style={{
+                            marginRight: '0.5rem',
+                            color: 'salmon',
+                            backgroundColor: showItem === i ? '#ffbc89' : '#fde3cf',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {d.firstName.charAt(0).toUpperCase()}
+                          {d.lastName.charAt(0).toUpperCase()}
+                        </Avatar>
+                      ))}
+                    </FlexRow>
+                    <Desktop>
+                      <Content>
+                        <Wrapper>
+                          <Carousel ref={carousel}>
+                            {data.sittes.map((sitte) => {
+                              const sitteDatesLookup = nest(sitte.dates, ['dateObjectId']);
+                              const dateObjectId = date.momentDate.format('MMDDYY');
+                              const updateId = sitteDatesLookup[dateObjectId] ? sitteDatesLookup[dateObjectId][0].id : '';
+
+                              return (
+                                <Mutation
+                                  mutation={CREATE_OR_UPDATE_DATE_MUTATION}
+                                  refetchQueries={() => [
+                                    {
+                                      query: GET_SITTES,
+                                    },
+                                  ]}
+                                >
+                                  {createOrUpdateDate => (
+                                    <SitteCarouselCard
+                                      sitte={sitte}
+                                      onSetDate={setDate}
+                                      date={date}
+                                      updateId={updateId}
+                                      onSetPayment={setPayment}
+                                      onSetNote={setNote}
+                                      onSetDateId={setDateId}
+                                      dateId={dateId}
+                                      payment={payment}
+                                      note={note}
+                                      onSubmit={() => {
+                                        createOrUpdateDate({
+                                          variables: {
+                                            dateId: updateId || '',
+                                            dateObjectId,
+                                            childId: sitte.id,
+                                            hours: paymentTypeIsBoolean ? 0 : payment,
+                                            isFixedRate: paymentTypeIsBoolean ? payment : false,
+                                            dayOfWeek: date.momentDate.format('ddd'),
+                                            year: parseInt(date.momentDate.format('YY'), 10),
+                                            month: parseInt(date.momentDate.format('MM'), 10),
+                                            day: parseInt(date.momentDate.format('DD'), 10),
+                                            notes: note,
+                                          },
+                                        });
+                                      }}
+                                    />
+                                  )}
+                                </Mutation>
+                              );
+                            })}
+                          </Carousel>
+                          {data.sittes.length > 1 && (
+                            <div>
+                              <Icon
+                                type="left-circle"
+                                onClick={() => carousel.current.slick.slickPrev()}
+                              />
+                              <Icon
+                                type="right-circle"
+                                onClick={() => carousel.current.slick.slickNext()}
+                              />
+                            </div>
+                          )}
+                        </Wrapper>
+                      </Content>
                     </Desktop>
                     <BelowMedium>
-                      <FlexRow style={{ marginBottom: '1rem', flexWrap: 'wrap' }}>
-                        {data.sittes.map((sitte, i) => (
-                          <Avatar
-                            onClick={() => {
-                              setShow(i);
-                            }}
-                            style={{
-                              marginRight: '0.5rem',
-                              color: 'salmon',
-                              backgroundColor: '#fde3cf',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            {sitte.firstName.charAt(0).toUpperCase()}
-                            {sitte.lastName.charAt(0).toUpperCase()}
-                          </Avatar>
-                        ))}
-                      </FlexRow>
                       <div>
                         {data.sittes.map((sitte, i) => (
                           <div>
@@ -245,7 +234,7 @@ const Children = () => {
                         ))}
                       </div>
                     </BelowMedium>
-                  </>
+                  </Layout>
                 )}
           </>
         );
