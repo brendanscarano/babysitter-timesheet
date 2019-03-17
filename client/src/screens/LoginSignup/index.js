@@ -37,7 +37,7 @@ class LoginSignupScreen extends React.PureComponent {
     // TODO: Switch out for client Query
     const token = localStorage.getItem('token');
     if (token) {
-      return <Redirect to={`/sheet/${formatDateForUrl}`} />;
+      return <Redirect to={`/sittes}`} />;
     }
 
     return (

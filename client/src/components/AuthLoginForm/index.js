@@ -87,7 +87,7 @@ class AuthLoginForm extends React.PureComponent {
 
               await window.localStorage.setItem('sid', response.data.login.token);
               mutationProps.client.writeData({ data: { isLoggedIn: true } });
-              this.props.history.push(`/sheet/${formatDateForUrl}`);
+              this.props.history.push('/sittes');
             }
           }}
         >

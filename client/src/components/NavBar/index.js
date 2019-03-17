@@ -37,14 +37,14 @@ const LogOutButton = styled(Button)`
 const DropdownMenu = ({ history }) => (
   <Menu>
 
-    <Menu.Item>
+    {/* <Menu.Item>
       <Link to="/new-sitte">New Sitte</Link>
+    </Menu.Item> */}
+    <Menu.Item>
+      <Link to="/sittes">Calendar</Link>
     </Menu.Item>
     <Menu.Item>
-      <Link to="/sittes">Sittes</Link>
-    </Menu.Item>
-    <Menu.Item>
-      <Link to={`/sheet/${moment().format('MM-YYYY')}`}>Sheets</Link>
+      <Link to={`/sheet/${moment().format('MM-YYYY')}`}>Sheet</Link>
     </Menu.Item>
     <Menu.Item>
       <Link to="/account">Account</Link>

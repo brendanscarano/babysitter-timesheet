@@ -8,6 +8,7 @@ import {
   Comment,
   Tooltip,
 } from 'antd';
+import { Link } from 'react-router-dom';
 import { FlexRow, FlexColumn } from '../../components/Flex';
 import { getGenderEmoji } from '../../utils/sittes';
 import PaymentType from './PaymentType';
@@ -19,7 +20,11 @@ const SitteCarouselCard = ({
 }) => (
   <FlexColumn>
     <FlexRow>
-      <h2>{`${sitte.firstName} ${sitte.lastName} `}</h2>
+      <h2>
+        <Link to={`/sitte/${sitte.id}`}>
+          {`${sitte.firstName} ${sitte.lastName} `}
+        </Link>
+      </h2>
       <div style={{ marginLeft: '0.5rem' }}>
         {getGenderEmoji(sitte.gender)}
       </div>

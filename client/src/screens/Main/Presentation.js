@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Button, Avatar, Icon } from 'antd';
 import { DataSheet } from '../../components/DataSheet';
 import { MonthPicker } from '../../components/MonthPicker';
 import { FlexRow } from '../../components/Flex';
+import { NewSitteModal } from '../../components/NewSitteModal';
 import { theme } from '../../shared/theme';
 import { formatCurr } from '../../helpers/formatCurr';
 
@@ -66,9 +66,21 @@ const Presentation = ({
 }) => {
   const leftPanel = data.map(array => array.slice(0, 4));
   const rightPanel = data.map(array => array.slice(4));
-
+  const [modalVisable, setModalVisable] = useState(false);
   return (
     <StyledContent>
+      <Avatar
+        onClick={() => setModalVisable(true)}
+        style={{
+          marginRight: '0.5rem',
+          marginBottom: '0.5rem',
+          color: '#00FF7F',
+          backgroundColor: '',
+          cursor: 'pointer',
+        }}
+      >
+        <Icon type="plus" />
+      </Avatar>
       <TopBarBackground>
         <TopBar>
           <DateWrapper>
@@ -77,25 +89,24 @@ const Presentation = ({
               monthToView={monthToView}
             />
             <h3>
-            Monthly Total:
+              Monthly Total:
               {' '}
               <b>{formatCurr(monthlyTotal)}</b>
             </h3>
           </DateWrapper>
         </TopBar>
       </TopBarBackground>
+      <NewSitteModal onToggle={setModalVisable} visable={modalVisable} />
       {data.length === 0
         ? (
           <NoDataWrapper>
             <h2>
-You haven
+              You haven
               {'\''}
-t added any children yet.
+              t added any sittes yet.
             </h2>
-            <Button type="primary">
-              <Link to="/new-sitte" type="primary">
-                Add a Child
-              </Link>
+            <Button type="primary" onClick={() => setModalVisable(true)}>
+              Add a Child
             </Button>
           </NoDataWrapper>
         )
