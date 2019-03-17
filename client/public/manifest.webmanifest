@@ -1,0 +1,16 @@
+{
+  "name": "sitter sheet",
+  "short_name": "sitter sheet",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#00ccff",
+  "theme_color": "#ff6600",
+  "description": "Sitter sheet is a tool for sitters to visually track their invoices, see their business grow, and make invoicing much easier",
+  "icons": [
+    {
+      "src": "/og.png",
+      "sizes": "512 × 512",
+      "type": "image/png"
+    }
+  ]
+}

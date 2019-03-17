@@ -9,6 +9,7 @@ import {
   Avatar,
   Card,
   Button,
+  Empty,
 } from 'antd';
 import moment from 'moment';
 import { FlexRow } from '../../components/Flex';
@@ -99,13 +100,9 @@ const Children = () => {
               data.sittes.length === 0
                 ? (
                   <NoDataWrapper>
-                    <h2>
-                      You haven
-                      {'\''}
-                      t added any sittes yet.
-                    </h2>
-                    <Button type="primary" onClick={() => setModalVisable(true)}>
-                      Add a Child
+                    <Empty />
+                    <Button style={{ marginTop: '2rem' }} type="primary" onClick={() => setModalVisable(true)}>
+                      Add Sitte
                     </Button>
                   </NoDataWrapper>
                 ) : (
@@ -123,7 +120,7 @@ const Children = () => {
                                 cursor: 'pointer',
                               }}
                             >
-                              <Icon type="plus" />
+                              <Icon className="new-sitte-icon" type="plus" />
                             </Avatar>
                             {data.sittes.map((d, i) => (
                               <Avatar

@@ -86,7 +86,7 @@ class AuthSignupForm extends React.PureComponent {
             if (response.data.signup.token) {
               localStorage.setItem('sid', response.data.signup.token);
               mutationProps.client.writeData({ data: { isLoggedIn: true } });
-              this.props.history.push(`/sheet/${formatDateForUrl}`);
+              this.props.history.push('/sittes');
             }
           }}
         >
