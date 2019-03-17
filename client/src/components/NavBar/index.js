@@ -5,13 +5,14 @@ import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import {
-  Avatar, Dropdown, Menu, Button, Layout,
+ Avatar, Dropdown, Menu, Button, Layout 
 } from 'antd';
 import { FlexRow } from '../Flex';
 import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
 import { formatDateForUrl } from '../../helpers/formatDateForUrl';
 // TODO: Inject theme instead of importing it
 import { theme } from '../../shared/theme';
+import { Loader } from '../Loader';
 
 const { Header } = Layout;
 
@@ -36,11 +37,10 @@ const LogOutButton = styled(Button)`
 
 const DropdownMenu = ({ history }) => (
   <Menu>
-
     {/* <Menu.Item>
       <Link to="/new-sitte">New Sitte</Link>
     </Menu.Item> */}
-    <Menu.Item>
+  <Menu.Item>
       <Link to="/sittes">Calendar</Link>
     </Menu.Item>
     <Menu.Item>
@@ -49,8 +49,11 @@ const DropdownMenu = ({ history }) => (
     <Menu.Item>
       <Link to="/account">Account</Link>
     </Menu.Item>
-    <Menu.Item>
-      <LogOutButton onClick={() => history.push('/logout')} type="danger">Log Out</LogOutButton>
+  <Menu.Item>
+  <LogOutButton onClick={() => history.push('/logout')} type="danger">
+				Log Out
+			
+</LogOutButton>
     </Menu.Item>
   </Menu>
 );
@@ -83,29 +86,30 @@ const NavBar = withRouter(({ isLoggedIn, history }) => {
   return (
     <Wrapper>
       <StyledLink to={isLoggedIn ? `/sheet/${formatDateForUrl}` : '/register'}>
-        <span role="img" aria-label="baby">👶</span>
-        <h1>Sitter Sheet</h1>
+        <span role="img" aria-label="baby">
+					👶
+				
+</span>
+  <h1>Sitter Sheet</h1>
       </StyledLink>
-      {
-        isLoggedIn
-          ? (
-            <Query query={ME_QUERY}>
-              {({ data, loading }) => {
-                if (loading) {
-                  return null;
-                }
-                return (
-                  <FlexRow>
-                    <StyledDropdown overlay={DropdownMenuWithHistory()}>
-                      <Avatar icon="user" />
-                    </StyledDropdown>
-                  </FlexRow>
-                );
-              }}
-            </Query>
-          )
-          : <StyledLink to="/register">Sign Up</StyledLink>
-      }
+      {isLoggedIn ? (
+        <Query query={ME_QUERY}>
+          {({ loading }) => {
+            if (loading) {
+              return <Loader />;
+            }
+            return (
+              <FlexRow>
+                <StyledDropdown overlay={DropdownMenuWithHistory()}>
+                  <Avatar icon="user" />
+                </StyledDropdown>
+              </FlexRow>
+            );
+          }}
+        </Query>
+      ) : (
+        <StyledLink to="/register">Sign Up</StyledLink>
+      )}
     </Wrapper>
   );
 });

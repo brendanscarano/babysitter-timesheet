@@ -11,6 +11,7 @@ import {
   Card,
   Button,
   Empty,
+  Calendar,
 } from 'antd';
 import moment from 'moment';
 import { FlexRow } from '../../components/Flex';
@@ -20,6 +21,7 @@ import { CREATE_OR_UPDATE_DATE_MUTATION } from '../Main/graphql';
 import { Desktop, BelowMedium } from '../../utils/responsive';
 import { nest } from '../../utils/nest';
 import { NewSitteModal } from '../../components/NewSitteModal';
+import { Loader } from '../../components/Loader';
 
 const { Content } = Layout;
 
@@ -86,7 +88,7 @@ const Children = () => {
       {({ data, loading, error }) => {
         if (loading) {
           return (
-            <Spin />
+            <Loader />
           );
         }
         if (error) {
@@ -215,20 +217,25 @@ const Children = () => {
                         {data.sittes.map((sitte, i) => (
                           <div>
                             {showItem === i && (
-                              <Card
-                                title={`${sitte.firstName} ${sitte.lastName}`}
-                                actions={[
-                                  <Button
-                                    onClick={() => {
-                                      const val = i + 1 !== data.sittes.length ? i + 1 : 0;
-                                      setShow(val);
-                                    }}
-                                  >
+                              <>
+                                <Card
+                                  title={`${sitte.firstName} ${sitte.lastName}`}
+                                  actions={[
+                                    <Button
+                                      onClick={() => {
+                                        const val = i + 1 !== data.sittes.length ? i + 1 : 0;
+                                        setShow(val);
+                                      }}
+                                    >
                                     Next
-                                  </Button>]}
-                              >
-                                <p>{sitte.rateType}</p>
-                              </Card>
+                                    </Button>]}
+                                >
+                                  {/* <div style={{ maxWidth: 300, border: '1px solid #d9d9d9', borderRadius: 4 }}>
+                                    <Calendar fullscreen={false} onPanelChange={() => {}} />
+                                  </div> */}
+                                  <p>{sitte.rateType}</p>
+                                </Card>
+                              </>
                             )}
                           </div>
                         ))}

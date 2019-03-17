@@ -1,9 +1,10 @@
 import React from 'react';
 import { Bar } from 'react-chartjs';
+import { Loader } from '../../../components/Loader';
 
 const Graph = ({ loading, error, data }) => {
   if (loading) {
-    return <div>Loading Data...</div>;
+    return <Loader />;
   }
   if (error) {
     return <div>There was an error loading the data...</div>;
