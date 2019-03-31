@@ -10,6 +10,7 @@ import {
   Card,
   Button,
   Empty,
+  DatePicker,
 } from 'antd';
 import moment from 'moment';
 import { FlexRow } from '../../components/Flex';
@@ -20,7 +21,6 @@ import { Desktop, BelowMedium } from '../../utils/responsive';
 import { nest } from '../../utils/nest';
 import { NewSitteModal } from '../../components/NewSitteModal';
 import { Loader } from '../../components/Loader';
-import { GET_SITTE_BY_ID } from '../../graphql/queries/GET_SITTE_BY_ID';
 
 const { Content } = Layout;
 
@@ -80,7 +80,6 @@ const Children = () => {
   const [note, setNote] = useState(null);
   const [showItem, setShow] = useState(0);
   const [modalVisable, setModalVisable] = useState(false);
-  const paymentTypeIsBoolean = typeof payment === 'boolean';
 
   return (
     <Query query={GET_SITTES}>
@@ -175,19 +174,20 @@ const Children = () => {
                                       dateId={dateId}
                                       payment={payment}
                                       note={note}
-                                      onSubmit={() => {
+                                      onSubmit={(variables) => {
                                         createOrUpdateDate({
                                           variables: {
                                             dateId: updateId || '',
                                             dateObjectId,
                                             childId: sitte.id,
-                                            hours: paymentTypeIsBoolean ? 1 : payment,
-                                            isFixedRate: paymentTypeIsBoolean ? payment : false,
+                                            hours: sitte.rateType === 'HOURLY' ? payment : 1,
+                                            isFixedRate: sitte.rateType === 'FLAT' ? Boolean(payment) : false,
                                             dayOfWeek: date.momentDate.format('ddd'),
                                             year: parseInt(date.momentDate.format('YY'), 10),
                                             month: parseInt(date.momentDate.format('MM'), 10),
                                             day: parseInt(date.momentDate.format('DD'), 10),
                                             notes: note,
+                                            ...variables,
                                           },
                                         });
                                       }}
@@ -230,10 +230,9 @@ const Children = () => {
                                     Next
                                     </Button>]}
                                 >
-                                  {/* <div style={{ maxWidth: 300, border: '1px solid #d9d9d9', borderRadius: 4 }}>
-                                    <Calendar fullscreen={false} onPanelChange={() => {}} />
-                                  </div> */}
+                                  <DatePicker defaultValue={moment()} disabled />
                                   <p>{sitte.rateType}</p>
+                                  {sitte.rateType === 'FLAT' ? 'Mark seen for today?' : 'Input hours for today?'}
                                 </Card>
                               </React.Fragment>
                             )}
