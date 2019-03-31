@@ -12,6 +12,7 @@ import { GET_SITTES, CREATE_OR_UPDATE_DATE_MUTATION } from './graphql';
 import { mapQueryToKids } from './mapQueryToKids';
 import { Presentation } from './Presentation';
 import { theme } from '../../shared/theme';
+import { Loader } from '../../components/Loader';
 
 const LoadingWrapper = styled.div`
   background-color: ${theme.colors.background};
@@ -116,12 +117,7 @@ class Inner extends React.PureComponent {
         <Query query={GET_SITTES} fetchPolicy="no-cache">
           {(props) => {
             if (props.loading) {
-              return (
-                <LoadingWrapper>
-                  <Spin size="large" />
-                  <span>Loading...</span>
-                </LoadingWrapper>
-              );
+              return <Loader />;
             }
 
             if (!props.data || !props.data.sittes) {

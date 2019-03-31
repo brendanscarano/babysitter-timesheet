@@ -9,6 +9,7 @@ import { NewChildForm } from '../NewChildForm';
 export const NewSitteModal = ({
   visable,
   onToggle,
+  refetch
 }) => (
   <Modal
     centered
@@ -17,11 +18,6 @@ export const NewSitteModal = ({
     footer={null}
   >
     <Mutation
-      refetchQueries={[
-        {
-          query: GET_SITTES,
-        },
-      ]}
       mutation={CREATE_NEW_CHILD}
     >
       {createSitte => (
@@ -68,7 +64,7 @@ export const NewSitteModal = ({
                     message: 'Success',
                     description: `Added ${values.firstName} ${values.lastName}`,
                   });
-
+                  refetch();
                   onToggle(false);
                 }
               }}

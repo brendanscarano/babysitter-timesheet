@@ -5,35 +5,27 @@ import { Checkbox, InputNumber } from 'antd';
 
 const Hourly = ({ onChange, value }) => (
   <div>
-    Hours Sat
-    {' '}
-    <InputNumber
-      min={1}
-      max={24}
-      value={value || 1}
-      onChange={e => onChange(e)}
-    />
+		Hours Sat 
+{' '}
+<InputNumber min={1} max={24} value={value || 1} onChange={(e) => onChange(e)} />
   </div>
 );
 
 const Flat = ({ onChange, value, checked }) => (
   <div>
-    Sat?
-    {' '}
-    <Checkbox
-      onChange={e => onChange(e.target.checked)}
-      checked={checked || value}
-    />
+		Sat? 
+{' '}
+<Checkbox onChange={(e) => onChange(e.target.checked)} checked={checked || value} />
   </div>
 );
 
 const PaymentType = ({
-  rateType, onChange, value, checked,
+ rateType, onChange, value, checked 
 }) => (
-  <p>
-    {rateType === 'HOURLY' ? <Hourly onChange={onChange} value={value} /> : <Flat onChange={onChange} value={value} checked={checked} />}
-  </p>
+  <div>{rateType === 'HOURLY' ? <Hourly onChange={onChange} value={value} /> : null}</div>
 );
+
+/** <Flat onChange={onChange} value={value} checked={checked} /> */
 
 PaymentType.propTypes = {
   rateType: propTypes.oneOf(['FLAT', 'HOURLY']).isRequired,

@@ -1,21 +1,22 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Spin, Alert } from 'antd';
+import { Alert } from 'antd';
 import { Query } from 'react-apollo';
+import { Loader } from '../../components/Loader';
 
 const ChildInfo = () => (
-  <Query query={gql`
-    query getSitte{
-      sitte {
-        id
-      }
-    }
-  `}
+  <Query
+  query={gql`
+			query getSitte {
+				sitte {
+					id
+				}
+			}
+		`}
   >
     {({ data, loading, error }) => {
-      console.log(loading, data, error);
       if (loading) {
-        return (<Spin />);
+        return <Loader />;
       }
 
       if (error) {
@@ -28,8 +29,9 @@ const ChildInfo = () => (
 
       return (
         <div>
-          Hello
-          <pre>{JSON.stringify(data, null, 3)}</pre>
+					Hello
+          
+<pre>{JSON.stringify(data, null, 3)}</pre>
         </div>
       );
     }}

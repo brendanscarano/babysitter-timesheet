@@ -12,21 +12,18 @@ import { GET_SITTES } from './graphql';
 import Graph from './profileComponents/Graph';
 import { TotalPerChildSitteeCard } from './profileComponents/SitteeCard';
 import InfoCard from './profileComponents/InfoCard';
+import { Loader } from '../../components/Loader';
 
-const DataSheetWrapper = styled.div`
-  padding: 2rem 0;
-`;
+const DataSheetWrapper = styled.div`padding: 2rem 0;`;
 
 const CardWrapper = styled.div`
-  flex-wrap: wrap;
-  display: flex;
-  margin: 2rem 0rem 2rem 0rem;
-  justify-content: space-between;
+	flex-wrap: wrap;
+	display: flex;
+	margin: 2rem 0rem 2rem 0rem;
+	justify-content: space-between;
 `;
 
-const UserName = styled.h2`
-  margin: 0 0 0 0.5rem;
-`;
+const UserName = styled.h2`margin: 0 0 0 0.5rem;`;
 
 const TopRow = styled(FlexRow)`
   justify-content: space-between;
@@ -37,76 +34,72 @@ const TitleBar = styled(FlexRow)`
 `;
 
 const MyProfile = () => (
-  <Query query={ME_QUERY}>
-    {({ data, loading, error }) => {
-      if (loading) {
-        return 'Loading...';
-      }
+	<Query query={ME_QUERY}>
+		{({ data, loading, error }) => {
+			if (loading) {
+				return <Loader />;
+			}
 
-      if (error) {
-        return 'Something went wrong';
-      }
+			if (error) {
+				return 'Something went wrong';
+			}
 
-      const { me } = data;
+			const { me } = data;
 
-      return (
-        <Layout style={{ backgroundColor: '#fff' }}>
-          <TopRow>
-            <TitleBar>
-              <Avatar icon="user" />
-              <UserName>
-                {me.firstName}
-                {' '}
-                {me.lastName}
-              </UserName>
-            </TitleBar>
-            <div>
-              <p>{`You are currently on a ${me.type} account`}</p>
-              <Payment user={me} />
-            </div>
-          </TopRow>
-          <Query query={GET_SITTES}>
-            {(props) => {
-              const sitteData = props.data.sittes && props.data.sittes.length > 0 ? props.data.sittes : null;
-              const annualData = buildYearlyTotals(sitteData);
-              const annualAnnualSum = annualData.datasets[0].data.reduce(
-                (acc, curr) => acc + curr,
-                0,
-              );
+			return (
+				<Layout style={{ backgroundColor: '#fff' }}>
+					<TopRow>
+						<TitleBar>
+							<Avatar icon="user" />
+							<UserName>
+								{me.firstName} {me.lastName}
+							</UserName>
+						</TitleBar>
+						<div>
+							<p>{`You are currently on a ${me.type} account`}</p>
+							<Payment user={me} />
+						</div>
+					</TopRow>
+					<Query query={GET_SITTES}>
+						{(props) => {
+							const sitteData =
+								props.data.sittes && props.data.sittes.length > 0 ? props.data.sittes : null;
+							const annualData = buildYearlyTotals(sitteData);
+							const annualAnnualSum = annualData.datasets[0].data.reduce((acc, curr) => acc + curr, 0);
 
-              return (
-                <DataSheetWrapper>
-                  <Card title={`2018 Total: ${formatCurr(annualAnnualSum)}`}>
-                    <Graph loading={props.loading} error={props.error} data={annualData} />
-                  </Card>
-                  <CardWrapper>
-                    {sitteData
-                      && sitteData.map((sittee, i) => (
-                        <TotalPerChildSitteeCard
-                          key={sittee.firstName}
-                          name={`${sittee.firstName} ${sittee.lastName}`}
-                          {...sittee}
-                        />
-                      ))}
-                  </CardWrapper>
-                  <InfoCard info={30} hours />
-                  <InfoCard info={120} hours={false} />
-                </DataSheetWrapper>
-              );
-            }}
-          </Query>
-        </Layout>
-      );
-    }}
-  </Query>
+							return (
+								<DataSheetWrapper>
+									<Card title={`2018 Total: ${formatCurr(annualAnnualSum)}`}>
+										<Graph loading={props.loading} error={props.error} data={annualData} />
+									</Card>
+									<CardWrapper>
+										{sitteData &&
+											sitteData.map((sittee, i) => (
+												<TotalPerChildSitteeCard
+													key={sittee.firstName}
+													name={`${sittee.firstName} ${sittee.lastName}`}
+													{...sittee}
+												/>
+											))}
+									</CardWrapper>
+									<InfoCard info={30} hours />
+									<InfoCard info={120} hours={false} />
+								</DataSheetWrapper>
+							);
+						}}
+					</Query>
+				</Layout>
+			);
+		}}
+	</Query>
 );
 
 MyProfile.propTypes = {
-  me: PropTypes.shape({
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    // type: PropTypes.oneOf('TRIAL', 'MONTHLY_PAID'),
-  }).isRequired,
+	me: PropTypes.shape({
+		firstName: PropTypes.string,
+		lastName: PropTypes.string
+		// type: PropTypes.oneOf('TRIAL', 'MONTHLY_PAID'),
+	}).isRequired
 };
 
 export default MyProfile;
