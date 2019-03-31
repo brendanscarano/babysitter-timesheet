@@ -4,14 +4,12 @@ import { get } from 'lodash';
 import { Query, Mutation } from 'react-apollo';
 import {
   Carousel,
-  Spin,
   Layout,
   Icon,
   Avatar,
   Card,
   Button,
   Empty,
-  Calendar,
 } from 'antd';
 import moment from 'moment';
 import { FlexRow } from '../../components/Flex';
@@ -22,6 +20,7 @@ import { Desktop, BelowMedium } from '../../utils/responsive';
 import { nest } from '../../utils/nest';
 import { NewSitteModal } from '../../components/NewSitteModal';
 import { Loader } from '../../components/Loader';
+import { GET_SITTE_BY_ID } from '../../graphql/queries/GET_SITTE_BY_ID';
 
 const { Content } = Layout;
 
@@ -77,7 +76,7 @@ const Children = () => {
     momentDate: moment(),
   });
   const [dateId, setDateId] = useState('');
-  const [payment, setPayment] = useState(null);
+  const [payment, setPayment] = useState(1);
   const [note, setNote] = useState(null);
   const [showItem, setShow] = useState(0);
   const [modalVisable, setModalVisable] = useState(false);
@@ -85,12 +84,13 @@ const Children = () => {
 
   return (
     <Query query={GET_SITTES}>
-      {({ data, loading, error }) => {
+      {({ data, loading, error, refetch }) => {
         if (loading) {
           return (
             <Loader />
           );
         }
+        console.log(data);
         if (error) {
           return (
             <p>Something went wrong</p>
@@ -98,10 +98,10 @@ const Children = () => {
         }
 
         return (
-          <>
-            <NewSitteModal onToggle={setModalVisable} visable={modalVisable} />
+          <React.Fragment>
+            <NewSitteModal refetch={refetch} onToggle={setModalVisable} visable={modalVisable} />
             {
-              data.sittes.length === 0
+              !get(data, 'sittes.length', 0)
                 ? (
                   <NoDataWrapper>
                     <Empty />
@@ -126,6 +126,7 @@ const Children = () => {
                       </Avatar>
                       {data.sittes.map((d, i) => (
                         <Avatar
+                          key={d.id}
                           onClick={() => {
                             if (get(carousel, 'current.slick', null) !== null) {
                               carousel.current.slick.slickGoTo(i);
@@ -157,11 +158,10 @@ const Children = () => {
                               return (
                                 <Mutation
                                   mutation={CREATE_OR_UPDATE_DATE_MUTATION}
-                                  refetchQueries={() => [
-                                    {
-                                      query: GET_SITTES,
-                                    },
-                                  ]}
+                                  refetchQueries={() => [{
+                                    query: GET_SITTES,
+                                  }]}
+                                  key={sitte.id}
                                 >
                                   {createOrUpdateDate => (
                                     <SitteCarouselCard
@@ -181,7 +181,7 @@ const Children = () => {
                                             dateId: updateId || '',
                                             dateObjectId,
                                             childId: sitte.id,
-                                            hours: paymentTypeIsBoolean ? 0 : payment,
+                                            hours: paymentTypeIsBoolean ? 1 : payment,
                                             isFixedRate: paymentTypeIsBoolean ? payment : false,
                                             dayOfWeek: date.momentDate.format('ddd'),
                                             year: parseInt(date.momentDate.format('YY'), 10),
@@ -215,9 +215,9 @@ const Children = () => {
                     <BelowMedium>
                       <div>
                         {data.sittes.map((sitte, i) => (
-                          <div>
+                          <div key={sitte.id}>
                             {showItem === i && (
-                              <>
+                              <React.Fragment>
                                 <Card
                                   title={`${sitte.firstName} ${sitte.lastName}`}
                                   actions={[
@@ -235,7 +235,7 @@ const Children = () => {
                                   </div> */}
                                   <p>{sitte.rateType}</p>
                                 </Card>
-                              </>
+                              </React.Fragment>
                             )}
                           </div>
                         ))}
@@ -243,7 +243,7 @@ const Children = () => {
                     </BelowMedium>
                   </Layout>
                 )}
-          </>
+          </React.Fragment>
         );
       }}
     </Query>

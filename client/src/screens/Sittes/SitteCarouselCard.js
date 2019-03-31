@@ -62,8 +62,8 @@ const SitteCarouselCard = ({
                       && (
                         <>
                           <Icon type="dollar" theme="twoTone" twoToneColor="#52c41a" />
-                          <p>{(sitteDate.hours) ? `Sat for ${sitteDate.hours} hours` : ''}</p>
-                          <p>{sitteDate.notes}</p>
+                          <p>{(sitteDate.hours) ? `Sat for ${sitteDate.hours} ${sitteDate.hours === 1 ? 'hour' : 'hours'}` : ''}</p>
+                          {/* <p>{sitteDate.notes}</p> */}
                         </>
                       )
                     ))

@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
-import {
- Avatar, Dropdown, Menu, Button, Layout 
-} from 'antd';
+import { Avatar, Dropdown, Menu, Button, Layout } from 'antd';
 import { FlexRow } from '../Flex';
 import { ME_QUERY } from '../../graphql/queries/ME_QUERY';
 import { formatDateForUrl } from '../../helpers/formatDateForUrl';
@@ -36,26 +34,25 @@ const LogOutButton = styled(Button)`
 `;
 
 const DropdownMenu = ({ history }) => (
-  <Menu>
-    {/* <Menu.Item>
+	<Menu>
+		{/* <Menu.Item>
       <Link to="/new-sitte">New Sitte</Link>
     </Menu.Item> */}
-  <Menu.Item>
-      <Link to="/sittes">Calendar</Link>
-    </Menu.Item>
-    <Menu.Item>
+		<Menu.Item>
+			<Link to="/sittes">Calendar</Link>
+		</Menu.Item>
+		{/* <Menu.Item>
       <Link to={`/sheet/${moment().format('MM-YYYY')}`}>Sheet</Link>
-    </Menu.Item>
-    <Menu.Item>
-      <Link to="/account">Account</Link>
-    </Menu.Item>
-  <Menu.Item>
-  <LogOutButton onClick={() => history.push('/logout')} type="danger">
+    </Menu.Item> */}
+		<Menu.Item>
+			<Link to="/account">Account</Link>
+		</Menu.Item>
+		<Menu.Item>
+			<LogOutButton onClick={() => history.push('/logout')} type="danger">
 				Log Out
-			
-</LogOutButton>
-    </Menu.Item>
-  </Menu>
+			</LogOutButton>
+		</Menu.Item>
+	</Menu>
 );
 
 const StyledDropdown = styled(Dropdown)`
@@ -82,40 +79,39 @@ const Wrapper = styled(Header)`
 `;
 
 const NavBar = withRouter(({ isLoggedIn, history }) => {
-  const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
-  return (
-    <Wrapper>
-      <StyledLink to={isLoggedIn ? `/sheet/${formatDateForUrl}` : '/register'}>
-        <span role="img" aria-label="baby">
+	const DropdownMenuWithHistory = () => <DropdownMenu history={history} />;
+	return (
+		<Wrapper>
+			<StyledLink to={isLoggedIn ? `/sheet/${formatDateForUrl}` : '/register'}>
+				<span role="img" aria-label="baby">
 					👶
-				
-</span>
-  <h1>Sitter Sheet</h1>
-      </StyledLink>
-      {isLoggedIn ? (
-        <Query query={ME_QUERY}>
-          {({ loading }) => {
-            if (loading) {
-              return <Loader />;
-            }
-            return (
-              <FlexRow>
-                <StyledDropdown overlay={DropdownMenuWithHistory()}>
-                  <Avatar icon="user" />
-                </StyledDropdown>
-              </FlexRow>
-            );
-          }}
-        </Query>
-      ) : (
-        <StyledLink to="/register">Sign Up</StyledLink>
-      )}
-    </Wrapper>
-  );
+				</span>
+				<h1>Sitter Sheet</h1>
+			</StyledLink>
+			{isLoggedIn ? (
+				<Query query={ME_QUERY}>
+					{({ loading }) => {
+						if (loading) {
+							return '';
+						}
+						return (
+							<FlexRow>
+								<StyledDropdown overlay={DropdownMenuWithHistory()}>
+									<Avatar icon="user" />
+								</StyledDropdown>
+							</FlexRow>
+						);
+					}}
+				</Query>
+			) : (
+				<StyledLink to="/register">Sign Up</StyledLink>
+			)}
+		</Wrapper>
+	);
 });
 
 NavBar.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
+	isLoggedIn: PropTypes.bool.isRequired
 };
 
 export { NavBar };

@@ -1,8 +1,10 @@
 import ApolloClient from 'apollo-boost';
 import { typeDefs } from './resolvers';
 
+const { REACT_APP_ENV, REACT_APP_GRAPHQL_SERVER_PROD, REACT_APP_GRAPHQL_SERVER_DEV } = process.env;
+
 export const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPHQL_SERVER,
+  uri: REACT_APP_ENV === 'production' ? REACT_APP_GRAPHQL_SERVER_PROD : REACT_APP_GRAPHQL_SERVER_DEV,
   credentials: 'include',
   clientState: {
     defaults: {
