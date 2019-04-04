@@ -6,7 +6,7 @@ const Query = {
 		return ctx.prisma.user({ id: userId });
 	},
 	dates: (parent, args, ctx) => {
-		return [ 'Yes', 'No', 'Maybe so' ];
+    return ctx.prisma.dates();
 	},
 	sittes: (parent, args, ctx) => {
 		const id = getUserId(ctx);

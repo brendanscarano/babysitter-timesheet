@@ -1,15 +1,21 @@
-const auth = require('./mutations/auth');
-const createSittee = require('./mutations/createSitte');
-const createOrUpdateDate = require('./mutations/createOrUpdateDate');
+const auth = require("./mutations/auth");
+const { createSitte, updateSitte, deleteSitte } = require("./mutations/sitte");
+const {
+  createOrUpdateDate,
+  createDate
+} = require("./mutations/createOrUpdateDate");
 const stripe = require("./mutations/Stripe");
 
 const Mutation = {
   ...auth,
-  ...createSittee,
-  ...createOrUpdateDate,
+  createSitte,
+  updateSitte,
+  deleteSitte,
+  createOrUpdateDate,
+  createDate,
   ...stripe
-}
+};
 
 module.exports = {
-  Mutation,
-}
+  Mutation
+};

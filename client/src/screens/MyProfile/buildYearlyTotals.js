@@ -76,6 +76,29 @@ export const calculateAvgHoursPerMonth = (data) => {
     }
   });
 };
+
+export const calculateAvgHrsPerMonth = (arr) => {
+  let allDates = [];
+
+  arr.forEach((sittee) => {
+    allDates = allDates.concat(sittee.dates);
+  });
+
+  let allHours = 0;
+  const uniqueMonth = {};
+  allDates.forEach(({ hours, month }) => {
+    allHours += hours;
+    if (hours && uniqueMonth[month]) {
+      uniqueMonth[month] += 1;
+    } else if (hours && !uniqueMonth[month]) {
+      uniqueMonth[month] = 1;
+    }
+  });
+
+  const numOfMonths = Object.keys(uniqueMonth).length;
+  return allHours / numOfMonths;
+};
+
 // const sampleData = {
 //   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 //   datasets: [

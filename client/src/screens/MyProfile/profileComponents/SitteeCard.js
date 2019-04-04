@@ -50,7 +50,10 @@ export const TotalPerChildSitteeCard = ({ name, ...props }) => {
       <p>
         Yearly total-to-date:
         {' '}
-        <Hours>{totalPaidPerchild(dates, rateAmount)}</Hours>
+        <Hours>
+$
+          {totalPaidPerchild(dates, rateAmount)}
+        </Hours>
       </p>
     </SitteeCard>
   );
