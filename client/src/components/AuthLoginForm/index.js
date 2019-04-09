@@ -68,8 +68,8 @@ class AuthLoginForm extends React.PureComponent {
 	              email: values.email,
 	              password: values.password,
 	            },
-	          });
-
+						});
+						console.log(response)
 	          if (response.data.login.token) {
 	            Notification.success({
 	              message: 'Login successful',

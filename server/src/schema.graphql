@@ -17,7 +17,7 @@ type Mutation {
   ): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
   logout: Boolean!
-  createSubscription(source: String!, ccLast4: String!): User
+  createSubscription(source: String!, ccLast4: String!): User,
   cancelSubscription: User
   changeCreditCard(source: String!, ccLast4: String!): User
   createSitte(
@@ -28,6 +28,7 @@ type Mutation {
     rateType: RateType!
     gender: Gender!
   ): Sittee
+  createDate(data: DateCreateInput!): Date!
   createOrUpdateDate(
     dateId: ID
     dateObjectId: String!

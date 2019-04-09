@@ -18,27 +18,27 @@ import { Logout } from './screens/Logout/index';
 import { Loader } from './components/Loader';
 
 const IS_LOGGED_IN = gql`
-	{
-		isLoggedIn @client
-	}
+  {
+    isLoggedIn @client
+  }
 `;
 
 const loggedInRoutes = isLoggedIn => isLoggedIn && (
-    <Route
-      path="/"
-      component={RequireSubscription(() => (
-        <Switch>
-          <Route exact path="/_sheet/:date" component={Main} />
-          {/* <Route exact path="/new-sitte" component={NewChild} /> */}
-  <Route exact path="/sittes" component={Sittes} />
-          <Route exact path="/sitte/:id" component={ChildInfo} />
-          <Route exact path="/account" render={MyProfile} />
-          <Route exact path="/logout" component={Logout} />
-  <Route component={FourOFour} />
-        </Switch>
-      ))}
-    />
-  );
+  <Route
+    path="/"
+    component={RequireSubscription(() => (
+      <Switch>
+        <Route exact path="/_sheet/:date" component={Main} />
+        {/* <Route exact path="/new-sitte" component={NewChild} /> */}
+        <Route exact path="/sittes" component={Sittes} />
+        <Route exact path="/sitte/:id" component={ChildInfo} />
+        <Route exact path="/account" render={MyProfile} />
+        <Route exact path="/logout" component={Logout} />
+        <Route component={FourOFour} />
+      </Switch>
+    ))}
+  />
+);
 
 const App = () => (
   <ApolloProvider client={client}>
@@ -55,13 +55,21 @@ const App = () => (
 
           return (
             <Switch>
-              <Route exact path="/" component={RedirectIfLoggedIn(() => <Welcome />)} />
+              <Route
+                exact
+                path="/"
+                component={RedirectIfLoggedIn(() => (
+                  <Welcome />
+                ))}
+              />
               <Layout isLoggedIn={data.isLoggedIn}>
                 {loggedInRoutes(data.isLoggedIn)}
                 <Route
                   exact
                   path="/register"
-                  component={RedirectIfLoggedIn(props => <LoginSignup {...props} />)}
+                  component={RedirectIfLoggedIn(props => (
+                    <LoginSignup {...props} />
+                  ))}
                 />
               </Layout>
             </Switch>
